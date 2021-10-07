@@ -2,8 +2,8 @@ import { ChakraProvider } from "@chakra-ui/provider";
 
 import { wrapper } from "../store";
 import "../styles/globals.css";
-import theme from "../src/theme/index";
-import "../src/theme/styles.css";
+import theme from "../styles/theme/index";
+import "../styles/theme/Fonts";
 
 const App = ({ Component, pageProps }) => {
   return (
