@@ -1,6 +1,7 @@
+import { ChakraProvider } from "@chakra-ui/provider";
+
 import { wrapper } from "../store";
 import "../styles/globals.css";
-import { ChakraProvider } from "@chakra-ui/provider";
 import theme from "../src/theme/index";
 import "../src/theme/styles.css";
 
