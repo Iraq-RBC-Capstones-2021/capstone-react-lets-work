@@ -1,4 +1,5 @@
 import "@fontsource/roboto";
+import "@fontsource/roboto/300.css";
 import { ChakraProvider } from "@chakra-ui/provider";
 
 import { wrapper } from "../store";
