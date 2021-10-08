@@ -4,9 +4,10 @@ import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import NextLink from "next/link";
 
 export default function Navbar() {
+  const [display, setDisplay] = useState("none");
   return (
-    <Flex>
-      <Flex pos="fixed" top="1rem" right="1rem" align="center">
+    <Flex justify="end">
+      <Flex top="1rem" right="1rem" align="center">
         <Flex display={["none", "none", "flex", "flex"]}>
           <NextLink href="/" passHref>
             <Button as="a" variant="ghost" aria-label="Home" my="5" w="100%">
@@ -33,8 +34,10 @@ export default function Navbar() {
           aria-label="open menu"
           size="lg"
           mr="2"
+          mt="2"
           icon={<HamburgerIcon />}
           display={["flex", "flex", "none", "none"]}
+          onClick={() => setDisplay("flex")}
         />
       </Flex>
       <Flex
@@ -47,6 +50,7 @@ export default function Navbar() {
         left="0"
         overflow="auto"
         flexDir="column"
+        display={display}
       >
         <Flex justify="flex-end">
           <IconButton
@@ -55,9 +59,14 @@ export default function Navbar() {
             aria-label="Close menu"
             size="lg"
             icon={<CloseIcon />}
+            onClick={() => setDisplay("none")}
           />
         </Flex>
-        <Flex flexDir="column" align="center">
+        <Flex
+          flexDir="column"
+          align="center"
+          onClick={() => setDisplay("none")}
+        >
           <NextLink href="/" passHref>
             <Button as="a" variant="ghost" aria-label="Home" my="5" w="100%">
               Home

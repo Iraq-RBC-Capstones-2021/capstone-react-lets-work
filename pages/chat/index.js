@@ -1,7 +1,5 @@
-export default function index() {
-  return (
-    <div>
-      <h1>Chat Page</h1>
-    </div>
-  );
+import { Heading } from "@chakra-ui/react";
+
+export default function Chat() {
+  return <Heading as="h1">Chat Page</Heading>;
 }

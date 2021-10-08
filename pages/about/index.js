@@ -1,7 +1,5 @@
-export default function index() {
-  return (
-    <div>
-      <h1>About Page</h1>
-    </div>
-  );
+import { Heading } from "@chakra-ui/react";
+
+export default function About() {
+  return <Heading as="h1">About Page</Heading>;
 }
