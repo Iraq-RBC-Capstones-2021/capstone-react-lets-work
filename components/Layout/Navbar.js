@@ -6,7 +6,9 @@ import NextLink from "next/link";
 export default function Navbar() {
   const [display, setDisplay] = useState("none");
   const [signedIn, setSignedIn] = useState(false);
-
+  const authenticate = () => {
+    setSignedIn(!signedIn);
+  };
   return (
     <Flex justify="end">
       <Flex display={["flex", "flex", "none", "none"]} mr="auto">
@@ -40,7 +42,20 @@ export default function Navbar() {
               About
             </Button>
           </NextLink>
-
+          <NextLink href="#" passHref>
+            <Button
+              as="a"
+              variant="ghost"
+              aria-label="Home"
+              my="5"
+              w="100%"
+              ml="14"
+              mr="2"
+              onClick={authenticate}
+            >
+              {signedIn ? "Account" : "Sign Up"}
+            </Button>
+          </NextLink>
           <IconButton
             aria-label="open menu"
             bgColor="transparent"
@@ -107,6 +122,18 @@ export default function Navbar() {
             <NextLink href="/about" passHref>
               <Button as="a" variant="ghost" aria-label="Home" my="2" w="100%">
                 About
+              </Button>
+            </NextLink>
+            <NextLink href="#" passHref>
+              <Button
+                as="a"
+                variant="ghost"
+                aria-label="Home"
+                my="2"
+                w="100%"
+                onClick={authenticate}
+              >
+                {signedIn ? "Account" : "Sign Up"}
               </Button>
             </NextLink>
           </Flex>
