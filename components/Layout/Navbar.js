@@ -40,53 +40,56 @@ export default function Navbar() {
           onClick={() => setDisplay("flex")}
         />
       </Flex>
-      <Flex
-        w="100vw"
-        bgColor="gray.200"
-        zIndex={20}
-        h="100vw"
-        pos="fixed"
-        top="0"
-        left="0"
-        overflow="auto"
-        flexDir="column"
-        display={display}
-      >
-        <Flex justify="flex-end">
-          <IconButton
-            mt="2"
-            mr="2"
-            aria-label="Close menu"
-            size="lg"
-            icon={<CloseIcon />}
-            onClick={() => setDisplay("none")}
-          />
-        </Flex>
+      <Flex display={["flex", "flex", "none", "none"]}>
         <Flex
+          w="100vw"
+          bgColor="gray.200"
+          zIndex={20}
+          minHeight="100%"
+          pos="fixed"
+          top="0"
+          left="0"
+          overflow="auto"
           flexDir="column"
-          align="center"
-          onClick={() => setDisplay("none")}
+          display={display}
         >
-          <NextLink href="/" passHref>
-            <Button as="a" variant="ghost" aria-label="Home" my="5" w="100%">
-              Home
-            </Button>
-          </NextLink>
-          <NextLink href="/chat" passHref>
-            <Button as="a" variant="ghost" aria-label="Home" my="5" w="100%">
-              Chat
-            </Button>
-          </NextLink>
-          <NextLink href="/search" passHref>
-            <Button as="a" variant="ghost" aria-label="Home" my="5" w="100%">
-              Search
-            </Button>
-          </NextLink>
-          <NextLink href="/about" passHref>
-            <Button as="a" variant="ghost" aria-label="Home" my="5" w="100%">
-              About
-            </Button>
-          </NextLink>
+          <Flex justify="flex-end">
+            <IconButton
+              mt="2"
+              mr="2"
+              aria-label="Close menu"
+              size="lg"
+              icon={<CloseIcon />}
+              onClick={() => setDisplay("none")}
+            />
+          </Flex>
+          <Flex
+            height="100%"
+            flexDir="column"
+            align="center"
+            onClick={() => setDisplay("none")}
+          >
+            <NextLink href="/" passHref>
+              <Button as="a" variant="ghost" aria-label="Home" my="2" w="100%">
+                Home
+              </Button>
+            </NextLink>
+            <NextLink href="/chat" passHref>
+              <Button as="a" variant="ghost" aria-label="Home" my="2" w="100%">
+                Chat
+              </Button>
+            </NextLink>
+            <NextLink href="/search" passHref>
+              <Button as="a" variant="ghost" aria-label="Home" my="2" w="100%">
+                Search
+              </Button>
+            </NextLink>
+            <NextLink href="/about" passHref>
+              <Button as="a" variant="ghost" aria-label="Home" my="2" w="100%">
+                About
+              </Button>
+            </NextLink>
+          </Flex>
         </Flex>
       </Flex>
     </Flex>
