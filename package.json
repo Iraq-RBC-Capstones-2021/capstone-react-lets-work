@@ -12,11 +12,11 @@
     "test": "jest --watch"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^1.0.15",
     "@chakra-ui/react": "^1.6.9",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@fontsource/roboto": "^4.5.1",
-    "@react-icons/all-files": "^4.1.0",
     "@reduxjs/toolkit": "^1.6.1",
     "firebase": "^9.1.1",
     "framer-motion": "^4",
