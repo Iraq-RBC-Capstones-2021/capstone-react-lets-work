@@ -69,7 +69,7 @@ export default function TopSection() {
       </Container>
       <Container maxW="5xl">
         <Box px={0}>
-          <SimpleGrid columns={{ base: 3 }} spacing={16}>
+          <SimpleGrid columns={{ base: 1, md: 3 }} spacing={16}>
             <Center>
               <Image
                 as={NextImage}
