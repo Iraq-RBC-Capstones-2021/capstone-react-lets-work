@@ -1,12 +1,23 @@
 import { useState } from "react";
 import { Flex, Button, IconButton } from "@chakra-ui/react";
-import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import { HamburgerIcon, CloseIcon, BellIcon } from "@chakra-ui/icons";
 import NextLink from "next/link";
 
 export default function Navbar() {
   const [display, setDisplay] = useState("none");
+  const [signedIn, setSignedIn] = useState(false);
+
   return (
     <Flex justify="end">
+      <Flex display={["flex", "flex", "none", "none"]} mr="auto">
+        <IconButton
+          mt="2"
+          ml="2"
+          aria-label="Close menu"
+          size="lg"
+          icon={<BellIcon />}
+        />
+      </Flex>
       <Flex top="1rem" right="1rem" align="center">
         <Flex display={["none", "none", "flex", "flex"]}>
           <NextLink href="/" passHref>
@@ -29,6 +40,15 @@ export default function Navbar() {
               About
             </Button>
           </NextLink>
+
+          <IconButton
+            aria-label="open menu"
+            bgColor="transparent"
+            size="md"
+            my="5"
+            mr="2"
+            icon={<BellIcon />}
+          />
         </Flex>
         <IconButton
           aria-label="open menu"
