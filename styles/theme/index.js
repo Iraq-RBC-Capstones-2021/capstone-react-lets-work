@@ -1,33 +1,29 @@
 import { extendTheme } from "@chakra-ui/react";
 
 const fonts = {
-  heading: "Open Sans",
-  body: "Raleway",
+  heading: "",
+  body: "Roboto",
 };
 
 const colors = {
   transparent: "transparent",
   black: "#000",
   white: "#fff",
-  gray: {
-    50: "#f7fafc",
-    100: "#EDF2F7",
-    200: "#E2E8F0",
-    700: "#2D3748",
-    800: "#1A202C",
-    900: "#171923",
+  primary: {
+    lighter: "#7884ff",
+    main: "#5E6DFF",
+    darker: "#4556ff",
   },
-  Blue: {
-    50: "#EBF8FF",
-    100: "#BEE3F8",
-    200: "#90CDF4",
-    300: "#63B3ED",
-    400: "#4299E1",
-    500: "#3182CE",
-    600: "#2B6CB0",
-    700: "#2C5282",
-    800: "#2A4365",
-    900: "#1A365D",
+
+  secondary: {
+    lighter: "#edeffd",
+    main: "#EBEDFF",
+    darker: "#d2d6ff",
+  },
+  tertiary: {
+    lighter: "#244153",
+    main: "#1C3341",
+    darker: "#14252f",
   },
 };
 
