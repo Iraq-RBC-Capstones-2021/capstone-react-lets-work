@@ -17,7 +17,7 @@ export default function TopSection() {
       <Container maxW="3xl">
         <Stack
           as={Box}
-          textAlign="start"
+          textAlign={{ base: "center", md: "start" }}
           spacing={{ base: 8, md: 8 }}
           py={{ base: 10, md: 24 }}
         >
@@ -37,9 +37,9 @@ export default function TopSection() {
             color="#455A64"
             fontSize={{ base: "1xl", sm: "1xl", md: "2xl" }}
             fontWeight={600}
-            align="start"
-            alignSelf="start"
-            pr="36"
+            align={{ base: "center", md: "start" }}
+            pr={{ base: 0, md: 36 }}
+            px={{ base: 10, md: 0 }}
           >
             A platform where you can find Projects, Ideas, and People with the
             same interest as you.
@@ -47,7 +47,7 @@ export default function TopSection() {
           <Stack
             direction="column"
             align="start"
-            alignSelf="start"
+            alignSelf={{ base: "center", md: "start" }}
             position="relative"
           >
             <Button
@@ -87,6 +87,7 @@ export default function TopSection() {
                 height={251.37}
                 width={318}
                 alt="team"
+                display={{ base: "none", md: "block" }}
               />
             </Center>
 
@@ -97,6 +98,7 @@ export default function TopSection() {
                 height={251.37}
                 width={318}
                 alt="jobhunt"
+                display={{ base: "none", md: "block" }}
               />
             </Center>
           </SimpleGrid>
