@@ -12,6 +12,7 @@ import {
   InputRightElement,
   IconButton,
   HStack,
+  FormHelperText,
 } from "@chakra-ui/react";
 import { BiEnvelope, BiLock } from "react-icons/bi";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
@@ -19,11 +20,62 @@ import { FaRegUser } from "react-icons/fa";
 import Image from "next/image";
 import { useState } from "react";
 import NextLink from "next/link";
+import useInput from "../../hooks/useInput";
 function SignUp() {
   const [showPass, setShowPass] = useState({
     password: false,
     repeatPass: false,
   });
+  const {
+    value: usernameValue,
+    isValid: usernameIsValid,
+    reset: usernameReset,
+    hasError: usernameHasError,
+    inputBlurHandler: usernameBlurHandler,
+    inputChangeHandler: usernameChangeHandler,
+  } = useInput((value) => value.trim().length >= 3);
+  const {
+    value: emailValue,
+    isValid: emailIsValid,
+    reset: emailReset,
+    hasError: emailHasError,
+    inputBlurHandler: emailBlurHandler,
+    inputChangeHandler: emailChangeHandler,
+  } = useInput((value) => value.includes("@"));
+  const {
+    value: passwordValue,
+    isValid: passwordIsValid,
+    reset: passwordReset,
+    hasError: passwordHasError,
+    inputBlurHandler: passwordBlurHandler,
+    inputChangeHandler: passwordChangeHandler,
+  } = useInput((value) => value.trim().length >= 6);
+  const {
+    value: repeatPassValue,
+    isValid: repeatPassIsValid,
+    reset: repeatPassReset,
+    hasError: repeatPassHasError,
+    inputBlurHandler: repeatPassBlurHandler,
+    inputChangeHandler: repeatPassChangeHandler,
+  } = useInput((value) => value === passwordValue);
+  const isValidForm =
+    passwordIsValid && emailIsValid && usernameIsValid && repeatPassIsValid;
+  function signUpHandler(e) {
+    e.preventDefault();
+    if (!isValidForm) {
+      return;
+    }
+    const userData = {
+      username: usernameValue,
+      email: emailValue,
+      password: passwordValue,
+    };
+    //dispatch signup action with userData
+    passwordReset();
+    emailReset();
+    repeatPassReset();
+    usernameReset();
+  }
   return (
     <Flex
       width="full"
@@ -66,7 +118,7 @@ function SignUp() {
           <Text fontSize="md">Sign up now to start sharing your ideas</Text>
         </Stack>
         <Box>
-          <form>
+          <form onSubmit={signUpHandler}>
             <Stack align="center" justify="center" spacing="12">
               <Stack align="center" justify="center" spacing="4">
                 <FormControl>
@@ -79,20 +131,21 @@ function SignUp() {
                       children={<FaRegUser size="20" />}
                     />
                     <Input
-                      _focus={{
-                        border: "1px solid",
-                        borderColor: "primary.lighter",
-                      }}
+                      value={usernameValue}
+                      onChange={usernameChangeHandler}
+                      onBlur={usernameBlurHandler}
                       placeholder="Username"
-                      variant="white"
+                      variant={usernameHasError ? "error" : "primary"}
                       w={{ base: "18.7rem", md: "21.8rem" }}
                       size="lg"
-                      boxShadow="sm"
                       type="text"
-                      border="1px solid #EAEAEA"
-                      borderRadius="3px"
                     />
                   </InputGroup>
+                  {usernameHasError ? (
+                    <FormHelperText color="#cc0000">
+                      username must has atleast 3 characters
+                    </FormHelperText>
+                  ) : null}
                 </FormControl>
                 <FormControl>
                   <InputGroup>
@@ -104,20 +157,21 @@ function SignUp() {
                       children={<BiEnvelope size="20" />}
                     />
                     <Input
-                      _focus={{
-                        border: "1px solid",
-                        borderColor: "primary.lighter",
-                      }}
+                      value={emailValue}
+                      onChange={emailChangeHandler}
+                      onBlur={emailBlurHandler}
                       placeholder="Email"
-                      variant="white"
+                      variant={emailHasError ? "error" : "primary"}
                       w={{ base: "18.7rem", md: "21.8rem" }}
                       size="lg"
-                      boxShadow="sm"
                       type="email"
-                      border="1px solid #EAEAEA"
-                      borderRadius="3px"
                     />
                   </InputGroup>
+                  {emailHasError ? (
+                    <FormHelperText color="#cc0000">
+                      Enter a valid email
+                    </FormHelperText>
+                  ) : null}
                 </FormControl>
                 <FormControl>
                   <InputGroup>
@@ -129,18 +183,15 @@ function SignUp() {
                       children={<BiLock size="20" />}
                     />
                     <Input
-                      _focus={{
-                        border: "1px solid",
-                        borderColor: "primary.lighter",
-                      }}
+                      value={passwordValue}
+                      onChange={passwordChangeHandler}
+                      onBlur={passwordBlurHandler}
                       placeholder="Password"
-                      variant="white"
+                      variant={passwordHasError ? "error" : "primary"}
                       w={{ base: "18.7rem", md: "21.8rem" }}
                       size="lg"
                       boxShadow="sm"
                       type={showPass.password ? "text" : "password"}
-                      border="1px solid #EAEAEA"
-                      borderRadius="3px"
                     />
                     <InputRightElement width="4.5rem">
                       <IconButton
@@ -168,8 +219,13 @@ function SignUp() {
                       />
                     </InputRightElement>
                   </InputGroup>
+                  {passwordHasError ? (
+                    <FormHelperText color="#cc0000">
+                      password must atleast has 6 characters
+                    </FormHelperText>
+                  ) : null}
                 </FormControl>
-                <FormControl>
+                <FormControl id="repeatPass">
                   <InputGroup>
                     <InputLeftElement
                       pointerEvents="none"
@@ -179,19 +235,16 @@ function SignUp() {
                       children={<BiLock size="20" />}
                     />
                     <Input
-                      _focus={{
-                        border: "1px solid",
-                        borderColor: "primary.lighter",
-                      }}
                       placeholder="Repeat Password"
-                      variant="white"
                       w={{ base: "18.7rem", md: "21.8rem" }}
                       size="lg"
-                      boxShadow="sm"
                       type={showPass.repeatPass ? "text" : "password"}
-                      border="1px solid #EAEAEA"
-                      borderRadius="3px"
+                      value={repeatPassValue}
+                      onChange={repeatPassChangeHandler}
+                      onBlur={repeatPassBlurHandler}
+                      variant={repeatPassHasError ? "error" : "primary"}
                     />
+
                     <InputRightElement width="4.5rem">
                       <IconButton
                         size="sm"
@@ -218,9 +271,15 @@ function SignUp() {
                       />
                     </InputRightElement>
                   </InputGroup>
+                  {repeatPassHasError ? (
+                    <FormHelperText color="#cc0000">
+                      passwords must match
+                    </FormHelperText>
+                  ) : null}
                 </FormControl>
               </Stack>
               <Button
+                type="submit"
                 w={{ base: "18.7rem", md: "21.8rem" }}
                 size="lg"
                 fontWeight="black"

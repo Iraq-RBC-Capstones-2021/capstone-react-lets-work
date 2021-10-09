@@ -14,7 +14,9 @@ import {
   Checkbox,
   useDisclosure,
   HStack,
+  FormHelperText,
 } from "@chakra-ui/react";
+import useInput from "../../hooks/useInput";
 import { BiEnvelope, BiLock } from "react-icons/bi";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
@@ -25,6 +27,34 @@ import ForgotPass from "./ForgotPass";
 function SignIn() {
   const [showPass, setShowPass] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const {
+    value: emailValue,
+    isValid: emailIsValid,
+    reset: emailReset,
+    hasError: emailHasError,
+    inputBlurHandler: emailBlurHandler,
+    inputChangeHandler: emailChangeHandler,
+  } = useInput((value) => value.includes("@"));
+  const {
+    value: passwordValue,
+    isValid: passwordIsValid,
+    reset: passwordReset,
+    hasError: passwordHasError,
+    inputBlurHandler: passwordBlurHandler,
+    inputChangeHandler: passwordChangeHandler,
+  } = useInput((value) => value.trim().length >= 3);
+  const isValidForm = passwordIsValid && emailIsValid;
+  function signInSubmitHandler(e) {
+    e.preventDefault();
+    if (!isValidForm) {
+      return;
+    }
+    const userData = { password: passwordValue, email: emailValue };
+    //dispatch sign in action with userData
+    passwordReset();
+    emailReset();
+  }
   return (
     <Flex
       width="full"
@@ -68,7 +98,7 @@ function SignIn() {
           <Text fontSize="md">Sign In now to start sharing your ideas</Text>
         </Stack>
         <Box>
-          <form>
+          <form onSubmit={signInSubmitHandler}>
             <Stack align="center" justify="center" spacing="8">
               <Stack align="center" justify="center" spacing="4">
                 <FormControl>
@@ -81,20 +111,21 @@ function SignIn() {
                       children={<BiEnvelope size="20" />}
                     />
                     <Input
-                      _focus={{
-                        border: "1px solid",
-                        borderColor: "primary.lighter",
-                      }}
+                      value={emailValue}
+                      onChange={emailChangeHandler}
+                      onBlur={emailBlurHandler}
                       placeholder="Email"
-                      variant="white"
+                      variant={emailHasError ? "error" : "primary"}
                       w={{ base: "18.7rem", md: "21.8rem" }}
                       size="lg"
-                      boxShadow="sm"
                       type="email"
-                      border="1px solid #EAEAEA"
-                      borderRadius="3px"
                     />
                   </InputGroup>
+                  {emailHasError ? (
+                    <FormHelperText color="#cc0000">
+                      enter a valid email
+                    </FormHelperText>
+                  ) : null}
                 </FormControl>
                 <FormControl>
                   <InputGroup>
@@ -106,18 +137,15 @@ function SignIn() {
                       children={<BiLock size="20" />}
                     />
                     <Input
-                      _focus={{
-                        border: "1px solid",
-                        borderColor: "primary.lighter",
-                      }}
+                      value={passwordValue}
+                      onChange={passwordChangeHandler}
+                      onBlur={passwordBlurHandler}
                       placeholder="Password"
-                      variant="white"
+                      variant={passwordHasError ? "error" : "primary"}
                       w={{ base: "18.7rem", md: "21.8rem" }}
                       size="lg"
                       boxShadow="sm"
-                      type={showPass ? "text" : "password"}
-                      border="1px solid #EAEAEA"
-                      borderRadius="3px"
+                      type={showPass.password ? "text" : "password"}
                     />
                     <InputRightElement width="4.5rem">
                       <IconButton
@@ -140,6 +168,11 @@ function SignIn() {
                       />
                     </InputRightElement>
                   </InputGroup>
+                  {passwordHasError ? (
+                    <FormHelperText color="#cc0000">
+                      password must atleast has 6 characters
+                    </FormHelperText>
+                  ) : null}
                 </FormControl>
               </Stack>
               <Checkbox

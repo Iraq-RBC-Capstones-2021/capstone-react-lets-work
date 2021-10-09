@@ -8,15 +8,31 @@ import {
   ModalCloseButton,
   Button,
   FormControl,
-  FormLabel,
   Input,
-  useDisclosure,
   InputGroup,
   InputLeftElement,
+  FormHelperText,
   Stack,
 } from "@chakra-ui/react";
+import useInput from "../../hooks/useInput";
 import { BiEnvelope } from "react-icons/bi";
 function ForgotPass({ isOpen, onClose }) {
+  const {
+    value: emailValue,
+    isValid: emailIsValid,
+    reset: emailReset,
+    hasError: emailHasError,
+    inputBlurHandler: emailBlurHandler,
+    inputChangeHandler: emailChangeHandler,
+  } = useInput((value) => value.includes("@"));
+  function forgotPassHandler() {
+    //check if the email exists in the database
+    if (!emailIsValid) {
+      return;
+    }
+    //dispatch a resetpassword action
+    emailReset();
+  }
   return (
     <>
       <Modal isCentered isOpen={isOpen} onClose={onClose}>
@@ -37,20 +53,30 @@ function ForgotPass({ isOpen, onClose }) {
                   />
                   <Input
                     w={{ base: "18.7rem", md: "21.8rem" }}
+                    value={emailValue}
+                    onChange={emailChangeHandler}
+                    onBlur={emailBlurHandler}
                     placeholder="Email"
-                    variant="white"
+                    variant={emailHasError ? "error" : "primary"}
                     size="lg"
-                    boxShadow="sm"
                     type="email"
-                    border="1px solid #EAEAEA"
-                    borderRadius="3px"
                   />
                 </InputGroup>
+                {emailHasError ? (
+                  <FormHelperText color="#cc0000">
+                    enter a valid email
+                  </FormHelperText>
+                ) : null}
               </FormControl>
             </ModalBody>
 
             <ModalFooter>
-              <Button size="lg" w="10rem" variant="primary">
+              <Button
+                onClick={forgotPassHandler}
+                size="lg"
+                w="10rem"
+                variant="primary"
+              >
                 Submit
               </Button>
             </ModalFooter>
