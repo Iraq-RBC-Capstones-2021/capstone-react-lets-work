@@ -1,5 +1,10 @@
-import { Heading } from "@chakra-ui/react";
+import styles from "../styles/Home.module.css";
+import TopSection from "../components/Home/TopSection";
 
 export default function Home() {
-  return <Heading as="h1">Home Page</Heading>;
+  return (
+    <div className={styles.app}>
+      <TopSection />
+    </div>
+  );
 }
