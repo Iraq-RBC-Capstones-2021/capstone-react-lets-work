@@ -10,7 +10,7 @@ export default function Navbar() {
     setSignedIn(!signedIn);
   };
   return (
-    <Flex justify="end">
+    <Flex justify="end" bgColor="offWhite">
       <Flex display={["flex", "flex", "none", "none"]} mr="auto">
         <IconButton
           mt="2"
@@ -23,22 +23,22 @@ export default function Navbar() {
       <Flex top="1rem" right="1rem" align="center">
         <Flex display={["none", "none", "flex", "flex"]}>
           <NextLink href="/" passHref>
-            <Button as="a" variant="ghost" aria-label="Home" my="5" w="100%">
+            <Button as="a" variant="ghost" aria-label="Home" my="2" w="100%">
               Home
             </Button>
           </NextLink>
           <NextLink href="/chat" passHref>
-            <Button as="a" variant="ghost" aria-label="Home" my="5" w="100%">
+            <Button as="a" variant="ghost" aria-label="Home" my="2" w="100%">
               Chat
             </Button>
           </NextLink>
           <NextLink href="/search" passHref>
-            <Button as="a" variant="ghost" aria-label="Home" my="5" w="100%">
+            <Button as="a" variant="ghost" aria-label="Home" my="2" w="100%">
               Search
             </Button>
           </NextLink>
           <NextLink href="/about" passHref>
-            <Button as="a" variant="ghost" aria-label="Home" my="5" w="100%">
+            <Button as="a" variant="ghost" aria-label="Home" my="2" w="100%">
               About
             </Button>
           </NextLink>
@@ -47,7 +47,7 @@ export default function Navbar() {
               as="a"
               variant="ghost"
               aria-label="Home"
-              my="5"
+              my="2"
               w="100%"
               ml="14"
               mr="2"
@@ -60,7 +60,7 @@ export default function Navbar() {
             aria-label="open menu"
             bgColor="transparent"
             size="md"
-            my="5"
+            my="2"
             mr="2"
             icon={<BellIcon />}
           />
@@ -69,7 +69,7 @@ export default function Navbar() {
           aria-label="open menu"
           size="lg"
           mr="2"
-          mt="2"
+          marginY="2"
           icon={<HamburgerIcon />}
           display={["flex", "flex", "none", "none"]}
           onClick={() => setDisplay("flex")}
@@ -78,7 +78,7 @@ export default function Navbar() {
       <Flex display={["flex", "flex", "none", "none"]}>
         <Flex
           w="100vw"
-          bgColor="gray.200"
+          bgColor="offWhite"
           zIndex={20}
           minHeight="100%"
           pos="fixed"
