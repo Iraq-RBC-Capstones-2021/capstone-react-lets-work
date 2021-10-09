@@ -1,4 +1,3 @@
-/* eslint-disable react/no-children-prop */
 import {
   Box,
   Flex,
@@ -76,6 +75,7 @@ function SignUp() {
                       pointerEvents="none"
                       fontSize="lg"
                       h="46px"
+                      // eslint-disable-next-line react/no-children-prop
                       children={<FaRegUser size="20" />}
                     />
                     <Input
@@ -100,6 +100,7 @@ function SignUp() {
                       pointerEvents="none"
                       fontSize="lg"
                       h="46px"
+                      // eslint-disable-next-line react/no-children-prop
                       children={<BiEnvelope size="20" />}
                     />
                     <Input
@@ -124,6 +125,7 @@ function SignUp() {
                       pointerEvents="none"
                       fontSize="lg"
                       h="46px"
+                      // eslint-disable-next-line react/no-children-prop
                       children={<BiLock size="20" />}
                     />
                     <Input
@@ -173,6 +175,7 @@ function SignUp() {
                       pointerEvents="none"
                       fontSize="lg"
                       h="46px"
+                      // eslint-disable-next-line react/no-children-prop
                       children={<BiLock size="20" />}
                     />
                     <Input

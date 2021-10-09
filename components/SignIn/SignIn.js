@@ -1,4 +1,3 @@
-/* eslint-disable react/no-children-prop */
 import {
   Box,
   Flex,
@@ -78,6 +77,7 @@ function SignIn() {
                       pointerEvents="none"
                       fontSize="lg"
                       h="46px"
+                      // eslint-disable-next-line react/no-children-prop
                       children={<BiEnvelope size="20" />}
                     />
                     <Input
@@ -102,6 +102,7 @@ function SignIn() {
                       pointerEvents="none"
                       fontSize="lg"
                       h="46px"
+                      // eslint-disable-next-line react/no-children-prop
                       children={<BiLock size="20" />}
                     />
                     <Input
@@ -168,6 +169,7 @@ function SignIn() {
             _hover={{ bg: "transparent", transform: "scale(1.1)" }}
             bg="transparent"
             size="lg"
+            // eslint-disable-next-line react/no-children-prop
             children={<FcGoogle size="100%" />}
           />
           <Text

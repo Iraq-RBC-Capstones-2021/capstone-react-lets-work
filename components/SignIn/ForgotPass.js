@@ -1,4 +1,3 @@
-/* eslint-disable react/no-children-prop */
 import {
   Modal,
   ModalOverlay,
@@ -33,6 +32,7 @@ function ForgotPass({ isOpen, onClose }) {
                     pointerEvents="none"
                     fontSize="lg"
                     h="46px"
+                    // eslint-disable-next-line react/no-children-prop
                     children={<BiEnvelope size="20" />}
                   />
                   <Input
