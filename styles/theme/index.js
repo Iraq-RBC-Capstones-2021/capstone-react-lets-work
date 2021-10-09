@@ -1,6 +1,5 @@
 import { extendTheme } from "@chakra-ui/react";
 import { darken } from "@chakra-ui/theme-tools";
-
 const fonts = {
   heading: "Roboto",
   body: "Roboto",
@@ -63,6 +62,7 @@ const components = {
     },
   },
 };
+
 const theme = extendTheme({ colors, fonts, components });
 
 export default theme;
