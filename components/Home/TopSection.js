@@ -9,11 +9,15 @@ import {
   Center,
   Image,
 } from "@chakra-ui/react";
+import { useTranslation } from "next-i18next";
+import { useRouter } from "next/dist/client/router";
 import { Image as NextImage } from "next/image";
 
 export default function TopSection() {
+  const { t } = useTranslation("home");
+  const router = useRouter();
   return (
-    <div>
+    <div dir={router.locale === "ar" ? "rtl" : "ltr"}>
       <Container maxW="3xl">
         <Stack
           as={Box}
@@ -27,10 +31,10 @@ export default function TopSection() {
             lineHeight="70%"
             color="primary.main"
           >
-            Let&apos;s Work
+            {t("brand")}
             <Text as="span" color={"tertiary.darker"}>
               {" "}
-              on a Project!
+              {t("heading")}
             </Text>
           </Heading>
           <Text
@@ -41,8 +45,7 @@ export default function TopSection() {
             pr={{ base: 0, md: 36 }}
             px={{ base: 10, md: 0 }}
           >
-            A platform where you can find Projects, Ideas, and People with the
-            same interest as you.
+            {t("description")}
           </Text>
           <Stack
             direction="column"
@@ -62,7 +65,7 @@ export default function TopSection() {
                 bg: "primary.lighter",
               }}
             >
-              Join us
+              {t("join_us")}
             </Button>
           </Stack>
         </Stack>
