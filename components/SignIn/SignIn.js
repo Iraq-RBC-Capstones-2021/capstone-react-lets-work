@@ -43,7 +43,7 @@ function SignIn() {
     hasError: passwordHasError,
     inputBlurHandler: passwordBlurHandler,
     inputChangeHandler: passwordChangeHandler,
-  } = useInput((value) => value.trim().length >= 3);
+  } = useInput((value) => value.trim().length >= 6);
   const isValidForm = passwordIsValid && emailIsValid;
   function signInSubmitHandler(e) {
     e.preventDefault();
