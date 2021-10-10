@@ -12,14 +12,13 @@ const sampleNotifications = [
   {
     content: "Sent a message to Group Chat",
     userId: "",
-    //user details should be fetched from database through userId for now we will use random image
-    userImageURL: "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-
+    createdAt: new Date(),
     redirectTo: "/chat",
     id: "1",
+    // TODO: fetch user data using userId
+    userImageURL: "https://randomuser.me/api/portraits/thumb/men/75.jpg",
     username: "Ali",
     imageURL: "https://random.imagecdn.app/500/151",
-    createdAt: new Date(),
   },
   {
     content: "Sent a message to Group Chat",
