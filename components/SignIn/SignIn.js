@@ -15,6 +15,7 @@ import {
   HStack,
   FormHelperText,
 } from "@chakra-ui/react";
+import { useTranslation } from "next-i18next";
 import useInput from "../../hooks/useInput";
 import { BiEnvelope, BiLock } from "react-icons/bi";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
@@ -22,7 +23,10 @@ import { FcGoogle } from "react-icons/fc";
 import Image from "next/image";
 import { useState } from "react";
 import NextLink from "next/link";
+import { useRouter } from "next/dist/client/router";
 function SignIn() {
+  const { t } = useTranslation("form");
+  const { locale } = useRouter();
   const [showPass, setShowPass] = useState(false);
   const [showResetPassForm, setShowResetPassForm] = useState(false);
 
@@ -71,6 +75,7 @@ function SignIn() {
   }
   return (
     <Flex
+      dir={locale === "ar" ? "rtl" : "ltr"}
       width="full"
       h={{ md: "44rem", base: "100vh" }}
       justify="space-around"
@@ -78,7 +83,7 @@ function SignIn() {
     >
       <Flex
         pt="5"
-        pl="7.5rem"
+        px="7.5rem"
         display={{ base: "none", md: "flex", lg: "flex" }}
         direction="column"
         flexBasis="50%"
@@ -86,9 +91,9 @@ function SignIn() {
       >
         <Stack>
           <Text fontWeight="semibold" color="primary.main" fontSize="6xl">
-            Let&apos;s Work
+            {t("brand")}
           </Text>
-          <Text fontSize="4xl">Where your ideas become reality</Text>
+          <Text fontSize="4xl">{t("title")}</Text>
         </Stack>
         <Image
           src="/images/Creative team-amico.svg"
@@ -107,12 +112,10 @@ function SignIn() {
       >
         <Stack align="center">
           <Text fontWeight="semibold" fontSize="6xl">
-            {showResetPassForm ? "Reset Password" : "Sign In"}
+            {showResetPassForm ? t("reset_password") : t("signIn")}
           </Text>
           <Text fontSize="md">
-            {showResetPassForm
-              ? "Enter your email to reset your password"
-              : "Sign In now to start sharing your ideas"}
+            {showResetPassForm ? t("reset_pass_desc") : t("signIn_description")}
           </Text>
         </Stack>
         <Box>
@@ -137,7 +140,7 @@ function SignIn() {
                         value={resetEmailValue}
                         onChange={resetEmailChangeHandler}
                         onBlur={resetEmailBlurHandler}
-                        placeholder="Email"
+                        placeholder={t("email")}
                         variant={resetEmailHasError ? "error" : "primary"}
                         w={{ base: "18.7rem", md: "21.8rem" }}
                         size="lg"
@@ -148,7 +151,7 @@ function SignIn() {
                         value={emailValue}
                         onChange={emailChangeHandler}
                         onBlur={emailBlurHandler}
-                        placeholder="Email"
+                        placeholder={t("email")}
                         variant={emailHasError ? "error" : "primary"}
                         w={{ base: "18.7rem", md: "21.8rem" }}
                         size="lg"
@@ -158,7 +161,7 @@ function SignIn() {
                   </InputGroup>
                   {emailHasError ? (
                     <FormHelperText color="#cc0000">
-                      enter a valid email
+                      {t("email_error")}
                     </FormHelperText>
                   ) : null}
                 </FormControl>
@@ -176,7 +179,7 @@ function SignIn() {
                         value={passwordValue}
                         onChange={passwordChangeHandler}
                         onBlur={passwordBlurHandler}
-                        placeholder="Password"
+                        placeholder={t("password")}
                         variant={passwordHasError ? "error" : "primary"}
                         w={{ base: "18.7rem", md: "21.8rem" }}
                         size="lg"
@@ -184,29 +187,31 @@ function SignIn() {
                         type={showPass.password ? "text" : "password"}
                       />
                       <InputRightElement width="4.5rem">
-                        <IconButton
-                          size="sm"
-                          textAlign="center"
-                          bg="transparent"
-                          _hover="none"
-                          _active="none"
-                          mt="1"
-                          border="none"
-                          outline="none"
-                          onClick={() => setShowPass(!showPass)}
-                          icon={
-                            showPass ? (
-                              <AiOutlineEye size="20" />
-                            ) : (
-                              <AiOutlineEyeInvisible size="20" />
-                            )
-                          }
-                        />
+                        {locale !== "ar" && (
+                          <IconButton
+                            size="sm"
+                            textAlign="center"
+                            bg="transparent"
+                            _hover="none"
+                            _active="none"
+                            mt="1"
+                            border="none"
+                            outline="none"
+                            onClick={() => setShowPass(!showPass)}
+                            icon={
+                              showPass ? (
+                                <AiOutlineEye size="20" />
+                              ) : (
+                                <AiOutlineEyeInvisible size="20" />
+                              )
+                            }
+                          />
+                        )}
                       </InputRightElement>
                     </InputGroup>
                     {passwordHasError ? (
                       <FormHelperText color="#cc0000">
-                        password must atleast has 6 characters
+                        {t("password_error")}
                       </FormHelperText>
                     ) : null}
                   </FormControl>
@@ -220,7 +225,7 @@ function SignIn() {
                   px="2"
                   alignSelf="flex-start"
                 >
-                  <Text fontSize="md">Remember me</Text>
+                  <Text fontSize="md">{t("remember_me")}</Text>
                 </Checkbox>
               )}
               <Button
@@ -231,7 +236,7 @@ function SignIn() {
                 fontWeight="black"
                 type="submit"
               >
-                {showResetPassForm ? "Reset" : "Sign In"}
+                {showResetPassForm ? t("reset") : t("signIn")}
               </Button>
             </Stack>
           </form>
@@ -239,7 +244,7 @@ function SignIn() {
         <Stack align="center" spacing="5">
           {!showResetPassForm && (
             <Stack align="center">
-              <Text>or sign in with</Text>
+              <Text>{t("alternativeSignIn")}</Text>
               <IconButton
                 _hover={{ bg: "transparent", transform: "scale(1.1)" }}
                 bg="transparent"
@@ -255,7 +260,7 @@ function SignIn() {
             cursor="pointer"
             fontWeight="300"
           >
-            {showResetPassForm ? "Go back to Sign In page" : "forgot password?"}
+            {showResetPassForm ? t("go_back") : t("forgot_Password")}
           </Text>
         </Stack>
         <HStack wrap="wrap" align="center" justify="center">
@@ -264,7 +269,7 @@ function SignIn() {
             color="#121212"
             fontWeight="semibold"
           >
-            Don&apos;t have an account yet?{" "}
+            {t("dont_have_account")}
           </Text>
           <Text
             fontSize={{ md: "20", base: "17" }}
@@ -272,7 +277,7 @@ function SignIn() {
             fontWeight="semibold"
           >
             <Link as={NextLink} href="/signup" color="primary.main">
-              Sign Up here
+              {t("signUp_Here")}
             </Link>{" "}
           </Text>
         </HStack>

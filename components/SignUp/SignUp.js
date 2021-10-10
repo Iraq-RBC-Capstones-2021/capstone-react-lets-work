@@ -21,7 +21,11 @@ import Image from "next/image";
 import { useState } from "react";
 import NextLink from "next/link";
 import useInput from "../../hooks/useInput";
+import { useTranslation } from "next-i18next";
+import { useRouter } from "next/dist/client/router";
 function SignUp() {
+  const { t } = useTranslation("form");
+  const { locale } = useRouter();
   const [showPass, setShowPass] = useState({
     password: false,
     repeatPass: false,
@@ -78,6 +82,7 @@ function SignUp() {
   }
   return (
     <Flex
+      dir={locale === "ar" ? "rtl" : "ltr"}
       width="full"
       h={{ md: "44rem", base: "100vh" }}
       justify="space-around"
@@ -85,7 +90,7 @@ function SignUp() {
     >
       <Flex
         pt="2rem"
-        pl="7.5rem"
+        px="7.5rem"
         display={{ base: "none", md: "flex", lg: "flex" }}
         direction="column"
         flexBasis="50%"
@@ -93,9 +98,9 @@ function SignUp() {
       >
         <Stack>
           <Text fontWeight="semibold" color="primary.main" fontSize="6xl">
-            Let&apos;s Work
+            {t("brand")}
           </Text>
-          <Text fontSize="4xl">Where your ideas become reality</Text>
+          <Text fontSize="4xl">{t("title")}</Text>
         </Stack>
         <Image
           src="/images/Creative team-amico.svg"
@@ -113,9 +118,9 @@ function SignUp() {
       >
         <Stack align="center">
           <Text fontWeight="semibold" fontSize="6xl">
-            Sign Up
+            {t("signUp")}
           </Text>
-          <Text fontSize="md">Sign up now to start sharing your ideas</Text>
+          <Text fontSize="md">{t("signUp_description")}</Text>
         </Stack>
         <Box>
           <form onSubmit={signUpHandler}>
@@ -134,7 +139,7 @@ function SignUp() {
                       value={usernameValue}
                       onChange={usernameChangeHandler}
                       onBlur={usernameBlurHandler}
-                      placeholder="Username"
+                      placeholder={t("username")}
                       variant={usernameHasError ? "error" : "primary"}
                       w={{ base: "18.7rem", md: "21.8rem" }}
                       size="lg"
@@ -143,7 +148,7 @@ function SignUp() {
                   </InputGroup>
                   {usernameHasError ? (
                     <FormHelperText color="#cc0000">
-                      username must has atleast 3 characters
+                      {t("username_error")}
                     </FormHelperText>
                   ) : null}
                 </FormControl>
@@ -160,7 +165,7 @@ function SignUp() {
                       value={emailValue}
                       onChange={emailChangeHandler}
                       onBlur={emailBlurHandler}
-                      placeholder="Email"
+                      placeholder={t("email")}
                       variant={emailHasError ? "error" : "primary"}
                       w={{ base: "18.7rem", md: "21.8rem" }}
                       size="lg"
@@ -169,7 +174,7 @@ function SignUp() {
                   </InputGroup>
                   {emailHasError ? (
                     <FormHelperText color="#cc0000">
-                      Enter a valid email
+                      {t("email_error")}
                     </FormHelperText>
                   ) : null}
                 </FormControl>
@@ -186,7 +191,7 @@ function SignUp() {
                       value={passwordValue}
                       onChange={passwordChangeHandler}
                       onBlur={passwordBlurHandler}
-                      placeholder="Password"
+                      placeholder={t("password")}
                       variant={passwordHasError ? "error" : "primary"}
                       w={{ base: "18.7rem", md: "21.8rem" }}
                       size="lg"
@@ -194,34 +199,36 @@ function SignUp() {
                       type={showPass.password ? "text" : "password"}
                     />
                     <InputRightElement width="4.5rem">
-                      <IconButton
-                        size="sm"
-                        textAlign="center"
-                        bg="transparent"
-                        _hover="none"
-                        _active="none"
-                        mt="1"
-                        border="none"
-                        outline="none"
-                        onClick={() =>
-                          setShowPass({
-                            ...showPass,
-                            password: !showPass.password,
-                          })
-                        }
-                        icon={
-                          showPass.password ? (
-                            <AiOutlineEye size="20" />
-                          ) : (
-                            <AiOutlineEyeInvisible size="20" />
-                          )
-                        }
-                      />
+                      {locale !== "ar" && (
+                        <IconButton
+                          size="sm"
+                          textAlign="center"
+                          bg="transparent"
+                          _hover="none"
+                          _active="none"
+                          mt="1"
+                          border="none"
+                          outline="none"
+                          onClick={() =>
+                            setShowPass({
+                              ...showPass,
+                              password: !showPass.password,
+                            })
+                          }
+                          icon={
+                            showPass.password ? (
+                              <AiOutlineEye size="20" />
+                            ) : (
+                              <AiOutlineEyeInvisible size="20" />
+                            )
+                          }
+                        />
+                      )}
                     </InputRightElement>
                   </InputGroup>
                   {passwordHasError ? (
                     <FormHelperText color="#cc0000">
-                      password must atleast has 6 characters
+                      {t("password_error")}
                     </FormHelperText>
                   ) : null}
                 </FormControl>
@@ -235,7 +242,7 @@ function SignUp() {
                       children={<BiLock size="20" />}
                     />
                     <Input
-                      placeholder="Repeat Password"
+                      placeholder={t("repeat_password")}
                       w={{ base: "18.7rem", md: "21.8rem" }}
                       size="lg"
                       type={showPass.repeatPass ? "text" : "password"}
@@ -246,34 +253,36 @@ function SignUp() {
                     />
 
                     <InputRightElement width="4.5rem">
-                      <IconButton
-                        size="sm"
-                        textAlign="center"
-                        bg="transparent"
-                        _hover="none"
-                        _active="none"
-                        mt="1"
-                        border="none"
-                        outline="none"
-                        onClick={() =>
-                          setShowPass({
-                            ...showPass,
-                            repeatPass: !showPass.repeatPass,
-                          })
-                        }
-                        icon={
-                          showPass.repeatPass ? (
-                            <AiOutlineEye size="20" />
-                          ) : (
-                            <AiOutlineEyeInvisible size="20" />
-                          )
-                        }
-                      />
+                      {locale !== "ar" && (
+                        <IconButton
+                          size="sm"
+                          textAlign="center"
+                          bg="transparent"
+                          _hover="none"
+                          _active="none"
+                          mt="1"
+                          border="none"
+                          outline="none"
+                          onClick={() =>
+                            setShowPass({
+                              ...showPass,
+                              repeatPass: !showPass.repeatPass,
+                            })
+                          }
+                          icon={
+                            showPass.repeatPass ? (
+                              <AiOutlineEye size="20" />
+                            ) : (
+                              <AiOutlineEyeInvisible size="20" />
+                            )
+                          }
+                        />
+                      )}
                     </InputRightElement>
                   </InputGroup>
                   {repeatPassHasError ? (
                     <FormHelperText color="#cc0000">
-                      passwords must match
+                      {repeat_password_error}
                     </FormHelperText>
                   ) : null}
                 </FormControl>
@@ -285,18 +294,18 @@ function SignUp() {
                 fontWeight="black"
                 variant="primary"
               >
-                Sign Up
+                {t("signUp")}
               </Button>
             </Stack>
           </form>
         </Box>
         <HStack align="center" justify="center" wrap="wrap">
           <Text fontSize="20" color="#121212" fontWeight="semibold">
-            Already have an account ?{" "}
+            {t("already_have_account")}
           </Text>
           <Text fontWeight="semibold" fontSize="20" color="primary.main">
             <Link as={NextLink} href="/signin" color="primary.main">
-              Login here
+              {t("login_here")}
             </Link>{" "}
           </Text>
         </HStack>
