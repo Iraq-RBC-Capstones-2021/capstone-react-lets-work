@@ -12,7 +12,6 @@ import {
   InputRightElement,
   IconButton,
   Checkbox,
-  useDisclosure,
   HStack,
   FormHelperText,
 } from "@chakra-ui/react";
@@ -23,10 +22,9 @@ import { FcGoogle } from "react-icons/fc";
 import Image from "next/image";
 import { useState } from "react";
 import NextLink from "next/link";
-import ForgotPass from "./ForgotPass";
 function SignIn() {
   const [showPass, setShowPass] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [showResetPassForm, setShowResetPassForm] = useState(false);
 
   const {
     value: emailValue,
@@ -37,13 +35,21 @@ function SignIn() {
     inputChangeHandler: emailChangeHandler,
   } = useInput((value) => value.includes("@"));
   const {
+    value: resetEmailValue,
+    isValid: resetEmailIsValid,
+    reset: resetEmailReset,
+    hasError: resetEmailHasError,
+    inputBlurHandler: resetEmailBlurHandler,
+    inputChangeHandler: resetEmailChangeHandler,
+  } = useInput((value) => value.includes("@"));
+  const {
     value: passwordValue,
     isValid: passwordIsValid,
     reset: passwordReset,
     hasError: passwordHasError,
     inputBlurHandler: passwordBlurHandler,
     inputChangeHandler: passwordChangeHandler,
-  } = useInput((value) => value.trim().length >= 6);
+  } = useInput((value) => value.trim().length >= 3);
   const isValidForm = passwordIsValid && emailIsValid;
   function signInSubmitHandler(e) {
     e.preventDefault();
@@ -54,6 +60,14 @@ function SignIn() {
     //dispatch sign in action with userData
     passwordReset();
     emailReset();
+  }
+  function resetPassHandler(e) {
+    e.preventDefault();
+    if (!resetEmailIsValid) {
+      return;
+    }
+    //dispatch a reset email action
+    resetEmailReset();
   }
   return (
     <Flex
@@ -93,12 +107,20 @@ function SignIn() {
       >
         <Stack align="center">
           <Text fontWeight="semibold" fontSize="6xl">
-            Sign In
+            {showResetPassForm ? "Reset Password" : "Sign In"}
           </Text>
-          <Text fontSize="md">Sign In now to start sharing your ideas</Text>
+          <Text fontSize="md">
+            {showResetPassForm
+              ? "Enter your email to reset your password"
+              : "Sign In now to start sharing your ideas"}
+          </Text>
         </Stack>
         <Box>
-          <form onSubmit={signInSubmitHandler}>
+          <form
+            onSubmit={
+              showResetPassForm ? resetPassHandler : signInSubmitHandler
+            }
+          >
             <Stack align="center" justify="center" spacing="8">
               <Stack align="center" justify="center" spacing="4">
                 <FormControl>
@@ -110,16 +132,29 @@ function SignIn() {
                       // eslint-disable-next-line react/no-children-prop
                       children={<BiEnvelope size="20" />}
                     />
-                    <Input
-                      value={emailValue}
-                      onChange={emailChangeHandler}
-                      onBlur={emailBlurHandler}
-                      placeholder="Email"
-                      variant={emailHasError ? "error" : "primary"}
-                      w={{ base: "18.7rem", md: "21.8rem" }}
-                      size="lg"
-                      type="email"
-                    />
+                    {showResetPassForm ? (
+                      <Input
+                        value={resetEmailValue}
+                        onChange={resetEmailChangeHandler}
+                        onBlur={resetEmailBlurHandler}
+                        placeholder="Email"
+                        variant={resetEmailHasError ? "error" : "primary"}
+                        w={{ base: "18.7rem", md: "21.8rem" }}
+                        size="lg"
+                        type="email"
+                      />
+                    ) : (
+                      <Input
+                        value={emailValue}
+                        onChange={emailChangeHandler}
+                        onBlur={emailBlurHandler}
+                        placeholder="Email"
+                        variant={emailHasError ? "error" : "primary"}
+                        w={{ base: "18.7rem", md: "21.8rem" }}
+                        size="lg"
+                        type="email"
+                      />
+                    )}
                   </InputGroup>
                   {emailHasError ? (
                     <FormHelperText color="#cc0000">
@@ -127,93 +162,101 @@ function SignIn() {
                     </FormHelperText>
                   ) : null}
                 </FormControl>
-                <FormControl>
-                  <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      fontSize="lg"
-                      h="46px"
-                      // eslint-disable-next-line react/no-children-prop
-                      children={<BiLock size="20" />}
-                    />
-                    <Input
-                      value={passwordValue}
-                      onChange={passwordChangeHandler}
-                      onBlur={passwordBlurHandler}
-                      placeholder="Password"
-                      variant={passwordHasError ? "error" : "primary"}
-                      w={{ base: "18.7rem", md: "21.8rem" }}
-                      size="lg"
-                      boxShadow="sm"
-                      type={showPass.password ? "text" : "password"}
-                    />
-                    <InputRightElement width="4.5rem">
-                      <IconButton
-                        size="sm"
-                        textAlign="center"
-                        bg="transparent"
-                        _hover="none"
-                        _active="none"
-                        mt="1"
-                        border="none"
-                        outline="none"
-                        onClick={() => setShowPass(!showPass)}
-                        icon={
-                          showPass ? (
-                            <AiOutlineEye size="20" />
-                          ) : (
-                            <AiOutlineEyeInvisible size="20" />
-                          )
-                        }
+                {!showResetPassForm && (
+                  <FormControl>
+                    <InputGroup>
+                      <InputLeftElement
+                        pointerEvents="none"
+                        fontSize="lg"
+                        h="46px"
+                        // eslint-disable-next-line react/no-children-prop
+                        children={<BiLock size="20" />}
                       />
-                    </InputRightElement>
-                  </InputGroup>
-                  {passwordHasError ? (
-                    <FormHelperText color="#cc0000">
-                      password must atleast has 6 characters
-                    </FormHelperText>
-                  ) : null}
-                </FormControl>
+                      <Input
+                        value={passwordValue}
+                        onChange={passwordChangeHandler}
+                        onBlur={passwordBlurHandler}
+                        placeholder="Password"
+                        variant={passwordHasError ? "error" : "primary"}
+                        w={{ base: "18.7rem", md: "21.8rem" }}
+                        size="lg"
+                        boxShadow="sm"
+                        type={showPass.password ? "text" : "password"}
+                      />
+                      <InputRightElement width="4.5rem">
+                        <IconButton
+                          size="sm"
+                          textAlign="center"
+                          bg="transparent"
+                          _hover="none"
+                          _active="none"
+                          mt="1"
+                          border="none"
+                          outline="none"
+                          onClick={() => setShowPass(!showPass)}
+                          icon={
+                            showPass ? (
+                              <AiOutlineEye size="20" />
+                            ) : (
+                              <AiOutlineEyeInvisible size="20" />
+                            )
+                          }
+                        />
+                      </InputRightElement>
+                    </InputGroup>
+                    {passwordHasError ? (
+                      <FormHelperText color="#cc0000">
+                        password must atleast has 6 characters
+                      </FormHelperText>
+                    ) : null}
+                  </FormControl>
+                )}
               </Stack>
-              <Checkbox
-                variant="rounded"
-                size="lg"
-                iconSize="23px"
-                px="2"
-                alignSelf="flex-start"
-              >
-                <Text fontSize="md">Remember me</Text>
-              </Checkbox>
+              {!showResetPassForm && (
+                <Checkbox
+                  variant="rounded"
+                  size="lg"
+                  iconSize="23px"
+                  px="2"
+                  alignSelf="flex-start"
+                >
+                  <Text fontSize="md">Remember me</Text>
+                </Checkbox>
+              )}
               <Button
                 w={{ base: "18.7rem", md: "21.8rem" }}
                 size="lg"
                 bg="#5E6DFF"
                 variant="primary"
                 fontWeight="black"
+                type="submit"
               >
-                Sign In
+                {showResetPassForm ? "Reset" : "Sign In"}
               </Button>
             </Stack>
           </form>
         </Box>
         <Stack align="center" spacing="5">
-          <Text>or sign in with</Text>
-          <IconButton
-            _hover={{ bg: "transparent", transform: "scale(1.1)" }}
-            bg="transparent"
-            size="lg"
-            // eslint-disable-next-line react/no-children-prop
-            children={<FcGoogle size="100%" />}
-          />
+          {!showResetPassForm && (
+            <Stack align="center">
+              <Text>or sign in with</Text>
+              <IconButton
+                _hover={{ bg: "transparent", transform: "scale(1.1)" }}
+                bg="transparent"
+                size="lg"
+                // eslint-disable-next-line react/no-children-prop
+                children={<FcGoogle size="100%" />}
+              />
+            </Stack>
+          )}
           <Text
             _hover={{ color: "gray.500" }}
-            onClick={onOpen}
+            onClick={() => setShowResetPassForm(!showResetPassForm)}
             cursor="pointer"
             fontWeight="300"
           >
-            Forgot password?
+            {showResetPassForm ? "Go back to Sign In page" : "forgot password?"}
           </Text>
-          <ForgotPass onClose={onClose} isOpen={isOpen} />
         </Stack>
         <HStack wrap="wrap" align="center" justify="center">
           <Text
