@@ -1,85 +1,48 @@
-import {
-  Box,
-  Flex,
-  Button,
-  Text,
-  FormControl,
-  Input,
-  InputLeftElement,
-  InputGroup,
-  Stack,
-  Link,
-  InputRightElement,
-  IconButton,
-  HStack,
-  FormHelperText,
-} from "@chakra-ui/react";
+import { Box, Flex, Button, Text, Stack, Link, HStack } from "@chakra-ui/react";
+import { Formik, Form } from "formik";
+import NextLink from "next/link";
+import * as Yup from "yup";
 import { BiEnvelope, BiLock } from "react-icons/bi";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { FaRegUser } from "react-icons/fa";
 import Image from "next/image";
-import { useState } from "react";
-import NextLink from "next/link";
-import useInput from "../../hooks/useInput";
+import ChakraInput from "../Shared/ChakraInput";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/dist/client/router";
 function SignUp() {
   const { t } = useTranslation("form");
   const { locale } = useRouter();
-  const [showPass, setShowPass] = useState({
-    password: false,
-    repeatPass: false,
+  const initialValues = {
+    email: "",
+    username: "",
+    password: "",
+    passConfirm: "",
+  };
+  const validationSchema = Yup.object({
+    username: Yup.string()
+      .min(2, "Too Short!")
+      .max(50, "Too Long!")
+      .required("Please enter your name"),
+    email: Yup.string()
+      .email("Please enter a valid email")
+      .required("Please enter your email address"),
+    password: Yup.string()
+      .required("Please enter your password")
+      .min(8, "Password should be 8 chars minimum.")
+      .matches(/[a-zA-Z]/, "Password must contain a letter atleast")
+      .matches(/[0-9]/, "Password must contain a number atleast "),
+    passConfirm: Yup.string()
+      .oneOf([Yup.ref("password")], "Passwords must match")
+      .required("Please confirm your password"),
   });
-  const {
-    value: usernameValue,
-    isValid: usernameIsValid,
-    reset: usernameReset,
-    hasError: usernameHasError,
-    inputBlurHandler: usernameBlurHandler,
-    inputChangeHandler: usernameChangeHandler,
-  } = useInput((value) => value.trim().length >= 3);
-  const {
-    value: emailValue,
-    isValid: emailIsValid,
-    reset: emailReset,
-    hasError: emailHasError,
-    inputBlurHandler: emailBlurHandler,
-    inputChangeHandler: emailChangeHandler,
-  } = useInput((value) => value.includes("@"));
-  const {
-    value: passwordValue,
-    isValid: passwordIsValid,
-    reset: passwordReset,
-    hasError: passwordHasError,
-    inputBlurHandler: passwordBlurHandler,
-    inputChangeHandler: passwordChangeHandler,
-  } = useInput((value) => value.trim().length >= 6);
-  const {
-    value: repeatPassValue,
-    isValid: repeatPassIsValid,
-    reset: repeatPassReset,
-    hasError: repeatPassHasError,
-    inputBlurHandler: repeatPassBlurHandler,
-    inputChangeHandler: repeatPassChangeHandler,
-  } = useInput((value) => value === passwordValue);
-  const isValidForm =
-    passwordIsValid && emailIsValid && usernameIsValid && repeatPassIsValid;
-  function signUpHandler(e) {
-    e.preventDefault();
-    if (!isValidForm) {
-      return;
-    }
-    const userData = {
-      username: usernameValue,
-      email: emailValue,
-      password: passwordValue,
+  const onSubmit = (value, onSubmitProps) => {
+    const userCredentials = {
+      email: value.email.trim(),
+      username: value.username.trim(),
+      password: value.password.trim(),
     };
-    //dispatch signup action with userData
-    passwordReset();
-    emailReset();
-    repeatPassReset();
-    usernameReset();
-  }
+    onSubmitProps.resetForm();
+    //TODO: send a sign up request with the userCredentials.
+  };
   return (
     <Flex
       dir={locale === "ar" ? "rtl" : "ltr"}
@@ -123,181 +86,67 @@ function SignUp() {
           <Text fontSize="md">{t("signUp_description")}</Text>
         </Stack>
         <Box>
-          <form onSubmit={signUpHandler}>
-            <Stack align="center" justify="center" spacing="12">
-              <Stack align="center" justify="center" spacing="4">
-                <FormControl>
-                  <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      fontSize="lg"
-                      h="46px"
-                      // eslint-disable-next-line react/no-children-prop
-                      children={<FaRegUser size="20" />}
-                    />
-                    <Input
-                      value={usernameValue}
-                      onChange={usernameChangeHandler}
-                      onBlur={usernameBlurHandler}
-                      placeholder={t("username")}
-                      variant={usernameHasError ? "error" : "primary"}
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={onSubmit}
+          >
+            {(Formik) => {
+              return (
+                <Form>
+                  <Stack align="center" justify="center" spacing="12">
+                    <Stack align="center" justify="center" spacing="4">
+                      <ChakraInput
+                        placeholder={t("username")}
+                        w={{ base: "18.7rem", md: "21.8rem" }}
+                        size="lg"
+                        type="text"
+                        leftIcon={<FaRegUser size="20" />}
+                        name="username"
+                      />
+                      <ChakraInput
+                        placeholder={t("email")}
+                        w={{ base: "18.7rem", md: "21.8rem" }}
+                        size="lg"
+                        type="email"
+                        name="email"
+                        leftIcon={<BiEnvelope size="20" />}
+                      />
+                      <ChakraInput
+                        placeholder={t("password")}
+                        w={{ base: "18.7rem", md: "21.8rem" }}
+                        size="lg"
+                        boxShadow="sm"
+                        type="password"
+                        name="password"
+                        leftIcon={<BiLock size="20" />}
+                      />
+                      <ChakraInput
+                        placeholder={t("repeat_password")}
+                        w={{ base: "18.7rem", md: "21.8rem" }}
+                        size="lg"
+                        type="password"
+                        name="passConfirm"
+                        leftIcon={<BiLock size="20" />}
+                      />
+                    </Stack>
+                    <Button
+                      isDisabled={!Formik.isValid}
                       w={{ base: "18.7rem", md: "21.8rem" }}
                       size="lg"
-                      type="text"
-                    />
-                  </InputGroup>
-                  {usernameHasError ? (
-                    <FormHelperText color="#cc0000">
-                      {t("username_error")}
-                    </FormHelperText>
-                  ) : null}
-                </FormControl>
-                <FormControl>
-                  <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      fontSize="lg"
-                      h="46px"
-                      // eslint-disable-next-line react/no-children-prop
-                      children={<BiEnvelope size="20" />}
-                    />
-                    <Input
-                      value={emailValue}
-                      onChange={emailChangeHandler}
-                      onBlur={emailBlurHandler}
-                      placeholder={t("email")}
-                      variant={emailHasError ? "error" : "primary"}
-                      w={{ base: "18.7rem", md: "21.8rem" }}
-                      size="lg"
-                      type="email"
-                    />
-                  </InputGroup>
-                  {emailHasError ? (
-                    <FormHelperText color="#cc0000">
-                      {t("email_error")}
-                    </FormHelperText>
-                  ) : null}
-                </FormControl>
-                <FormControl>
-                  <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      fontSize="lg"
-                      h="46px"
-                      // eslint-disable-next-line react/no-children-prop
-                      children={<BiLock size="20" />}
-                    />
-                    <Input
-                      value={passwordValue}
-                      onChange={passwordChangeHandler}
-                      onBlur={passwordBlurHandler}
-                      placeholder={t("password")}
-                      variant={passwordHasError ? "error" : "primary"}
-                      w={{ base: "18.7rem", md: "21.8rem" }}
-                      size="lg"
-                      boxShadow="sm"
-                      type={showPass.password ? "text" : "password"}
-                    />
-                    <InputRightElement width="4.5rem">
-                      {locale !== "ar" && (
-                        <IconButton
-                          size="sm"
-                          textAlign="center"
-                          bg="transparent"
-                          _hover="none"
-                          _active="none"
-                          mt="1"
-                          border="none"
-                          outline="none"
-                          onClick={() =>
-                            setShowPass({
-                              ...showPass,
-                              password: !showPass.password,
-                            })
-                          }
-                          icon={
-                            showPass.password ? (
-                              <AiOutlineEye size="20" />
-                            ) : (
-                              <AiOutlineEyeInvisible size="20" />
-                            )
-                          }
-                        />
-                      )}
-                    </InputRightElement>
-                  </InputGroup>
-                  {passwordHasError ? (
-                    <FormHelperText color="#cc0000">
-                      {t("password_error")}
-                    </FormHelperText>
-                  ) : null}
-                </FormControl>
-                <FormControl id="repeatPass">
-                  <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      fontSize="lg"
-                      h="46px"
-                      // eslint-disable-next-line react/no-children-prop
-                      children={<BiLock size="20" />}
-                    />
-                    <Input
-                      placeholder={t("repeat_password")}
-                      w={{ base: "18.7rem", md: "21.8rem" }}
-                      size="lg"
-                      type={showPass.repeatPass ? "text" : "password"}
-                      value={repeatPassValue}
-                      onChange={repeatPassChangeHandler}
-                      onBlur={repeatPassBlurHandler}
-                      variant={repeatPassHasError ? "error" : "primary"}
-                    />
-
-                    <InputRightElement width="4.5rem">
-                      {locale !== "ar" && (
-                        <IconButton
-                          size="sm"
-                          textAlign="center"
-                          bg="transparent"
-                          _hover="none"
-                          _active="none"
-                          mt="1"
-                          border="none"
-                          outline="none"
-                          onClick={() =>
-                            setShowPass({
-                              ...showPass,
-                              repeatPass: !showPass.repeatPass,
-                            })
-                          }
-                          icon={
-                            showPass.repeatPass ? (
-                              <AiOutlineEye size="20" />
-                            ) : (
-                              <AiOutlineEyeInvisible size="20" />
-                            )
-                          }
-                        />
-                      )}
-                    </InputRightElement>
-                  </InputGroup>
-                  {repeatPassHasError ? (
-                    <FormHelperText color="#cc0000">
-                      {repeat_password_error}
-                    </FormHelperText>
-                  ) : null}
-                </FormControl>
-              </Stack>
-              <Button
-                type="submit"
-                w={{ base: "18.7rem", md: "21.8rem" }}
-                size="lg"
-                fontWeight="black"
-                variant="primary"
-              >
-                {t("signUp")}
-              </Button>
-            </Stack>
-          </form>
+                      variant="primary"
+                      fontWeight="black"
+                      type="submit"
+                      _hover={{ _disabled: {} }}
+                      _disabled={{ cursor: "auto", bg: "#919bff" }}
+                    >
+                      {t("signUp")}
+                    </Button>
+                  </Stack>
+                </Form>
+              );
+            }}
+          </Formik>
         </Box>
         <HStack align="center" justify="center" wrap="wrap">
           <Text fontSize="20" color="#121212" fontWeight="semibold">
