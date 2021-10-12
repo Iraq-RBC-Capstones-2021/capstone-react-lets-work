@@ -1,13 +1,18 @@
 import { Box, Link, Image, Text, HStack, Flex } from "@chakra-ui/react";
 import { Image as NextImage } from "next/image";
+import { Link as NextLink } from "next/link";
 
-const IdeaCard = ({ ideaImage, title, userImage, username, date }) => {
+const IdeaCard = ({ ideaImage, title, userImage, username, date, ideaId }) => {
   return (
-    <Link textDecoration="none" _hover={{ textDecoration: "none" }}>
+    <Link
+      as={NextLink}
+      textDecoration="none"
+      _hover={{ textDecoration: "none" }}
+      href={`/projects/${ideaId}`}
+    >
       <Box
         bg="white"
         borderRadius="lg"
-        maxW="300px"
         boxShadow="md"
         transition="0.3s ease-in-out"
         _hover={{
@@ -15,7 +20,12 @@ const IdeaCard = ({ ideaImage, title, userImage, username, date }) => {
           boxShadow: "lg",
         }}
       >
-        <Box overflow="hidden" borderTopRadius="lg">
+        <Box
+          overflow="hidden"
+          borderTopRadius="lg"
+          height="218px"
+          width="300px"
+        >
           <Image
             as={NextImage}
             src={ideaImage}
@@ -39,13 +49,16 @@ const IdeaCard = ({ ideaImage, title, userImage, username, date }) => {
             {title}
           </Text>
           <HStack marginTop="2" spacing="2" display="flex" alignSelf="start">
-            <Image
-              borderRadius="full"
-              boxSize="40px"
-              src={userImage}
-              alt={username}
-              height="24px"
-            />
+            <Box overflow="hidden" height="24px" width="24px">
+              <Image
+                borderRadius="50%"
+                src={userImage}
+                alt={username}
+                height="24px"
+                objectFit="cover"
+                width="24px"
+              />
+            </Box>
             <Text fontSize="12px" color="#5D6F88" py={4}>
               {username}
             </Text>
