@@ -9,6 +9,7 @@ const IdeaCard = ({ ideaImage, title, userImage, username, date, ideaId }) => {
       textDecoration="none"
       _hover={{ textDecoration: "none" }}
       href={`/projects/${ideaId}`}
+      _focus={{ boxShadow: "none" }}
     >
       <Box
         bg="white"
