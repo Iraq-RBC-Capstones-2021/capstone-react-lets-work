@@ -48,7 +48,7 @@ function PostCard({
         {imageURL && (
           <Box borderTopRadius="lg" overflow="hidden" flexBasis="60%">
             <Image
-              alt="wow"
+              alt={title}
               objectFit="cover"
               w="100%"
               h="100%"
@@ -59,7 +59,7 @@ function PostCard({
         )}
         <Stack px="4" py="2" flexBasis="40%" bg="white">
           <HStack justify="space-between">
-            <NextLink href="/signin">
+            <NextLink href={`projects/${postId}`}>
               <LinkOverlay cursor="pointer">
                 <Text noOfLines={1} fontSize="30px">
                   {title}
