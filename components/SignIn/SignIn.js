@@ -61,14 +61,14 @@ function SignIn() {
     <Flex
       dir={locale === "ar" ? "rtl" : "ltr"}
       width="full"
-      h={{ md: "44rem", base: "100vh" }}
+      h={{ md: "94vh", base: "92vh" }}
       justify="space-around"
       bg="#F9F9F9"
     >
       <Flex
         pt="5"
         px="7.5rem"
-        display={{ base: "none", md: "flex", lg: "flex" }}
+        display={{ base: "none", md: "none", lg: "flex" }}
         direction="column"
         flexBasis="50%"
         justify="space-evenly"
@@ -91,7 +91,7 @@ function SignIn() {
         justify="space-evenly"
         direction="column"
         bg="secondary.main"
-        flexBasis={{ base: "100%", md: "50%" }}
+        flexBasis={{ base: "100%", md: "100%", lg: "50%" }}
         align="center"
       >
         <Stack align="center">

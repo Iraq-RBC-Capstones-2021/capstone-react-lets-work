@@ -508,7 +508,7 @@
 
 "@chakra-ui/icons@^1.0.15":
   version "1.0.15"
-  resolved "https://registry.yarnpkg.com/@chakra-ui/icons/-/icons-1.0.15.tgz#90b0e3c2c161c5a100d6b83a277941b22945f880"
+  resolved "https://registry.npmjs.org/@chakra-ui/icons/-/icons-1.0.15.tgz"
   integrity sha512-MMuPwmeCil9vAXceIN/Fxn6CNHbhkLofFQaKUfs+UaBsviiU2tvS0nqGaxm/9FNzLr5ithPVWpbz3uV7DXc77g==
   dependencies:
     "@chakra-ui/icon" "1.1.11"
@@ -1939,7 +1939,7 @@
 
 "@types/i18next-fs-backend@^1.0.0":
   version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@types/i18next-fs-backend/-/i18next-fs-backend-1.1.2.tgz#4f3116769229371fcdf64bbdb6841ea745e392f9"
+  resolved "https://registry.npmjs.org/@types/i18next-fs-backend/-/i18next-fs-backend-1.1.2.tgz"
   integrity sha512-ZzTRXA5B0x0oGhzKNp08IsYjZpli4LjRZpg3q4j0XFxN5lKG2MVLnR4yHX8PPExBk4sj9Yfk1z9O6CjPrAlmIQ==
   dependencies:
     i18next "^21.0.1"
@@ -2898,15 +2898,10 @@ core-js-pure@^3.16.0:
   resolved "https://registry.npmjs.org/core-js-pure/-/core-js-pure-3.18.2.tgz"
   integrity sha512-4hMMLUlZhKJKOWbbGD1/VDUxGPEhEoN/T01k7bx271WiBKCvCfkgPzy0IeRS4PB50p6/N1q/SZL4B/TRsTE5bA==
 
-core-js@3.6.5:
+core-js@3.6.5, core-js@^3:
   version "3.6.5"
   resolved "https://registry.npmjs.org/core-js/-/core-js-3.6.5.tgz"
   integrity sha512-vZVEEwZoIsI+vPEuoF9Iqf5H7/M3eeQqWlQnYa8FSKKePuYTf5MWnxb5SDAzCa60b3JBRS5g9b+Dq7b1y/RCrA==
-
-core-js@^3:
-  version "3.18.2"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.18.2.tgz#63a551e8a29f305cd4123754846e65896619ba5b"
-  integrity sha512-zNhPOUoSgoizoSQFdX1MeZO16ORRb9FFQLts8gSYbZU5FcgXhp24iMWMxnOQo5uIaIG7/6FA/IqJPwev1o9ZXQ==
 
 core-util-is@~1.0.0:
   version "1.0.3"
@@ -4120,7 +4115,7 @@ html-escaper@^2.0.0:
 
 html-parse-stringify@^3.0.1:
   version "3.0.1"
-  resolved "https://registry.yarnpkg.com/html-parse-stringify/-/html-parse-stringify-3.0.1.tgz#dfc1017347ce9f77c8141a507f233040c59c55d2"
+  resolved "https://registry.npmjs.org/html-parse-stringify/-/html-parse-stringify-3.0.1.tgz"
   integrity sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==
   dependencies:
     void-elements "3.1.0"
@@ -4180,20 +4175,20 @@ husky@^7.0.2:
 
 i18next-fs-backend@^1.0.7:
   version "1.1.1"
-  resolved "https://registry.yarnpkg.com/i18next-fs-backend/-/i18next-fs-backend-1.1.1.tgz#1d8028926803f63784ffa0f2b1478fb369f92735"
+  resolved "https://registry.npmjs.org/i18next-fs-backend/-/i18next-fs-backend-1.1.1.tgz"
   integrity sha512-RFkfy10hNxJqc7MVAp5iAZq0Tum6msBCNebEe3OelOBvrROvzHUPaR8Qe10RQrOGokTm0W4vJGEJzruFkEt+hQ==
 
 i18next@^20.1.0:
   version "20.6.1"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-20.6.1.tgz#535e5f6e5baeb685c7d25df70db63bf3cc0aa345"
+  resolved "https://registry.npmjs.org/i18next/-/i18next-20.6.1.tgz"
   integrity sha512-yCMYTMEJ9ihCwEQQ3phLo7I/Pwycf8uAx+sRHwwk5U9Aui/IZYgQRyMqXafQOw5QQ7DM1Z+WyEXWIqSuJHhG2A==
   dependencies:
     "@babel/runtime" "^7.12.0"
 
 i18next@^21.0.1, i18next@^21.2.4:
-  version "21.2.4"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-21.2.4.tgz#ac56044099c83a0a8e2c596acf57f35da8ca327e"
-  integrity sha512-+81XmiwJOLWJFjRZJK5ASFahAo5TXZGz5IrBT4CfLJ3CyXho61A1cj1Kmh8za8TYtGFou0cEkUSjEaqfya7Wfg==
+  version "21.2.6"
+  resolved "https://registry.npmjs.org/i18next/-/i18next-21.2.6.tgz"
+  integrity sha512-xnCodgPo1ASLfdPs2/GS8jQFqQsaWrQKdsqfYgf5juANavIos4kjahgBkrMU8SUCn2kv7TSssfnyVu5LZjBWXw==
   dependencies:
     "@babel/runtime" "^7.12.0"
 
@@ -5423,6 +5418,11 @@ modern-normalize@^1.1.0:
   resolved "https://registry.npmjs.org/modern-normalize/-/modern-normalize-1.1.0.tgz"
   integrity sha512-2lMlY1Yc1+CUy0gw4H95uNN7vjbpoED7NNRSBHE25nWfLBdmMzFCsPshlzbxHz+gYMcBEUN8V4pU16prcdPSgA==
 
+moment@^2.29.1:
+  version "2.29.1"
+  resolved "https://registry.npmjs.org/moment/-/moment-2.29.1.tgz"
+  integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz"
@@ -5462,7 +5462,7 @@ natural-compare@^1.4.0:
 
 next-i18next@^8.8.0:
   version "8.8.0"
-  resolved "https://registry.yarnpkg.com/next-i18next/-/next-i18next-8.8.0.tgz#9d00e0c122ef240fedb6e6ec102d32cde48aebce"
+  resolved "https://registry.npmjs.org/next-i18next/-/next-i18next-8.8.0.tgz"
   integrity sha512-zCV8VU2t/BfrGrxULAGoK8exDTKaXCexKl5plcu0x1yDCvywaXwPXwDVYOc4LaU3rmUufiAbFM+YM2GWz5g1oA==
   dependencies:
     "@babel/runtime" "^7.13.17"
@@ -6281,7 +6281,7 @@ react-focus-lock@2.5.0:
 
 react-i18next@^11.8.13:
   version "11.12.0"
-  resolved "https://registry.yarnpkg.com/react-i18next/-/react-i18next-11.12.0.tgz#2a053321b9b7a876d5baa7af55a12d986117bffc"
+  resolved "https://registry.npmjs.org/react-i18next/-/react-i18next-11.12.0.tgz"
   integrity sha512-M9BT+hqVG03ywrl+L7CK74ugK+4jIo7AeKJ17+g9BoqJz2+/aVbs8SIVXT4KMQ1rjIdcw+GcSRDy1CXjcz6tLQ==
   dependencies:
     "@babel/runtime" "^7.14.5"
@@ -7426,7 +7426,7 @@ vm-browserify@1.1.2, vm-browserify@^1.0.1:
 
 void-elements@3.1.0:
   version "3.1.0"
-  resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-3.1.0.tgz#614f7fbf8d801f0bb5f0661f5b2f5785750e4f09"
+  resolved "https://registry.npmjs.org/void-elements/-/void-elements-3.1.0.tgz"
   integrity sha1-YU9/v42AHwu18GYfWy9XhXUOTwk=
 
 w3c-hr-time@^1.0.2:
