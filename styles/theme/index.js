@@ -28,7 +28,7 @@ const colors = {
   white: "#fff",
   offWhite: "#F9F9F9",
   darkPurple: "#141850",
-  background: "#EBEDFF",
+  lightPurple: "#5D5FEF",
   primary: {
     lighter: "#7884ff",
     main: "#5E6DFF",
