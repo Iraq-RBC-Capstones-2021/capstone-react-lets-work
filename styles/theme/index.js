@@ -36,6 +36,9 @@ const colors = {
     main: "#1C3341",
     darker: "#14252f",
   },
+  iconColor: {
+    main: "#5D5FEF",
+  },
 };
 const components = {
   Button: {
