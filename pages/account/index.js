@@ -5,24 +5,11 @@ export default function Account() {
   const dummy_data = [
     {
       date: "12 hours ago",
-      ideaImage: "/images/pexels-photo-2777898 2.png",
+      ideaImage: "https://source.unsplash.com/random",
       title: "German telescope",
-      userImage: "/images/Avatar.svg",
+      userImage: "https://source.unsplash.com/random",
       username: "Bruce Lee",
-    },
-    {
-      date: "12 hours ago",
-      ideaImage: "/images/pexels-photo-834949 1.png",
-      title: "German telescope",
-      userImage: "/images/Avatar.svg",
-      username: "Bruce Lee",
-    },
-    {
-      date: "12 hours ago",
-      ideaImage: "/images/pexels-photo-355948 2.png",
-      title: "German telescope",
-      userImage: "/images/Avatar.svg",
-      username: "Bruce Lee",
+      id: 1,
     },
   ];
 
@@ -39,12 +26,13 @@ export default function Account() {
             <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={16}>
               {dummy_data.map((idea) => (
                 <IdeaCard
-                  key={idea.title}
+                  key={idea.id}
                   date={idea.date}
                   ideaImage={idea.ideaImage}
                   title={idea.title}
                   userImage={idea.userImage}
                   username={idea.username}
+                  ideaId={idea.id}
                 />
               ))}
             </SimpleGrid>
