@@ -2,7 +2,6 @@ import {
   Box,
   Stack,
   HStack,
-  VStack,
   Heading,
   Accordion,
   AccordionItem,
@@ -13,7 +12,7 @@ import {
   Textarea,
   Input,
 } from "@chakra-ui/react";
-import { PhoneIcon, ArrowRightIcon, AtSignIcon } from "@chakra-ui/icons";
+import { PhoneIcon, AtSignIcon } from "@chakra-ui/icons";
 function Footer() {
   return (
     <HStack bg="#1C3341" color="white" top="8" spacing="24px">
