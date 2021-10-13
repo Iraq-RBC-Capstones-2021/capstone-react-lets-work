@@ -6,6 +6,7 @@ import {
   Stack,
   Button,
   useToast,
+  VStack,
 } from "@chakra-ui/react";
 import React from "react";
 
@@ -32,40 +33,48 @@ export default function AddProject() {
   return (
     <Box
       marginY="50px"
-      marginX="285px"
-      bg="blue.900"
+      marginX="300px"
+      bg="blue.700"
       color="white"
-      maxW="xl"
-      borderWidth="1px"
+      maxW="50%"
       borderRadius="xl"
       overflow="hidden"
       padding="45px"
     >
-      <Stack>
-        <Heading>New Project/idea</Heading>
-        <Input placeholder="Project name" variant="flushed" color="blue.500" />
-        <Input placeholder="Description" variant="flushed" />
-        <Heading>Tags</Heading>
-        <Input placeholder="Write your categories here.." variant="flushed" />
-        <Stack isInline spacing={2}>
-          <Button onClick={addToast} type="button" variant="outline">
-            Dev
-          </Button>
+      <Stack spacing={3}>
+        <VStack alignContent="space-evenly" spacing={5}>
+          <Heading as="h5">New Project/idea</Heading>
+          <Input
+            placeholder="Project name"
+            variant="flushed"
+            color="blue.500"
+          />
+          <Input placeholder="Description" variant="flushed" />
+        </VStack>
+        <VStack spacing={5}>
+          <Heading as="h5">Tags</Heading>
+          <Input placeholder="Write your categories here.." variant="flushed" />
 
-          <Button onClick={addToast} type="button" variant="outline">
-            JavaScript
-          </Button>
+          <Stack isInline spacing={2}>
+            <Button onClick={addToast} type="button" variant="outline">
+              Dev
+            </Button>
 
-          <Button onClick={addToast} type="button" variant="outline">
-            C++
-          </Button>
-          <Button onClick={addToast} type="button" variant="outline">
-            Design
-          </Button>
-          <Button onClick={addToast} type="button" variant="outline">
-            Graphic
-          </Button>
-        </Stack>
+            <Button onClick={addToast} type="button" variant="outline">
+              JavaScript
+            </Button>
+
+            <Button onClick={addToast} type="button" variant="outline">
+              C++
+            </Button>
+            <Button onClick={addToast} type="button" variant="outline">
+              Design
+            </Button>
+            <Button onClick={addToast} type="button" variant="outline">
+              Graphic
+            </Button>
+          </Stack>
+        </VStack>
       </Stack>
     </Box>
   );
