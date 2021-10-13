@@ -1,12 +1,10 @@
 import {
   Avatar,
   AvatarBadge,
-  Stack,
   Text,
   VStack,
   Box,
   HStack,
-  Button,
 } from "@chakra-ui/react";
 import { TiHeartOutline, TiArrowBackOutline } from "react-icons/ti";
 
@@ -28,18 +26,20 @@ function Comment() {
       border-radius="19px"
     >
       <VStack align="flex-start" spacing="1">
-        <Stack direction="row" spacing={1}>
+        <HStack spacing={2}>
           <Avatar size="sm" src={sampleComment.src}>
             <AvatarBadge boxSize="1em" bg="green.500" />
           </Avatar>
           <Text fontSize={{ base: "13px", md: "13px" }} color="#3F3B3B">
             {sampleComment.name}
           </Text>
-        </Stack>
+        </HStack>
         <Text
           fontSize={{ base: "12px", md: "12px" }}
           fontWeight="light"
           color="#5D6F88"
+          paddingX="20px"
+          paddingY="8px"
         >
           {sampleComment.content}{" "}
         </Text>
