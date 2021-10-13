@@ -15,7 +15,7 @@ import {
 import { PhoneIcon, AtSignIcon } from "@chakra-ui/icons";
 function Footer() {
   return (
-    <HStack bg="#1C3341" color="white" top="8" spacing="24px">
+    <HStack bg="#1C3341" color="white" spacing="18px">
       <Box padding="113px">
         <Stack>
           <Heading paddingBottom="25px">FAQ’s</Heading>
@@ -70,12 +70,12 @@ function Footer() {
       </Box>
       <Box padding="70px">
         <Stack>
-          <Heading> Lets Work</Heading>
-          <HStack>
+          <Heading padding="15px"> Lets Work</Heading>
+          <HStack spacing={3}>
             <PhoneIcon />
             <Text>+964 750 000 00 00</Text>
           </HStack>
-          <HStack>
+          <HStack spacing={3}>
             <AtSignIcon />
             <Text>letswork@gmail.com</Text>
           </HStack>
