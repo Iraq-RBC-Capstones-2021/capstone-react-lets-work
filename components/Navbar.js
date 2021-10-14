@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Flex, Button, IconButton } from "@chakra-ui/react";
-import { HamburgerIcon, CloseIcon, BellIcon } from "@chakra-ui/icons";
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import NextLink from "next/link";
+import NotificationsList from "./Notifications/NotificationsList";
 
 export default function Navbar() {
   const [display, setDisplay] = useState("none");
@@ -12,13 +13,7 @@ export default function Navbar() {
   return (
     <Flex justify="end" bgColor="offWhite">
       <Flex display={["flex", "flex", "none", "none"]} mr="auto">
-        <IconButton
-          mt="2"
-          ml="2"
-          aria-label="Close menu"
-          size="lg"
-          icon={<BellIcon />}
-        />
+        <NotificationsList />
       </Flex>
       <Flex top="1rem" right="1rem" align="center">
         <Flex display={["none", "none", "flex", "flex"]}>
@@ -56,14 +51,7 @@ export default function Navbar() {
               {signedIn ? "Account" : "Sign Up"}
             </Button>
           </NextLink>
-          <IconButton
-            aria-label="open menu"
-            bgColor="transparent"
-            size="md"
-            my="2"
-            mr="2"
-            icon={<BellIcon />}
-          />
+          <NotificationsList />
         </Flex>
         <IconButton
           aria-label="open menu"
