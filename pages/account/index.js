@@ -1,5 +1,5 @@
-import { Heading } from "@chakra-ui/react";
+import TopSection from "../../components/Profile/TopSection";
 
 export default function Account() {
-  return <Heading as="h1">Account Page</Heading>;
+  return <TopSection />;
 }
