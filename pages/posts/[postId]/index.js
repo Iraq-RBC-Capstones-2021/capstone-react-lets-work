@@ -35,7 +35,7 @@ export default function Index() {
         <Stack>
           <HStack mb="2">
             <Heading color="gray.700" fontSize="2xl" fontFamily="body">
-              Movies Project
+              {post.name}
             </Heading>
             <Spacer />
             <Button rounded="15px" onClick={() => setJoinBtn(!joinBtn)}>
@@ -44,12 +44,7 @@ export default function Index() {
           </HStack>
           <AvatarCollection users={usersDummyData} />
 
-          <Text color={"gray.500"}>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-            erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-            et ea rebum. Lorem ipsum dolor sit amet consectetur adipisicing
-          </Text>
+          <Text color={"gray.500"}>{post.description}</Text>
         </Stack>
         <Box height="40vw" maxH="600px" mb="6" pos="relative">
           <Image src="/images/movies-project.svg" alt="" layout="fill" />
@@ -61,8 +56,10 @@ export default function Index() {
               alt="Author"
             />
             <Stack direction="column" spacing="0" fontSize="sm">
-              <Text fontWeight="600">Achim Rolle</Text>
-              <Text color="gray.500">Content Creator, Web Developer</Text>
+              <Text fontWeight="600">{post.user}</Text>
+              <Text color="gray.500">
+                {post.userInfo.map((info) => `${info} , `)}
+              </Text>
             </Stack>
             <Spacer />
             {liked ? (
@@ -78,7 +75,7 @@ export default function Index() {
                 onClick={() => setLiked(!liked)}
               />
             )}
-            <Text color="lightPurple">32</Text>
+            <Text color="lightPurple">{post.likes}</Text>
           </HStack>
         </Stack>
       </Box>
@@ -95,6 +92,16 @@ const usersDummyData = [
   { name: "Karim Benzema", source: "https://bit.ly/kent-c-dodds" },
 ];
 
+const post = {
+  name: "Movies Project",
+  description: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+  nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+  erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+  et ea rebum. Lorem ipsum dolor sit amet consectetur adipisicing`,
+  user: "Achim Rolle",
+  userInfo: ["Content Creator", "Web Developer"],
+  likes: 32,
+};
 export async function getServerSideProps({ locale }) {
   return {
     props: {
