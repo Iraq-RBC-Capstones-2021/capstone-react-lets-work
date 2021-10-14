@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { BsHeartFill, BsHeart } from "react-icons/bs";
 import AvatarCollection from "../../../components/AvatarCollection";
 import {
@@ -12,16 +13,17 @@ import {
   Button,
   Spacer,
   Icon,
-  AvatarGroup,
-  VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import { useRouter as router } from "next/dist/client/router";
+import { useTranslation } from "next-i18next";
 
 export default function Index() {
+  const { t } = useTranslation("postId");
   const [joinBtn, setJoinBtn] = useState(false);
   const [liked, setLiked] = useState(false);
   return (
-    <Center p="6">
+    <Center p="6" dir={router().locale === "ar" ? "rtl" : "ltr"}>
       <Box
         maxW="780px"
         w="full"
@@ -37,7 +39,7 @@ export default function Index() {
             </Heading>
             <Spacer />
             <Button rounded="15px" onClick={() => setJoinBtn(!joinBtn)}>
-              {joinBtn ? "Joined" : "Join"}
+              {joinBtn ? t("joined") : t("join")}
             </Button>
           </HStack>
           <AvatarCollection users={usersDummyData} />
@@ -87,8 +89,16 @@ export default function Index() {
 const usersDummyData = [
   { name: "Dan Abrahamov", source: "https://bit.ly/ryan-florence" },
   { name: "Haidar Altufaily", source: "https://bit.ly/kent-c-dodds" },
-  { name: "Esraa Yareb", source: "https://bit.ly/sage-adebayo" },
+  { name: "Esra Yareb", source: "https://bit.ly/sage-adebayo" },
   { name: "Nora Yaqub", source: "https://bit.ly/code-beast" },
   { name: "Aryan Majeed", source: "https://bit.ly/ryan-florence" },
   { name: "Karim Benzema", source: "https://bit.ly/kent-c-dodds" },
 ];
+
+export async function getServerSideProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["postId"])),
+    },
+  };
+}
