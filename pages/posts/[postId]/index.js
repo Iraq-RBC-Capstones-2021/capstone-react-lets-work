@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { BsHeartFill, BsHeart } from "react-icons/bs";
+import AvatarCollection from "../../../components/AvatarCollection";
 import {
   Box,
   Center,
@@ -34,24 +35,12 @@ export default function Index() {
             <Heading color="gray.700" fontSize="2xl" fontFamily="body">
               Movies Project
             </Heading>
-            <AvatarGroup size="sm" max="4">
-              <Avatar name="Ryan Florence" src="https://bit.ly/ryan-florence" />
-              <Avatar name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
-              <Avatar name="Kent Dodds" src="https://bit.ly/kent-c-dodds" />
-              <Avatar
-                name="Prosper Otemuyiwa"
-                src="https://bit.ly/prosper-baba"
-              />
-              <Avatar name="Christian Nwamba" src="https://bit.ly/code-beast" />
-              <Avatar name="Christian Nwamba" src="https://bit.ly/code-beast" />
-              <Avatar name="Christian Nwamba" src="https://bit.ly/code-beast" />
-            </AvatarGroup>
-
             <Spacer />
             <Button rounded="15px" onClick={() => setJoinBtn(!joinBtn)}>
               {joinBtn ? "Joined" : "Join"}
             </Button>
           </HStack>
+          <AvatarCollection users={usersDummyData} />
 
           <Text color={"gray.500"}>
             Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
@@ -94,3 +83,12 @@ export default function Index() {
     </Center>
   );
 }
+
+const usersDummyData = [
+  { name: "Dan Abrahamov", source: "https://bit.ly/ryan-florence" },
+  { name: "Haidar Altufaily", source: "https://bit.ly/kent-c-dodds" },
+  { name: "Esraa Yareb", source: "https://bit.ly/sage-adebayo" },
+  { name: "Nora Yaqub", source: "https://bit.ly/code-beast" },
+  { name: "Aryan Majeed", source: "https://bit.ly/ryan-florence" },
+  { name: "Karim Benzema", source: "https://bit.ly/kent-c-dodds" },
+];
