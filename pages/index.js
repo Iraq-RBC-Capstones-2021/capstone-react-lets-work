@@ -46,7 +46,9 @@ export default function Home() {
   return (
     <div className={styles.app}>
       <TopSection />
-      <PostList posts={postSample} />
+      <PostList list="Top Projects" posts={postSample} />
+      <PostList list="Favorite Projects" posts={postSample} />
+      <PostList list="New Projects" posts={postSample} />
     </div>
   );
 }

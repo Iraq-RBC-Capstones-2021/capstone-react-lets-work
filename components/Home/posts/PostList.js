@@ -1,9 +1,13 @@
 import React from "react";
 import PostCard from "./PostCard";
-import { Container, Flex, Box } from "@chakra-ui/react";
-function PostList({ posts }) {
+import { Container, Flex, Box, Text } from "@chakra-ui/react";
+function PostList({ posts, list }) {
   return (
-    <Container maxWidth="container.xl">
+    <Container mt="10" maxWidth="container.xl">
+      <Text color="primary.main" fontWeight="bold" fontSize="5xl">
+        {" "}
+        {list}{" "}
+      </Text>
       <Flex
         wrap="wrap"
         direction={{ base: "column", md: "row" }}
