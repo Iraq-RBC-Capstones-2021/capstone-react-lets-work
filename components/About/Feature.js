@@ -16,14 +16,18 @@ const Feature = ({ imageSrc, alt, title, textContent }) => {
       </Center>
       <Heading
         fontWeight={400}
-        fontSize={{ base: "20px", sm: "30px", md: "36px" }}
+
+        fontSize={{ base: "24px", sm: "26px", md: "28px" }}
+
       >
         {title}
       </Heading>
       <Center>
         <Text
           color="#000"
-          fontSize="24px"
+
+          fontSize="18px"
+
           fontWeight="400"
           textAlign="center"
           mt="1rem"
