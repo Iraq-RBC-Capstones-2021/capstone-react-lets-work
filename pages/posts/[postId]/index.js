@@ -58,7 +58,7 @@ export default function Index() {
             <Stack direction="column" spacing="0" fontSize="sm">
               <Text fontWeight="600">{post.user}</Text>
               <Text color="gray.500">
-                {post.userInfo.map((info) => `${info} , `)}
+                {post.userInfo.map((info) => `${info} `)}
               </Text>
             </Stack>
             <Spacer />
