@@ -19,8 +19,14 @@ import { PhoneIcon, AtSignIcon } from "@chakra-ui/icons";
 import logo from "../public/images/logo.svg";
 function Footer() {
   return (
-    <HStack bg="#1C3341" color="white" spacing="18px">
-      <Box padding="113px">
+    <HStack
+      bg="#1C3341"
+      p={["100px", "50px", "20px"]}
+      color="white"
+      spacing="18px"
+      display={{ md: "flex" }}
+    >
+      <Box padding="50px" display={{ md: "flex" }}>
         <Stack>
           <Heading paddingBottom="25px" fontSize={{ base: "35px", md: "30px" }}>
             FAQ’s
@@ -30,7 +36,7 @@ function Footer() {
               <h2>
                 <AccordionButton>
                   <AccordionIcon />
-                  <Box flex="5" textAlign="left">
+                  <Box flexShrink={2} textAlign="left">
                     How Are We Different?
                   </Box>
                 </AccordionButton>
@@ -87,14 +93,20 @@ function Footer() {
           </HStack>
         </Stack>
       </Box>
-      <Box padding="120px">
+      <Box padding="50px">
         <Stack>
           <Heading fontSize={{ base: "35px", md: "30px" }}>Contact us</Heading>
           <Text>Send us messages</Text>
-          <Input variant="filled" placeholder="Name" />
-          <Input variant="filled" placeholder="Email" />
-          <Input as={Textarea} variant="filled" placeholder="Your Message" />
-          <Button bg="blue.400">Submit</Button>
+          <Stack width="xs" display={{ md: "flex" }}>
+            <Input
+              variant="filled"
+              placeholder="Name"
+              display={{ base: "flex", md: "auto" }}
+            />
+            <Input variant="filled" placeholder="Email" />
+            <Input as={Textarea} variant="filled" placeholder="Your Message" />
+            <Button bg="blue.400">Submit</Button>
+          </Stack>
         </Stack>
       </Box>
     </HStack>
