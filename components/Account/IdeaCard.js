@@ -8,7 +8,7 @@ const IdeaCard = ({ ideaImage, title, userImage, username, date, ideaId }) => {
       as={NextLink}
       textDecoration="none"
       _hover={{ textDecoration: "none" }}
-      href={`/projects/${ideaId}`}
+      href={`/posts/${ideaId}`}
       _focus={{ boxShadow: "none" }}
     >
       <Box
