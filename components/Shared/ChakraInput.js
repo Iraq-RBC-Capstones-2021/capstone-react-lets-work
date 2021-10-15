@@ -13,12 +13,15 @@ import {
   FormHelperText,
 } from "@chakra-ui/react";
 function ChakraInput(props) {
-  const { label, name, leftIcon, rightIcon, ...rest } = props;
+  const { label, name, leftIcon, rightIcon, isLoading, ...rest } = props;
   return (
     <Field name={name}>
       {({ field, form }) => {
         return (
-          <FormControl isInvalid={form.errors[name] && form.touched[name]}>
+          <FormControl
+            isDisabled={isLoading}
+            isInvalid={form.errors[name] && form.touched[name]}
+          >
             <InputGroup>
               <Input
                 variant={
