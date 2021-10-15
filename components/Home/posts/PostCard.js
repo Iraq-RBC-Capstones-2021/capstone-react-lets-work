@@ -2,18 +2,15 @@ import React from "react";
 import NextLink from "next/link";
 import {
   Box,
-  Flex,
   Stack,
   Text,
   Image,
-  Center,
   HStack,
   IconButton,
   Badge,
   Avatar,
   LinkBox,
   LinkOverlay,
-  Button,
   Skeleton,
 } from "@chakra-ui/react";
 import { FaPlus, FaHeart } from "react-icons/fa";
@@ -59,7 +56,7 @@ function PostCard({
         )}
         <Stack px="4" py="2" flexBasis="40%" bg="white">
           <HStack justify="space-between">
-            <NextLink href={`projects/${postId}`}>
+            <NextLink href={`posts/${postId}`}>
               <LinkOverlay cursor="pointer">
                 <Text noOfLines={1} fontSize="30px">
                   {title}
