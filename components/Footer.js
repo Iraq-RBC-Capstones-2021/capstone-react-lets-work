@@ -26,7 +26,7 @@ function Footer() {
       spacing="18px"
       display={{ md: "flex" }}
     >
-      <Box padding="50px" display={{ md: "flex" }}>
+      <Box padding="50px" display={{ base: "flex", md: "auto" }}>
         <Stack>
           <Heading paddingBottom="25px" fontSize={{ base: "35px", md: "30px" }}>
             FAQ’s
