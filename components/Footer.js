@@ -12,26 +12,25 @@ import {
   Textarea,
   Input,
   Button,
-  Image,
-  Img,
 } from "@chakra-ui/react";
 import { PhoneIcon, AtSignIcon } from "@chakra-ui/icons";
-import logo from "../public/images/logo.svg";
+import Image from "next/image";
 function Footer() {
   return (
     <HStack
       bg="#1C3341"
-      p={["100px", "50px", "20px"]}
       color="white"
       spacing="18px"
       display={{ md: "flex" }}
+      justify="center"
+      direction={["column", "column", "column", "row"]}
     >
-      <Box padding="50px" display={{ base: "flex", md: "auto" }}>
+      <Box padding="40px" display={{ base: "flex", md: "auto" }}>
         <Stack>
           <Heading paddingBottom="25px" fontSize={{ base: "35px", md: "30px" }}>
             FAQ’s
           </Heading>
-          <Accordion allowToggle>
+          <Accordion allowToggle spacing={4}>
             <AccordionItem border="none">
               <h2>
                 <AccordionButton>
@@ -48,7 +47,7 @@ function Footer() {
               <h2>
                 <AccordionButton>
                   <AccordionIcon />
-                  <Box flex="1" textAlign="left">
+                  <Box flexShrink={2} textAlign="left">
                     Is This Platform Totally Free?
                   </Box>
                 </AccordionButton>
@@ -59,7 +58,7 @@ function Footer() {
               <h2>
                 <AccordionButton>
                   <AccordionIcon />
-                  <Box flex="1" textAlign="left">
+                  <Box flexShrink={2} textAlign="left">
                     What Services Do We Provide?
                   </Box>
                 </AccordionButton>
@@ -70,7 +69,7 @@ function Footer() {
               <h2>
                 <AccordionButton>
                   <AccordionIcon Reverse />
-                  <Box flex="1" textAlign="left">
+                  <Box flexShrink={2} textAlign="left">
                     Where Are We Located?
                   </Box>
                 </AccordionButton>
@@ -81,8 +80,7 @@ function Footer() {
         </Stack>
       </Box>
       <Box>
-        <Stack padding="50px">
-          <Img src={logo} alt="logo" />
+        <Stack padding="40px">
           <HStack spacing={3}>
             <PhoneIcon />
             <Text>+964 750 000 00 00</Text>
@@ -93,19 +91,20 @@ function Footer() {
           </HStack>
         </Stack>
       </Box>
-      <Box padding="50px">
+      <Box padding="40px">
         <Stack>
           <Heading fontSize={{ base: "35px", md: "30px" }}>Contact us</Heading>
           <Text>Send us messages</Text>
-          <Stack width="xs" display={{ md: "flex" }}>
-            <Input
-              variant="filled"
-              placeholder="Name"
-              display={{ base: "flex", md: "auto" }}
-            />
+          <Stack
+            width={("sm", "sm", "sm", "xs")}
+            display={["flow", "flow", "flex"]}
+          >
+            <Input variant="filled" placeholder="Name" />
             <Input variant="filled" placeholder="Email" />
             <Input as={Textarea} variant="filled" placeholder="Your Message" />
-            <Button bg="blue.400">Submit</Button>
+            <Button bg="blue.400" variant="primary">
+              Submit
+            </Button>
           </Stack>
         </Stack>
       </Box>
