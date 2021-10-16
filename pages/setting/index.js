@@ -148,13 +148,13 @@ export default function Index() {
                       </Wrap>
                     </Box>
                   </Box>
-                  <Box w="100vw">
+                  <Box w="100vw" mt="6">
                     <Wrap>
                       <WrapItem alignItems="center" w="10vw">
                         <Text>Bio:</Text>
                       </WrapItem>
                       <WrapItem>
-                        <ChakraTextarea name="bio" />
+                        <ChakraTextarea name="bio" w="60vw" h="10vw" />
                       </WrapItem>
                     </Wrap>
                   </Box>
