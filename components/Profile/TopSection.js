@@ -32,7 +32,7 @@ function TopSection() {
         align={{ base: "flex-start", md: "center" }}
         bg="secondary.main"
       >
-        <Box px={["50px", "80px", "150px"]} py={["30px", "50px", "68px"]}>
+        <Box px={["50px", "80px", "150px"]} py={["30px", "50px", "55px"]}>
           <Flex
             direction={["column", "column", "row", "row"]}
             justify="space-around"
@@ -42,7 +42,7 @@ function TopSection() {
               <Image
                 borderRadius="full"
                 objectFit="cover"
-                boxSize={{ base: "8rem", md: "10rem", lg: "15rem" }}
+                boxSize={{ base: "8rem", md: "10rem", lg: "13rem" }}
                 src="https://bit.ly/sage-adebayo"
                 alt="Segun Adebayo"
               />
