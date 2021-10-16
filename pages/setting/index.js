@@ -148,50 +148,56 @@ export default function Index() {
                   </Box>
                   <Box w="100vw" mt="6">
                     <Wrap>
-                      <WrapItem alignItems="center" w="10vw">
+                      <WrapItem alignItems="center" w="15vw">
                         <Text>Bio:</Text>
                       </WrapItem>
                       <WrapItem>
                         <ChakraTextarea
                           placeholder="Write bio ..."
                           name="bio"
-                          w="60vw"
+                          w="57vw"
                           h="10vw"
                         />
                       </WrapItem>
                     </Wrap>
                     <Wrap>
-                      <WrapItem alignItems="center" w="10vw">
+                      <WrapItem alignItems="center" w="15vw">
                         <Text>About:</Text>
                       </WrapItem>
                       <WrapItem>
                         <ChakraTextarea
                           placeholder="Write about yourself ..."
                           name="about"
-                          w="60vw"
+                          w="57vw"
                           h="10vw"
                         />
                       </WrapItem>
                     </Wrap>
                     <Wrap>
-                      <WrapItem alignItems="center" w="10vw">
+                      <WrapItem alignItems="center" w="15vw">
                         <Text>Skills and Hobbies:</Text>
                       </WrapItem>
                       <WrapItem>
                         <ChakraTextarea
                           placeholder="Write skills and hobbies ..."
                           name="skillsAndHobbies"
-                          w="60vw"
+                          w="57vw"
                           h="10vw"
                         />
                       </WrapItem>
                     </Wrap>
                     <Wrap>
-                      <WrapItem alignItems="center" w="10vw">
+                      <WrapItem alignItems="center" w="15vw">
                         <Text>Intrests:</Text>
                       </WrapItem>
                       <WrapItem>
-                        <ChakraInput size="lg" type="text" name="intrests" />
+                        <ChakraInput
+                          placeholder="write intrests ..."
+                          size="lg"
+                          type="text"
+                          name="intrests"
+                          w="57vw"
+                        />
                       </WrapItem>
                     </Wrap>
                   </Box>
