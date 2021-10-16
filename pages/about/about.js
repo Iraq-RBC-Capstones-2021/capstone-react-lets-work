@@ -9,7 +9,7 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { Image as NextImage } from "next/image";
-import Feature from "../components/About/Feature";
+import Feature from "../../components/About/Feature";
 
 export default function About() {
   return (
