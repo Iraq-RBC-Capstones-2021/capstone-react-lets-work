@@ -38,7 +38,10 @@ function TopSection() {
             justify="space-around"
             align={{ base: "flex-start", md: "center" }}
           >
-            <Stack>
+            <Stack
+              w={["50%", "40%"]}
+              align={{ base: "flex-start", md: "center" }}
+            >
               <Image
                 borderRadius="full"
                 objectFit="cover"
@@ -47,7 +50,7 @@ function TopSection() {
                 alt="Segun Adebayo"
               />
             </Stack>
-            <Stack mx="8">
+            <Stack>
               <Heading fontSize={{ base: "25px", md: "27px" }}>
                 {user.username}
               </Heading>
