@@ -1,10 +1,12 @@
-import { Field } from "formik";
+import { ErrorMessage, Field } from "formik";
 import { Textarea } from "@chakra-ui/react";
+import TextError from "./TextError";
 function ChakraTextarea({ name, ...rest }) {
   return (
-    <Field name={name}>
-      <Textarea></Textarea>
-    </Field>
+    <>
+      <Field as={Textarea} name={name} {...rest} />
+      <ErrorMessage name={name} component={TextError} />
+    </>
   );
 }
 

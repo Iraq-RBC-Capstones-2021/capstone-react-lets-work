@@ -16,6 +16,7 @@ import { useState } from "react";
 import { useRouter as router } from "next/dist/client/router";
 import { useTranslation } from "next-i18next";
 import * as Yup from "yup";
+import ChakraTextarea from "../../components/Shared/ChakraTextarea";
 
 export default function Index() {
   const { t } = useTranslation("setting");
@@ -152,7 +153,9 @@ export default function Index() {
                       <WrapItem alignItems="center" w="10vw">
                         <Text>Bio:</Text>
                       </WrapItem>
-                      <WrapItem></WrapItem>
+                      <WrapItem>
+                        <ChakraTextarea name="bio" />
+                      </WrapItem>
                     </Wrap>
                   </Box>
                 </Form>
