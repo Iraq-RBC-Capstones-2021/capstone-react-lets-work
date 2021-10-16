@@ -8,7 +8,7 @@ import {
   Button,
   Wrap,
   WrapItem,
-  Flex,
+  Textarea,
 } from "@chakra-ui/react";
 import ChakraInput from "../../components/Shared/ChakraInput";
 import { Formik, Form } from "formik";
@@ -147,7 +147,14 @@ export default function Index() {
                       </Wrap>
                     </Box>
                   </Box>
-                  <Box w="100vw"></Box>
+                  <Box w="100vw">
+                    <Wrap>
+                      <WrapItem alignItems="center" w="10vw">
+                        <Text>Bio:</Text>
+                      </WrapItem>
+                      <WrapItem></WrapItem>
+                    </Wrap>
+                  </Box>
                 </Form>
               );
             }}
