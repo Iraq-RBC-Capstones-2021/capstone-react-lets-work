@@ -50,7 +50,7 @@ export default function Index() {
     bio: Yup.string().min(5, "Too Short!").max(100, "Too Long!"),
     about: Yup.string().min(5, "Too Short!").max(300, "Too Long!"),
     skillsAndHobbies: Yup.string().min(2, "Too Short!").max(100, "Too Long!"),
-    interests: Yup.string().min(2, "Too Short!").max(100, "Too Long!"),
+    intrests: Yup.string().min(2, "Too Short!").max(100, "Too Long!"),
   });
   return (
     <Center p="6" dir={router().locale === "ar" ? "rtl" : "ltr"}>
@@ -184,6 +184,14 @@ export default function Index() {
                           w="60vw"
                           h="10vw"
                         />
+                      </WrapItem>
+                    </Wrap>
+                    <Wrap>
+                      <WrapItem alignItems="center" w="10vw">
+                        <Text>Intrests:</Text>
+                      </WrapItem>
+                      <WrapItem>
+                        <ChakraInput size="lg" type="text" name="intrests" />
                       </WrapItem>
                     </Wrap>
                   </Box>
