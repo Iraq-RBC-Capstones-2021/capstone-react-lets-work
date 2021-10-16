@@ -85,7 +85,7 @@ export default function Index() {
               return (
                 <Form>
                   <Box mt="6" display={["block", "block", "flex", "flex"]}>
-                    <Box mr="4">
+                    <Box w="50vw">
                       <Wrap>
                         <WrapItem alignItems="center" w="10vw">
                           <Text>Name:</Text>
@@ -112,7 +112,7 @@ export default function Index() {
                         </WrapItem>
                       </Wrap>
                     </Box>
-                    <Box>
+                    <Box w="50vw">
                       <Wrap>
                         <WrapItem alignItems="center" w="10vw">
                           <Text>Facebook:</Text>
@@ -147,6 +147,7 @@ export default function Index() {
                       </Wrap>
                     </Box>
                   </Box>
+                  <Box w="100vw"></Box>
                 </Form>
               );
             }}
