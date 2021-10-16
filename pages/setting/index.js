@@ -30,7 +30,6 @@ export default function Index() {
     email: "",
     bio: "",
     about: "",
-    about: "",
     skillsAndHobbies: "",
     interests: "",
   };
@@ -82,7 +81,7 @@ export default function Index() {
             initialValues={initialValues}
             validationSchema={validationSchema}
           >
-            {(Formik) => {
+            {() => {
               return (
                 <Form>
                   <Box mt="6" display={["block", "block", "flex", "flex"]}>
@@ -95,7 +94,6 @@ export default function Index() {
                           <ChakraInput size="lg" type="text" name="name" />
                         </WrapItem>
                       </Wrap>
-
                       <Wrap>
                         <WrapItem alignItems="center" w="10vw">
                           <Text>Username:</Text>
@@ -154,7 +152,38 @@ export default function Index() {
                         <Text>Bio:</Text>
                       </WrapItem>
                       <WrapItem>
-                        <ChakraTextarea name="bio" w="60vw" h="10vw" />
+                        <ChakraTextarea
+                          placeholder="Write bio ..."
+                          name="bio"
+                          w="60vw"
+                          h="10vw"
+                        />
+                      </WrapItem>
+                    </Wrap>
+                    <Wrap>
+                      <WrapItem alignItems="center" w="10vw">
+                        <Text>About:</Text>
+                      </WrapItem>
+                      <WrapItem>
+                        <ChakraTextarea
+                          placeholder="Write about yourself ..."
+                          name="about"
+                          w="60vw"
+                          h="10vw"
+                        />
+                      </WrapItem>
+                    </Wrap>
+                    <Wrap>
+                      <WrapItem alignItems="center" w="10vw">
+                        <Text>Skills and Hobbies:</Text>
+                      </WrapItem>
+                      <WrapItem>
+                        <ChakraTextarea
+                          placeholder="Write skills and hobbies ..."
+                          name="skillsAndHobbies"
+                          w="60vw"
+                          h="10vw"
+                        />
                       </WrapItem>
                     </Wrap>
                   </Box>
