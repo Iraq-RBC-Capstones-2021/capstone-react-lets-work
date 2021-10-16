@@ -38,19 +38,15 @@ function TopSection() {
             justify="space-around"
             align={{ base: "flex-start", md: "center" }}
           >
-            <Stack
-              w={["50%", "40%"]}
-              align={{ base: "flex-start", md: "center" }}
-            >
-              <Image
-                borderRadius="full"
-                objectFit="cover"
-                boxSize={{ base: "8rem", md: "10rem", lg: "13rem" }}
-                src="https://bit.ly/sage-adebayo"
-                alt="Segun Adebayo"
-              />
-            </Stack>
-            <Stack>
+            <Image
+              borderRadius="full"
+              objectFit="cover"
+              boxSize={{ base: "8rem", md: "10rem", lg: "13rem" }}
+              src="https://bit.ly/sage-adebayo"
+              alt="Segun Adebayo"
+            />
+
+            <Stack mx={["15", "7"]}>
               <Heading fontSize={{ base: "25px", md: "27px" }}>
                 {user.username}
               </Heading>
@@ -58,7 +54,7 @@ function TopSection() {
                 {" "}
                 {user.bio}
               </Text>
-              <HStack align="center" spacing={0} display={{ md: "flex" }}>
+              <Flex align="center">
                 <IconButton
                   as={Link}
                   href={user.social.email}
@@ -79,7 +75,7 @@ function TopSection() {
                   href={user.social.linkedIn}
                   icon={<SiLinkedin />}
                 />
-              </HStack>
+              </Flex>
               <Text color="gray.500" fontWeight="light">
                 {" "}
                 {user.about}
@@ -99,13 +95,13 @@ function TopSection() {
           <Heading paddingBottom="20px" fontSize={{ base: "25px", md: "27px" }}>
             Interests
           </Heading>
-          <HStack justify="space-around" display={{ md: "flex" }}>
+          <Flex wrap="wrap">
             {user.interests.map((interest) => (
-              <Tag size="lg" variant="subtle" key={interest}>
+              <Tag size="lg" variant="subtle" key={interest} m="1">
                 {interest}
               </Tag>
             ))}
-          </HStack>
+          </Flex>
         </Box>
       </Flex>
       <Flex
