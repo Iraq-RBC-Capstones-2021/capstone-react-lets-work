@@ -192,7 +192,7 @@ export default function Index() {
                       </WrapItem>
                       <WrapItem>
                         <ChakraInput
-                          placeholder="write intrests ..."
+                          placeholder="Write intrests ..."
                           size="lg"
                           type="text"
                           name="intrests"
@@ -205,6 +205,18 @@ export default function Index() {
               );
             }}
           </Formik>
+          <Center>
+            <Button
+              mt="5"
+              w="20vw"
+              rounded="5px"
+              backgroundColor="lightPurple"
+              color="white"
+              _hover={{ bg: "darkPurple" }}
+            >
+              Save
+            </Button>
+          </Center>
         </Box>
       </Stack>
     </Center>
