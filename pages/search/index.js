@@ -21,8 +21,14 @@ import { BiSliderAlt } from "react-icons/bi";
 import AdvancedSearch from "../../components/Search/AdvancedSearch";
 import Sort from "../../components/Search/Sort";
 import PostList from "../../components/Home/posts/PostList";
+import { useTranslation } from "next-i18next";
+import { useRouter } from "next/dist/client/router";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export default function Search() {
+  const { t } = useTranslation("search");
+  const { locale } = useRouter();
+
   const postSample = [
     {
       createdAt: "posted 12/12/2021",
@@ -84,13 +90,14 @@ export default function Search() {
                 <Sort />
               </InputLeftElement>
               <Input
+                dir={locale === "ar" ? "rtl" : "ltr"}
                 _focus={{ boxShadow: "none" }}
                 borderColor="colors.darkPurple"
                 borderBottomWidth="1.5px"
                 pr="4.5rem"
                 pl="3rem"
                 type="text"
-                placeholder="Search..."
+                placeholder={t("search")}
                 variant="flushed"
                 value={searchValue}
                 onChange={handleChangeSearch}
@@ -137,4 +144,12 @@ export default function Search() {
       <PostList list="" posts={filteredPosts} />
     </Box>
   );
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["search"])),
+    },
+  };
 }

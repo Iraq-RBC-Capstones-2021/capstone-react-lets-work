@@ -10,13 +10,18 @@ import {
   Divider,
   Button,
 } from "@chakra-ui/react";
+import { useTranslation } from "next-i18next";
+import { useRouter } from "next/dist/client/router";
 
 const AdvancedSearch = () => {
+  const { t } = useTranslation("search");
+  const { locale } = useRouter();
+
   return (
     <PopoverBody>
       <FormControl id="country">
         <Text mt={4} fontWeight="bold" fontSize="xl">
-          Search Fields
+          {t("search_fields")}
         </Text>
         <Divider mb={4} />
 
@@ -26,10 +31,10 @@ const AdvancedSearch = () => {
           mb={4}
         >
           <GridItem colSpan={1} h="10">
-            <Text py={{ base: 0, md: 2 }}>Post Contains</Text>
+            <Text py={{ base: 0, md: 2 }}>{t("post_contains")}</Text>
           </GridItem>
           <GridItem colSpan={2} h="10">
-            <Input placeholder="words..." maxW="400px" />
+            <Input placeholder={t("words")} maxW="400px" />
           </GridItem>
         </Grid>
 
@@ -39,20 +44,20 @@ const AdvancedSearch = () => {
           mb={4}
         >
           <GridItem colSpan={1} h="10">
-            <Text py={2}>Location</Text>
+            <Text py={2}>{t("location")}</Text>
           </GridItem>
           <GridItem colSpan={2} h="10">
-            <Select placeholder="Select country" maxW="400px">
-              <option>Iraq</option>
-              <option>United Arab Emirates</option>
-              <option>USA</option>
-              <option>Canada</option>
+            <Select placeholder={t("select")} maxW="400px">
+              <option>{t("iraq")}</option>
+              <option>{t("uae")}</option>
+              <option>{t("usa")}</option>
+              <option>{t("canada")}</option>
             </Select>
           </GridItem>
         </Grid>
 
         <Text mt={8} fontWeight="bold" fontSize="xl">
-          Select Dates
+          {t("select_dates")}
         </Text>
         <Divider mb={4} />
         <Grid
@@ -61,18 +66,18 @@ const AdvancedSearch = () => {
           mb={4}
         >
           <GridItem colSpan={1} h="10">
-            <Text py={2}>Between</Text>
+            <Text py={2}>{t("between")}</Text>
           </GridItem>
           <GridItem colSpan={2} h="10">
             <Input type="date" maxW="400px" />
           </GridItem>
           <GridItem colSpan={1} h="10">
             <Center display={{ base: "none", md: "flex" }}>
-              <Text py={2}>and</Text>
+              <Text py={2}>{t("and")}</Text>
             </Center>
 
             <Text py={2} display={{ base: "block", md: "none" }}>
-              and
+              {/* {t("and")} */}
             </Text>
           </GridItem>
 
@@ -93,7 +98,7 @@ const AdvancedSearch = () => {
               bg: "primary.lighter",
             }}
           >
-            Apply Search
+            {t("apply")}
           </Button>
         </Center>
       </FormControl>

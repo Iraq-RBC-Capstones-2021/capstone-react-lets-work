@@ -11,8 +11,13 @@ import {
   PopoverCloseButton,
 } from "@chakra-ui/react";
 import { RiArrowDropDownLine } from "react-icons/ri";
+import { useTranslation } from "next-i18next";
+import { useRouter } from "next/dist/client/router";
 
 const Sort = () => {
+  const { t } = useTranslation("search");
+  const { locale } = useRouter();
+
   return (
     <Popover>
       <PopoverTrigger>
@@ -35,10 +40,10 @@ const Sort = () => {
         <PopoverBody>
           <RadioGroup defaultValue="1">
             <Stack pl="1rem">
-              <Radio value="1">Latest Projects</Radio>
-              <Radio value="2">Oldest Projects</Radio>
-              <Radio value="3">Most Popular</Radio>
-              <Radio value="4">Nearest Projects</Radio>
+              <Radio value="1">{t("latest")}</Radio>
+              <Radio value="2">{t("oldest")}</Radio>
+              <Radio value="3">{t("most")}</Radio>
+              <Radio value="4">{t("nearest")}</Radio>
             </Stack>
           </RadioGroup>
         </PopoverBody>
