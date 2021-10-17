@@ -31,6 +31,7 @@ export default async function handler(req, res) {
           instagram: "",
           youtube: "",
         },
+        imageURL: user.imageURL,
       });
       res.status(200).json("Successfully Signed Up");
     } catch (err) {

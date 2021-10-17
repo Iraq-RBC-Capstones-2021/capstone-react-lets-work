@@ -30,6 +30,7 @@ export const handleSignUp = createAsyncThunk(
       email,
       username: user.displayName,
       id: user.uid,
+      imageURL: "",
     });
 
     await sendEmailVerification(user);
@@ -81,8 +82,11 @@ export const handleForgetPass = createAsyncThunk(
 );
 export const handleSignOut = createAsyncThunk(
   "handleSignOut/auth",
-  async () => {
+  async (userId) => {
     await signOut(auth);
+    await axios.put(`/api/users/${userId}`, {
+      isOnline: false,
+    });
   }
 );
 const authSlice = createSlice({

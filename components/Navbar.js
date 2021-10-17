@@ -47,7 +47,7 @@ export default function Navbar() {
     setSignedIn(!signedIn);
   };
   function signOutHandler() {
-    dispatch(handleSignOut());
+    dispatch(handleSignOut(auth.currentUser?.uid));
   }
   return (
     // This is for testing purposes feel free to remove:

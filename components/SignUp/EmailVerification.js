@@ -38,8 +38,8 @@ function EmailVerification() {
       flexBasis={{ base: "100%", lg: "50%" }}
       align="center"
     >
-      <Stack h="50" align="center">
-        <Text fontWeight="semibold" fontSize="6xl">
+      <Stack h={{ md: "50", base: "60" }} align="center">
+        <Text fontWeight="semibold" fontSize={{ md: "6xl", base: "4xl" }}>
           Check Your Email
         </Text>
         <Stack spacing="8" align="center">
@@ -49,25 +49,26 @@ function EmailVerification() {
           <Text fontSize="lg">
             We have sent a verification link to your email
           </Text>
-          <Text>Didn&apos;t receive an email?</Text>
         </Stack>
       </Stack>
-
-      <Button
-        mt="5"
-        isLoading={verificationEmail.status === "loading"}
-        onClick={handleEmailVerification}
-        w={{ base: "18.7rem", md: "21.8rem" }}
-        size="lg"
-        variant="primary"
-        fontWeight="black"
-        type="submit"
-        _hover={{ _disabled: {} }}
-        _disabled={{ cursor: "auto", bg: "#919bff" }}
-      >
-        {" "}
-        Send another email{" "}
-      </Button>
+      <Stack>
+        <Text>Didn&apos;t receive an email?</Text>
+        <Button
+          mt="5"
+          isLoading={verificationEmail.status === "loading"}
+          onClick={handleEmailVerification}
+          w={{ base: "18.7rem", md: "21.8rem" }}
+          size="lg"
+          variant="primary"
+          fontWeight="black"
+          type="submit"
+          _hover={{ _disabled: {} }}
+          _disabled={{ cursor: "auto", bg: "#919bff" }}
+        >
+          {" "}
+          Send another email{" "}
+        </Button>
+      </Stack>
 
       <Text>
         Once you verify your account refresh the page and you will be redirected

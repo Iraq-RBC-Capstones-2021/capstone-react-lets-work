@@ -137,7 +137,10 @@ function SignIn() {
         align="center"
       >
         <Stack align="center">
-          <Text fontWeight="semibold" fontSize={{ base: "4xl", md: "6xl" }}>
+          <Text
+            fontWeight="semibold"
+            fontSize={{ base: showResetPassForm ? "5xl" : "6xl", md: "6xl" }}
+          >
             {showResetPassForm ? t("reset_password") : t("signIn")}
           </Text>
           <Text fontSize="md">
