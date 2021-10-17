@@ -49,20 +49,19 @@ export default function AddProject() {
         bg="white"
         color="blue.300"
         borderRadius="xl"
-        p={{ md: "8" }}
+        p={["5", "6", "8"]}
         h={{ base: "100%", md: "auto" }}
         w={{ md: "auto", base: "100%" }}
       >
         <Stack spacing={3}>
           <VStack
             alignContent="space-evenly"
-            spacing={5}
             align="flex-start"
             justify="flex-start"
           >
             <Heading
               as="h5"
-              fontSize={{ base: "30px", md: "15px" }}
+              fontSize={{ base: "15px", md: "10px" }}
               color="black"
             >
               New Project/idea
@@ -71,13 +70,18 @@ export default function AddProject() {
               placeholder="Project name"
               variant="flushed"
               color="blue.500"
+              fontSize={{ base: "11px", md: "10px" }}
             />
-            <Input placeholder="Description" variant="flushed" />
+            <Input
+              placeholder="Description"
+              variant="flushed"
+              fontSize={{ base: "10px", md: "10px" }}
+            />
           </VStack>
-          <VStack spacing={5} align="flex-start" justify="flex-start">
+          <VStack align="flex-start" justify="flex-start">
             <Heading
               as="h5"
-              fontSize={{ base: "30px", md: "15px" }}
+              fontSize={{ base: "15px", md: "10px" }}
               color="black"
             >
               Tags
@@ -85,12 +89,14 @@ export default function AddProject() {
             <Input
               placeholder="Write your categories here.."
               variant="flushed"
+              fontSize={{ base: "11px", md: "10px" }}
             />
 
             <HStack wrap="wrap" spacing={3} flexShrink={0}>
               {tags.map((tag) => {
                 return (
                   <Button
+                    fontSize={{ base: "12px", md: "10px" }}
                     key={tag}
                     onClick={addToast}
                     type="button"
@@ -103,7 +109,7 @@ export default function AddProject() {
             </HStack>
           </VStack>
 
-          <Stack isInline spacing={2}>
+          <Stack isInline spacing={2} wrap="wrap">
             <IconButton icon={<FiImage />} />
             <IconButton icon={<FiLink2 />} />
             <IconButton icon={<FiTrash2 />} />
