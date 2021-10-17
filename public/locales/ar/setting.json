@@ -1,0 +1,20 @@
+{
+    "accountSetting":"إعدادات الحساب",
+    "uploadNewPhoto":"تحميل صورة جديدة",
+    "name":"اسم",
+    "username":"اسم المستخدم",
+    "email":"بريد الالكتروني",
+    "facebook":"الفيسبوك",
+    "instagram":"انستغرام",
+    "youtube":"يوتيوب",
+    "linkedin":"لنينكدين",
+    "bio":"سيرة شخصية",
+    "about":"في المتناول",
+    "skillsAndHobbies":"المهارات والهوايات",
+    "interests":"الإهتمامات",
+    "writeBio":"... اكتب السيرة الذاتية",
+    "writeAbout":"... اكتب عن نفسك",
+    "WriteSkillsAndHobbies":"... اكتب المهارات والهوايات",
+    "writeInterests":"... اكتب اهتمامات",
+    "save":"حفظ البيانات"
+}

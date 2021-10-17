@@ -1,0 +1,20 @@
+{
+    "accountSetting":"Account Setting",
+    "uploadNewPhoto":"Upload New Photo",
+    "name":"Name",
+    "username":"Username",
+    "email":"Email",
+    "facebook":"Facebook",
+    "instagram":"Instagram",
+    "youtube":"Youtube",
+    "linkedin":"Linkedin",
+    "bio":"Bio",
+    "about":"About",
+    "skillsAndHobbies":"Skills and Hobbies",
+    "interests":"Interests",
+    "writeBio":"Write bio ...",
+    "writeAbout":"Write about yourself ...",
+    "WriteSkillsAndHobbies":"Write skills and hobbies ...",
+    "writeInterests":"Write interests ...",
+    "save":"Save"
+}

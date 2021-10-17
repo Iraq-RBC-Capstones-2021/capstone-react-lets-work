@@ -84,7 +84,7 @@ export default function Index() {
                 <Form>
                   <Box
                     mt="6"
-                    ml="6"
+                    px="6"
                     display={["block", "block", "flex", "flex"]}
                   >
                     <Box w="50vw">
