@@ -10,7 +10,6 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { CgImage, CgLink, CgTrash } from "react-icons/cg";
-import { AiOutlineSend } from "React-icons/ai";
 
 import React from "react";
 
@@ -94,7 +93,6 @@ export default function AddProject() {
             <IconButton icon={<CgImage />} bg="none" />
             <IconButton icon={<CgLink />} bg="none" />
             <IconButton icon={<CgTrash />} bg="none" />
-            <IconButton icon={<AiOutlineSend />} bg="none" />
           </Flex>
         </Stack>
       </Box>
