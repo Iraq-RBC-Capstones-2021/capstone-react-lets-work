@@ -1,49 +1,38 @@
-import {
-  Avatar,
-  AvatarBadge,
-  Text,
-  VStack,
-  Box,
-  HStack,
-} from "@chakra-ui/react";
+import { Avatar, AvatarBadge, Text, VStack, Box, Flex } from "@chakra-ui/react";
 import { TiHeartOutline, TiArrowBackOutline } from "react-icons/ti";
 
-function Comment() {
-  const sampleComment = {
-    name: "Dan Abrahmov",
-    src: "https://bit.ly/dan-abramov",
-    content: "That is great",
-    likes: "56",
-  };
+function Comment({ sampleComment }) {
   return (
     <Box
       bg="gray.300"
-      w="30%"
-      p={3}
-      m={2}
+      w={["90%", "90%", "50%", "35%"]}
+      p="2"
+      m="5"
       rounded="xl"
-      position="absolute"
-      border-radius="19px"
+      border-radius="10px"
     >
-      <VStack align="flex-start" spacing="1">
-        <HStack spacing={2}>
-          <Avatar size="sm" src={sampleComment.src}>
+      <VStack align="flex-start">
+        <Flex wrap="wrap" justify="space-between" align="center">
+          <Avatar size="sm" src={sampleComment.src} mr="2">
             <AvatarBadge boxSize="1em" bg="green.500" />
           </Avatar>
-          <Text fontSize={{ base: "13px", md: "13px" }} color="#3F3B3B">
+          <Text
+            fontSize={{ base: "10px", md: "13px" }}
+            color="#3F3B3B"
+            fontWeight="bold"
+          >
             {sampleComment.name}
           </Text>
-        </HStack>
+        </Flex>
         <Text
-          fontSize={{ base: "12px", md: "12px" }}
+          fontSize={{ base: "10px", md: "12px" }}
           fontWeight="light"
           color="#5D6F88"
-          paddingX="20px"
-          paddingY="8px"
+          paddingX="10px"
         >
           {sampleComment.content}{" "}
         </Text>
-        <HStack spacing={1}>
+        <Flex align="flex-start" justify="space-between">
           <TiHeartOutline color="#5D5FEF" />
           <Text
             color="#5D5FEF"
@@ -62,7 +51,7 @@ function Comment() {
           >
             Reply
           </Text>
-        </HStack>
+        </Flex>
       </VStack>
     </Box>
   );
