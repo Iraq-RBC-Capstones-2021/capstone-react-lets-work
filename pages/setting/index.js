@@ -8,11 +8,9 @@ import {
   Button,
   Wrap,
   WrapItem,
-  Textarea,
 } from "@chakra-ui/react";
 import ChakraInput from "../../components/Shared/ChakraInput";
 import { Formik, Form } from "formik";
-import { useState } from "react";
 import { useRouter as router } from "next/dist/client/router";
 import { useTranslation } from "next-i18next";
 import * as Yup from "yup";
@@ -84,10 +82,14 @@ export default function Index() {
             {() => {
               return (
                 <Form>
-                  <Box mt="6" display={["block", "block", "flex", "flex"]}>
+                  <Box
+                    mt="6"
+                    ml="6"
+                    display={["block", "block", "flex", "flex"]}
+                  >
                     <Box w="50vw">
                       <Wrap>
-                        <WrapItem alignItems="center" w="10vw">
+                        <WrapItem alignItems="center" w="15vw">
                           <Text>Name:</Text>
                         </WrapItem>
                         <WrapItem>
@@ -95,7 +97,7 @@ export default function Index() {
                         </WrapItem>
                       </Wrap>
                       <Wrap>
-                        <WrapItem alignItems="center" w="10vw">
+                        <WrapItem alignItems="center" w="15vw">
                           <Text>Username:</Text>
                         </WrapItem>
                         <WrapItem>
@@ -103,17 +105,15 @@ export default function Index() {
                         </WrapItem>
                       </Wrap>
                       <Wrap>
-                        <WrapItem alignItems="center" w="10vw">
+                        <WrapItem alignItems="center" w="15vw">
                           <Text>Email:</Text>
                         </WrapItem>
                         <WrapItem>
                           <ChakraInput size="lg" type="text" name="email" />
                         </WrapItem>
                       </Wrap>
-                    </Box>
-                    <Box w="50vw">
                       <Wrap>
-                        <WrapItem alignItems="center" w="10vw">
+                        <WrapItem alignItems="center" w="15vw">
                           <Text>Facebook:</Text>
                         </WrapItem>
                         <WrapItem>
@@ -121,7 +121,7 @@ export default function Index() {
                         </WrapItem>
                       </Wrap>
                       <Wrap>
-                        <WrapItem alignItems="center" w="10vw">
+                        <WrapItem alignItems="center" w="15vw">
                           <Text>Instagram:</Text>
                         </WrapItem>
                         <WrapItem>
@@ -129,7 +129,7 @@ export default function Index() {
                         </WrapItem>
                       </Wrap>
                       <Wrap>
-                        <WrapItem alignItems="center" w="10vw">
+                        <WrapItem alignItems="center" w="15vw">
                           <Text>Youtube:</Text>
                         </WrapItem>
                         <WrapItem>
@@ -137,7 +137,7 @@ export default function Index() {
                         </WrapItem>
                       </Wrap>
                       <Wrap>
-                        <WrapItem alignItems="center" w="10vw">
+                        <WrapItem alignItems="center" w="15vw">
                           <Text>LinkedIn:</Text>
                         </WrapItem>
                         <WrapItem>
@@ -146,7 +146,7 @@ export default function Index() {
                       </Wrap>
                     </Box>
                   </Box>
-                  <Box w="100vw" mt="6">
+                  <Box w="100vw" mt="6" ml="6">
                     <Wrap>
                       <WrapItem alignItems="center" w="15vw">
                         <Text>Bio:</Text>
