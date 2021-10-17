@@ -1,5 +1,4 @@
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import styles from "../styles/Home.module.css";
 import TopSection from "../components/Home/TopSection";
 import PostList from "../components/Home/posts/PostList";
 const postSample = [
@@ -44,7 +43,7 @@ const postSample = [
 ];
 export default function Home() {
   return (
-    <div className={styles.app}>
+    <div>
       <TopSection />
       <PostList list="Top Projects" posts={postSample} />
       <PostList list="Favorite Projects" posts={postSample} />
