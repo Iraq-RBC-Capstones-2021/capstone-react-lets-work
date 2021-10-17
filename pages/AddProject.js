@@ -3,7 +3,6 @@ import {
   Heading,
   Input,
   HStack,
-  Tag,
   Stack,
   Button,
   useToast,
@@ -11,7 +10,6 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { CgImage, CgLink, CgTrash } from "react-icons/cg";
-import { AiOutlineSend } from "React-icons/ai";
 
 import React from "react";
 
@@ -109,7 +107,6 @@ export default function AddProject() {
             <IconButton icon={<CgImage />} />
             <IconButton icon={<CgLink />} />
             <IconButton icon={<CgTrash />} />
-            <IconButton icon={<AiOutlineSend />} />
           </Stack>
         </Stack>
       </Box>
