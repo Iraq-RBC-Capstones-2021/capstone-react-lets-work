@@ -2,6 +2,7 @@ import {
   Box,
   Heading,
   Input,
+  HStack,
   Tag,
   Stack,
   Button,
@@ -17,6 +18,15 @@ import React from "react";
 export default function AddProject() {
   const toast = useToast();
   const toastIdRef = React.useRef();
+  const tags = [
+    "Dev",
+    "Design",
+    "Javascript",
+    "C++",
+    "Design",
+    "Graphic",
+    "Java",
+  ];
 
   function close() {
     if (toastIdRef.current) {
@@ -35,18 +45,23 @@ export default function AddProject() {
     toastIdRef.current = toast({ description: "tag added" });
   }
   return (
-    <Stack bg="gray.300" display={["flex", "flow"]} height="100%">
+    <Stack align="center" justify="center" bg="secondary.main" height="93vh">
       <Box
-        marginY="50px"
-        marginX="300px"
+        mx={{ base: "3" }}
         bg="white"
         color="blue.300"
-        maxW="50%"
         borderRadius="xl"
-        padding="45px"
+        p={{ md: "8" }}
+        h={{ base: "100%", md: "auto" }}
+        w={{ md: "auto", base: "100%" }}
       >
         <Stack spacing={3}>
-          <VStack alignContent="space-evenly" spacing={5}>
+          <VStack
+            alignContent="space-evenly"
+            spacing={5}
+            align="flex-start"
+            justify="flex-start"
+          >
             <Heading
               as="h5"
               fontSize={{ base: "30px", md: "15px" }}
@@ -61,7 +76,7 @@ export default function AddProject() {
             />
             <Input placeholder="Description" variant="flushed" />
           </VStack>
-          <VStack spacing={5}>
+          <VStack spacing={5} align="flex-start" justify="flex-start">
             <Heading
               as="h5"
               fontSize={{ base: "30px", md: "15px" }}
@@ -74,31 +89,20 @@ export default function AddProject() {
               variant="flushed"
             />
 
-            <Stack isInline spacing={2} flexShrink={0}>
-              <Button onClick={addToast} type="button" variant="secondary.main">
-                Dev
-              </Button>
-
-              <Button onClick={addToast} type="button" variant="outline">
-                JavaScript
-              </Button>
-
-              <Button onClick={addToast} type="button" variant="outline">
-                C++
-              </Button>
-              <Button onClick={addToast} type="button" variant="outline">
-                Design
-              </Button>
-              <Button onClick={addToast} type="button" variant="outline">
-                Graphic
-              </Button>
-              <Button onClick={addToast} type="button" variant="outline">
-                Graphic
-              </Button>
-              <Button onClick={addToast} type="button" variant="outline">
-                XD
-              </Button>
-            </Stack>
+            <HStack wrap="wrap" spacing={3} flexShrink={0}>
+              {tags.map((tag) => {
+                return (
+                  <Button
+                    key={tag}
+                    onClick={addToast}
+                    type="button"
+                    variant="secondary.main"
+                  >
+                    {tag}
+                  </Button>
+                );
+              })}
+            </HStack>
           </VStack>
 
           <Stack isInline spacing={2}>
