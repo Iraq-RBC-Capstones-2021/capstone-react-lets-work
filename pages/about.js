@@ -9,7 +9,7 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { Image as NextImage } from "next/image";
-import Feature from "../../components/About/Feature";
+import Feature from "../components/About/Feature";
 
 export default function About() {
   return (
@@ -22,7 +22,7 @@ export default function About() {
       >
         <Heading
           fontWeight={700}
-          fontSize={{ base: "30px", sm: "40px", md: "50px" }}
+          fontSize={{ base: "40px", sm: "50px", md: "60px" }}
           lineHeight="70px"
         >
           What is Let&apos;s Work?
@@ -45,7 +45,7 @@ export default function About() {
         <Center>
           <Image
             as={NextImage}
-            src="images/Goodteam.svg"
+            src="images/Good team-bro 2.svg"
             width={{ sm: "24rem", lg: "429px" }}
             alt="goodteambro"
             height={{ sm: "24rem", lg: "429px" }}
@@ -74,7 +74,7 @@ export default function About() {
           <Stack>
             <Heading
               fontWeight={700}
-              fontSize={{ base: "30px", sm: "40px", md: "50px" }}
+              fontSize={{ base: "40px", sm: "50px", md: "60px" }}
               lineHeight="70px"
               textAlign="center"
             >
@@ -107,7 +107,7 @@ export default function About() {
       >
         <Heading
           fontWeight={700}
-          fontSize={{ base: "30px", sm: "40px", md: "50px" }}
+          fontSize={{ base: "40px", sm: "50px", md: "60px" }}
           lineHeight="70px"
           mb={8}
         >
@@ -116,13 +116,13 @@ export default function About() {
         <Box p={4}>
           <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={16}>
             <Feature
-              imageSrc="images/innovative.svg"
+              imageSrc="images/Innovation _Flatline 1.svg"
               alt="feature1"
               title="Easy to use"
               textContent="Sign in and  instantly start working on your project!"
             />
             <Feature
-              imageSrc="images/startup.svg"
+              imageSrc="images/Startup_Flatline 1.svg"
               alt="feature2"
               title="Share your Idea"
               textContent="Work with people interested in your idea"
@@ -134,7 +134,7 @@ export default function About() {
               textContent="Search for ideas regarding all topics"
             />
             <Feature
-              imageSrc="images/web.svg"
+              imageSrc="images/World wide web_Flatline 1.svg"
               alt="feature4"
               title="Easy communication"
               textContent="Stay in touch with your project members via group chats"

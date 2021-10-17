@@ -94,6 +94,8 @@ function NotificationsList() {
         background="transparent"
       />
       <MenuList
+        position="relative"
+        zIndex="100"
         mr="3"
         pb="0"
         boxShadow="dark-lg"
