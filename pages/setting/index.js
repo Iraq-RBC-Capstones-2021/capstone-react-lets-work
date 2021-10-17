@@ -9,6 +9,7 @@ import {
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import ChakraInput from "../../components/Shared/ChakraInput";
 import { Formik, Form } from "formik";
 import { useRouter as router } from "next/dist/client/router";
@@ -53,7 +54,7 @@ export default function Index() {
   return (
     <Center p="6" dir={router().locale === "ar" ? "rtl" : "ltr"}>
       <Stack>
-        <Heading>Account Setting</Heading>
+        <Heading>{t("accountSetting")}</Heading>
         <Box w="85vw" bg="white" rounded="15px" p="6" overflow="hidden">
           <Wrap>
             <WrapItem>
@@ -70,7 +71,7 @@ export default function Index() {
                 color="white"
                 _hover={{ bg: "darkPurple" }}
               >
-                Upload New Photo
+                {t("uploadNewPhoto")}
               </Button>
             </WrapItem>
           </Wrap>
@@ -90,7 +91,7 @@ export default function Index() {
                     <Box w="50vw">
                       <Wrap>
                         <WrapItem alignItems="center" w="15vw">
-                          <Text>Name:</Text>
+                          <Text> {t("name")}:</Text>
                         </WrapItem>
                         <WrapItem>
                           <ChakraInput size="lg" type="text" name="name" />
@@ -98,7 +99,7 @@ export default function Index() {
                       </Wrap>
                       <Wrap>
                         <WrapItem alignItems="center" w="15vw">
-                          <Text>Username:</Text>
+                          <Text> {t("username")}:</Text>
                         </WrapItem>
                         <WrapItem>
                           <ChakraInput size="lg" type="text" name="username" />
@@ -106,7 +107,7 @@ export default function Index() {
                       </Wrap>
                       <Wrap>
                         <WrapItem alignItems="center" w="15vw">
-                          <Text>Email:</Text>
+                          <Text> {t("email")}:</Text>
                         </WrapItem>
                         <WrapItem>
                           <ChakraInput size="lg" type="text" name="email" />
@@ -114,7 +115,7 @@ export default function Index() {
                       </Wrap>
                       <Wrap>
                         <WrapItem alignItems="center" w="15vw">
-                          <Text>Facebook:</Text>
+                          <Text> {t("facebook")}:</Text>
                         </WrapItem>
                         <WrapItem>
                           <ChakraInput size="lg" type="text" name="facebook" />
@@ -122,7 +123,7 @@ export default function Index() {
                       </Wrap>
                       <Wrap>
                         <WrapItem alignItems="center" w="15vw">
-                          <Text>Instagram:</Text>
+                          <Text> {t("instagram")}:</Text>
                         </WrapItem>
                         <WrapItem>
                           <ChakraInput size="lg" type="text" name="instagram" />
@@ -130,7 +131,7 @@ export default function Index() {
                       </Wrap>
                       <Wrap>
                         <WrapItem alignItems="center" w="15vw">
-                          <Text>Youtube:</Text>
+                          <Text> {t("youtube")}</Text>
                         </WrapItem>
                         <WrapItem>
                           <ChakraInput size="lg" type="text" name="youtube" />
@@ -138,7 +139,7 @@ export default function Index() {
                       </Wrap>
                       <Wrap>
                         <WrapItem alignItems="center" w="15vw">
-                          <Text>LinkedIn:</Text>
+                          <Text> {t("linkedin")}:</Text>
                         </WrapItem>
                         <WrapItem>
                           <ChakraInput size="lg" type="text" name="linkedin" />
@@ -149,11 +150,11 @@ export default function Index() {
                   <Box w="100vw" mt="6" ml="6">
                     <Wrap>
                       <WrapItem alignItems="center" w="15vw">
-                        <Text>Bio:</Text>
+                        <Text>{t("bio")}:</Text>
                       </WrapItem>
                       <WrapItem>
                         <ChakraTextarea
-                          placeholder="Write bio ..."
+                          placeholder={t("writeBio")}
                           name="bio"
                           w="57vw"
                           h="10vw"
@@ -162,11 +163,11 @@ export default function Index() {
                     </Wrap>
                     <Wrap>
                       <WrapItem alignItems="center" w="15vw">
-                        <Text>About:</Text>
+                        <Text>{t("about")}:</Text>
                       </WrapItem>
                       <WrapItem>
                         <ChakraTextarea
-                          placeholder="Write about yourself ..."
+                          placeholder={t("writeAbout")}
                           name="about"
                           w="57vw"
                           h="10vw"
@@ -175,11 +176,11 @@ export default function Index() {
                     </Wrap>
                     <Wrap>
                       <WrapItem alignItems="center" w="15vw">
-                        <Text>Skills and Hobbies:</Text>
+                        <Text>{t("skillsAndHobbies")}:</Text>
                       </WrapItem>
                       <WrapItem>
                         <ChakraTextarea
-                          placeholder="Write skills and hobbies ..."
+                          placeholder={t("WriteSkillsAndHobbies")}
                           name="skillsAndHobbies"
                           w="57vw"
                           h="10vw"
@@ -188,11 +189,11 @@ export default function Index() {
                     </Wrap>
                     <Wrap>
                       <WrapItem alignItems="center" w="15vw">
-                        <Text>Intrests:</Text>
+                        <Text>{t("interests")}:</Text>
                       </WrapItem>
                       <WrapItem>
                         <ChakraInput
-                          placeholder="Write intrests ..."
+                          placeholder={t("writeInterests")}
                           size="lg"
                           type="text"
                           name="intrests"
@@ -214,11 +215,19 @@ export default function Index() {
               color="white"
               _hover={{ bg: "darkPurple" }}
             >
-              Save
+              {t("save")}
             </Button>
           </Center>
         </Box>
       </Stack>
     </Center>
   );
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["setting"])),
+    },
+  };
 }
