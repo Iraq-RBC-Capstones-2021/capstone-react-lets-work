@@ -9,7 +9,7 @@ import {
   VStack,
   IconButton,
 } from "@chakra-ui/react";
-import { CgImage, CgLink, CgTrash } from "react-icons/cg";
+import { FiSend, FiTrash2, FiImage, FiLink2 } from "react-icons/fi";
 
 import React from "react";
 
@@ -104,9 +104,10 @@ export default function AddProject() {
           </VStack>
 
           <Stack isInline spacing={2}>
-            <IconButton icon={<CgImage />} />
-            <IconButton icon={<CgLink />} />
-            <IconButton icon={<CgTrash />} />
+            <IconButton icon={<FiImage />} />
+            <IconButton icon={<FiLink2 />} />
+            <IconButton icon={<FiTrash2 />} />
+            <IconButton icon={<FiSend />} />
           </Stack>
         </Stack>
       </Box>
