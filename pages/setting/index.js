@@ -8,6 +8,7 @@ import {
   Button,
   Wrap,
   WrapItem,
+  Input,
 } from "@chakra-ui/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import ChakraInput from "../../components/Shared/ChakraInput";
@@ -16,8 +17,10 @@ import { useRouter as router } from "next/dist/client/router";
 import { useTranslation } from "next-i18next";
 import * as Yup from "yup";
 import ChakraTextarea from "../../components/Shared/ChakraTextarea";
+import { useRef } from "react";
 
 export default function Index() {
+  const uploadInput = useRef();
   const { t } = useTranslation("setting");
   const initialValues = {
     name: "",
@@ -51,6 +54,10 @@ export default function Index() {
     skillsAndHobbies: Yup.string().min(2, "Too Short!").max(100, "Too Long!"),
     intrests: Yup.string().min(2, "Too Short!").max(100, "Too Long!"),
   });
+
+  function openFileUpload() {
+    uploadInput.current.click();
+  }
   return (
     <Center p="6" dir={router().locale === "ar" ? "rtl" : "ltr"}>
       <Stack>
@@ -65,11 +72,18 @@ export default function Index() {
               />
             </WrapItem>
             <WrapItem alignItems="center">
+              <Input
+                hidden
+                ref={uploadInput}
+                type="file"
+                accept="image/png, image/jpeg"
+              />
               <Button
                 rounded="5px"
                 backgroundColor="lightPurple"
                 color="white"
                 _hover={{ bg: "darkPurple" }}
+                onClick={() => openFileUpload()}
               >
                 {t("uploadNewPhoto")}
               </Button>
