@@ -1,7 +1,6 @@
 import {
   Heading,
   Stack,
-  HStack,
   Box,
   Text,
   Image,
@@ -90,8 +89,9 @@ function TopSection() {
       <Flex
         direction={["column", "column", "row", "row"]}
         align={{ base: "flex-start", md: "center" }}
+        bg="white"
       >
-        <Box px={["50px", "100px", "150px"]} paddingY="40px">
+        <Box px={["50px", "100px", "150px"]} paddingY="40px" bg="white">
           <Heading paddingBottom="20px" fontSize={{ base: "25px", md: "27px" }}>
             Interests
           </Heading>
@@ -107,8 +107,9 @@ function TopSection() {
       <Flex
         direction={["column", "column", "row", "row"]}
         align={{ base: "flex-start", md: "flex-start" }}
+        bg="white"
       >
-        <Box px={["50px", "100px", "150px"]} paddingBottom="50px" spacing={25}>
+        <Box px={["50px", "100px", "150px"]} p="50px" spacing={25} bg="white">
           <Heading paddingBottom="20px" fontSize={{ base: "25px", md: "27px" }}>
             About
           </Heading>
