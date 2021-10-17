@@ -147,7 +147,7 @@ export default function Index() {
                       </Wrap>
                     </Box>
                   </Box>
-                  <Box w="100vw" mt="6" ml="6">
+                  <Box w="100vw" mt="6" px="6">
                     <Wrap>
                       <WrapItem alignItems="center" w="15vw">
                         <Text>{t("bio")}:</Text>
