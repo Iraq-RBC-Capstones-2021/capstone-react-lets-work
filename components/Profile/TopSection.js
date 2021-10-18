@@ -13,25 +13,26 @@ import {
 } from "@chakra-ui/react";
 import { SiGmail, SiInstagram, SiFacebook, SiLinkedin } from "react-icons/si";
 
-function TopSection() {
-  const user = {
-    username: "Segun Adebayo",
-    bio: "Web Developer",
-    about: "I love Web development and I have been coding for last ten years",
-    interests: ["Web", "Design", "HTML & Javascript"],
-    skills_hobbies: ["Web Development", "Hiking"],
-    social: { instagram: "", facebook: "", email: "", linkedIn: "" },
-  };
-
+function TopSection({
+  username,
+  bio,
+  job,
+  about,
+  email,
+  instagram,
+  facebook,
+  linkedIn,
+  interests,
+  skills_hobbies,
+}) {
   return (
     <Stack>
       <Flex
         justify="space-between"
         direction={["column", "column", "row", "row"]}
         align={{ base: "flex-start", md: "center" }}
-        bg="secondary.main"
       >
-        <Box px={["50px", "80px", "150px"]} py={["30px", "50px", "55px"]}>
+        <Box px={["50px", "80px", "150px"]} py={["15px", "30px", "30px"]}>
           <Flex
             direction={["column", "column", "row", "row"]}
             justify="space-around"
@@ -47,37 +48,21 @@ function TopSection() {
 
             <Stack mx={["15", "7"]}>
               <Heading fontSize={{ base: "25px", md: "27px" }}>
-                {user.username}
+                {username}
               </Heading>
               <Text color="gray.500" fontWeight="light">
                 {" "}
-                {user.bio}
+                {job}
               </Text>
               <Flex align="center">
-                <IconButton
-                  as={Link}
-                  href={user.social.email}
-                  icon={<SiGmail />}
-                />
-                <IconButton
-                  as={Link}
-                  href={user.social.instagram}
-                  icon={<SiInstagram />}
-                />
-                <IconButton
-                  as={Link}
-                  href={user.social.facebook}
-                  icon={<SiFacebook />}
-                />
-                <IconButton
-                  as={Link}
-                  href={user.social.linkedIn}
-                  icon={<SiLinkedin />}
-                />
+                <IconButton as={Link} href={email} icon={<SiGmail />} />
+                <IconButton as={Link} href={instagram} icon={<SiInstagram />} />
+                <IconButton as={Link} href={facebook} icon={<SiFacebook />} />
+                <IconButton as={Link} href={linkedIn} icon={<SiLinkedin />} />
               </Flex>
               <Text color="gray.500" fontWeight="light">
                 {" "}
-                {user.about}
+                {bio}
               </Text>
               <VStack align="flex-start">
                 <Button variant="primary">Message</Button>
@@ -95,13 +80,7 @@ function TopSection() {
           <Heading paddingBottom="20px" fontSize={{ base: "25px", md: "27px" }}>
             Interests
           </Heading>
-          <Flex wrap="wrap">
-            {user.interests.map((interest) => (
-              <Tag size="lg" variant="subtle" key={interest} m="1">
-                {interest}
-              </Tag>
-            ))}
-          </Flex>
+          <Flex wrap="wrap">{interests}</Flex>
         </Box>
       </Flex>
       <Flex
@@ -113,17 +92,7 @@ function TopSection() {
           <Heading paddingBottom="20px" fontSize={{ base: "25px", md: "27px" }}>
             About
           </Heading>
-          <Text>
-            A mote of dust suspended in a sunbeam Sea of Tranquility vanquish
-            the impossible shores of the cosmic ocean a billion trillion another
-            world. Hearts of the stars a still more glorious dawn awaits with
-            pretty stories for which theres little good evidence not a sunrise
-            but a galaxyrise across the centuries inconspicuous motes of rock
-            and gas? Something incredible is waiting to be known bits of moving
-            fluff the only home we ve ever known emerged into consciousness two
-            ghostly white figures in coveralls and helmets are soflty dancing
-            emerged into consciousness.
-          </Text>
+          <Text>{about}</Text>
         </Box>
       </Flex>
       <Flex
@@ -135,10 +104,7 @@ function TopSection() {
           <Heading paddingBottom="20px" fontSize={{ base: "25px", md: "27px" }}>
             Skills & Hobbies
           </Heading>
-
-          {user.skills_hobbies.map((skill) => {
-            return <Text key={skill}>{skill}</Text>;
-          })}
+          {skills_hobbies}
         </Box>
       </Flex>
     </Stack>
