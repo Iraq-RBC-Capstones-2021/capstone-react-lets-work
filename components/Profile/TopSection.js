@@ -6,7 +6,6 @@ import {
   Image,
   VStack,
   Button,
-  Tag,
   IconButton,
   Link,
   Flex,
@@ -76,7 +75,7 @@ function TopSection({
         align={{ base: "flex-start", md: "center" }}
         bg="white"
       >
-        <Box px={["50px", "100px", "150px"]} paddingY="40px" bg="white">
+        <Box px={["50px", "100px", "150px"]} paddingY="30px" bg="white">
           <Heading paddingBottom="20px" fontSize={{ base: "25px", md: "27px" }}>
             Interests
           </Heading>
@@ -88,7 +87,7 @@ function TopSection({
         align={{ base: "flex-start", md: "flex-start" }}
         bg="white"
       >
-        <Box px={["50px", "100px", "150px"]} p="50px" spacing={25} bg="white">
+        <Box px={["50px", "100px", "150px"]} py="20px" spacing={25} bg="white">
           <Heading paddingBottom="20px" fontSize={{ base: "25px", md: "27px" }}>
             About
           </Heading>
