@@ -247,8 +247,8 @@ export default function Navbar() {
               </Button>
             </NextLink>
             {auth.currentUser ? (
-              <Stack>
-                <NextLink href="/account">
+              <Stack w="100%">
+                <NextLink passHref href="/account">
                   <Button
                     as="a"
                     variant="ghost"
@@ -265,13 +265,14 @@ export default function Navbar() {
                   aria-label="Home"
                   my="2"
                   w="100%"
+                  cursor="pointer"
                   onClick={signOutHandler}
                 >
                   Logout
                 </Button>
               </Stack>
             ) : (
-              <NextLink href="/signup">
+              <NextLink passHref href="/signup">
                 <Button
                   as="a"
                   variant="ghost"
