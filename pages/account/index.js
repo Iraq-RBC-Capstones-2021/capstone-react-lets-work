@@ -1,3 +1,4 @@
+import Profile from "../../components/Profile/Profile";
 import IdeaCard from "../../components/Account/IdeaCard";
 import { Box, Stack, SimpleGrid, Center } from "@chakra-ui/react";
 
@@ -15,6 +16,7 @@ export default function Account() {
 
   return (
     <div>
+      <Profile />
       <Stack
         bg="secondary.main"
         py={{ base: 8, md: 16 }}
