@@ -10,8 +10,13 @@ import {
 } from "@chakra-ui/react";
 import { Image as NextImage } from "next/image";
 import Feature from "../../components/About/Feature";
+import { useTranslation } from "next-i18next";
+import { useRouter } from "next/dist/client/router";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export default function About() {
+  const { t } = useTranslation("about");
+  const { locale } = useRouter();
   return (
     <div>
       <Stack
@@ -25,7 +30,7 @@ export default function About() {
           fontSize={{ base: "30px", sm: "40px", md: "50px" }}
           lineHeight="70px"
         >
-          What is Let&apos;s Work?
+          {t("what")}
         </Heading>
         <Center>
           <Text
@@ -37,9 +42,7 @@ export default function About() {
             mt="2rem"
             lineHeight="140%"
           >
-            Let’s work is a platform to share project ideas across people and
-            get them to cooperate together and work on them to make them come
-            true
+            {t("about")}
           </Text>
         </Center>
         <Center>
@@ -78,7 +81,7 @@ export default function About() {
               lineHeight="70px"
               textAlign="center"
             >
-              Great discussion experience
+              {t("discussion")}
             </Heading>
             <Center>
               <Text
@@ -90,9 +93,7 @@ export default function About() {
                 mt="2rem"
                 lineHeight="140%"
               >
-                Clean and easy to handle discussion form to make sure our users
-                are having a great discussion experience about their favourite
-                topics!
+                {t("discussion_text")}
               </Text>
             </Center>
           </Stack>
@@ -111,37 +112,45 @@ export default function About() {
           lineHeight="70px"
           mb={8}
         >
-          Why You Should Join Us?
+          {t("why")}
         </Heading>
         <Box p={4}>
           <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={16}>
             <Feature
               imageSrc="images/innovative.svg"
               alt="feature1"
-              title="Easy to use"
-              textContent="Sign in and  instantly start working on your project!"
+              title={t("use")}
+              textContent={t("use_text")}
             />
             <Feature
               imageSrc="images/startup.svg"
               alt="feature2"
-              title="Share your Idea"
-              textContent="Work with people interested in your idea"
+              title={t("share")}
+              textContent={t("share_text")}
             />
             <Feature
               imageSrc="images/Information flow_Monochromatic.svg"
               alt="feature3"
-              title="Find ideas"
-              textContent="Search for ideas regarding all topics"
+              title={t("find")}
+              textContent={t("find_text")}
             />
             <Feature
               imageSrc="images/web.svg"
               alt="feature4"
-              title="Easy communication"
-              textContent="Stay in touch with your project members via group chats"
+              title={t("communication")}
+              textContent={t("communication_text")}
             />
           </SimpleGrid>
         </Box>
       </Stack>
     </div>
   );
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["about"])),
+    },
+  };
 }
