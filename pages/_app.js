@@ -1,6 +1,6 @@
 import "@fontsource/roboto";
 import "@fontsource/roboto/300.css";
-import Navbar from "../components/Navbar";
+import Layout from "../components/Layout";
 import { ChakraProvider } from "@chakra-ui/provider";
 import { appWithTranslation } from "next-i18next";
 import { wrapper } from "../store";
@@ -9,8 +9,9 @@ import theme from "../styles/theme/index";
 const App = ({ Component, pageProps }) => {
   return (
     <ChakraProvider theme={theme}>
-      <Navbar />
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </ChakraProvider>
   );
 };
