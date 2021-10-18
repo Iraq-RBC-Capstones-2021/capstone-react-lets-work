@@ -18,7 +18,7 @@ const AdvancedSearch = () => {
   const { locale } = useRouter();
 
   return (
-    <PopoverBody>
+    <PopoverBody dir={locale === "ar" ? "ltr" : "rtl"}>
       <FormControl id="country">
         <Text mt={4} fontWeight="bold" fontSize="xl">
           {t("search_fields")}

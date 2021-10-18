@@ -37,9 +37,9 @@ const Sort = () => {
       >
         <PopoverArrow />
         <PopoverCloseButton />
-        <PopoverBody>
-          <RadioGroup defaultValue="1">
-            <Stack pl="1rem">
+        <PopoverBody dir={locale === "ar" ? "rtl" : "ltr"}>
+          <RadioGroup defaultValue="1" dir={locale === "ar" ? "rtl" : "ltr"}>
+            <Stack pl="1rem" mt={4}>
               <Radio value="1">{t("latest")}</Radio>
               <Radio value="2">{t("oldest")}</Radio>
               <Radio value="3">{t("most")}</Radio>
