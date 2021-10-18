@@ -62,206 +62,212 @@ export default function Index() {
     <Center p="6" dir={router().locale === "ar" ? "rtl" : "ltr"}>
       <Stack>
         <Heading>{t("accountSetting")}</Heading>
-        <Box w="85vw" bg="white" rounded="15px" p="6" overflow="hidden">
-          <Wrap>
-            <WrapItem>
-              <Avatar
-                size="2xl"
-                name="Segun Adebayo"
-                src="https://bit.ly/sage-adebayo"
-              />
-            </WrapItem>
-            <WrapItem alignItems="center">
-              <Input
-                hidden
-                ref={uploadInput}
-                type="file"
-                accept="image/png, image/jpeg"
-              />
-              <Button
-                rounded="5px"
-                backgroundColor="lightPurple"
-                color="white"
-                _hover={{ bg: "darkPurple" }}
-                onClick={() => openFileUpload()}
-              >
-                {t("uploadNewPhoto")}
-              </Button>
-            </WrapItem>
-          </Wrap>
-          {/* there is alot of repetative code here inside the Formik, this will be fixed later */}
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-          >
-            {() => {
-              return (
-                <Form>
-                  <Box
-                    mt="6"
-                    px="6"
-                    display={["block", "block", "flex", "flex"]}
-                  >
-                    <Box w="50vw">
-                      <Wrap>
-                        <WrapItem alignItems="center" w="15vw">
-                          <Text> {t("name")}:</Text>
-                        </WrapItem>
-                        <WrapItem>
-                          <ChakraInput
-                            fontSize="md"
-                            size="lg"
-                            type="text"
-                            name="name"
-                            placeholder={t("addName")}
-                          />
-                        </WrapItem>
-                      </Wrap>
-                      <Wrap>
-                        <WrapItem alignItems="center" w="15vw">
-                          <Text> {t("username")}:</Text>
-                        </WrapItem>
-                        <WrapItem>
-                          <ChakraInput
-                            fontSize="md"
-                            size="lg"
-                            type="text"
-                            name="username"
-                            placeholder={t("addUsername")}
-                          />
-                        </WrapItem>
-                      </Wrap>
-                      <Wrap>
-                        <WrapItem alignItems="center" w="15vw">
-                          <Text> {t("email")}:</Text>
-                        </WrapItem>
-                        <WrapItem>
-                          <ChakraInput
-                            fontSize="md"
-                            size="lg"
-                            type="text"
-                            name="email"
-                            placeholder={t("addEmail")}
-                          />
-                        </WrapItem>
-                      </Wrap>
-                      <Wrap>
-                        <WrapItem alignItems="center" w="15vw">
-                          <Text> {t("facebook")}:</Text>
-                        </WrapItem>
-                        <WrapItem>
-                          <ChakraInput
-                            fontSize="md"
-                            size="lg"
-                            type="text"
-                            name="facebook"
-                            placeholder={t("addFacebook")}
-                          />
-                        </WrapItem>
-                      </Wrap>
-                      <Wrap>
-                        <WrapItem alignItems="center" w="15vw">
-                          <Text> {t("instagram")}:</Text>
-                        </WrapItem>
-                        <WrapItem>
-                          <ChakraInput
-                            fontSize="md"
-                            size="lg"
-                            type="text"
-                            name="instagram"
-                            placeholder={t("addInstagram")}
-                          />
-                        </WrapItem>
-                      </Wrap>
-                      <Wrap>
-                        <WrapItem alignItems="center" w="15vw">
-                          <Text> {t("youtube")}</Text>
-                        </WrapItem>
-                        <WrapItem>
-                          <ChakraInput
-                            fontSize="md"
-                            size="lg"
-                            type="text"
-                            name="youtube"
-                            placeholder={t("addYoutube")}
-                          />
-                        </WrapItem>
-                      </Wrap>
-                      <Wrap>
-                        <WrapItem alignItems="center" w="15vw">
-                          <Text> {t("linkedin")}:</Text>
-                        </WrapItem>
-                        <WrapItem>
-                          <ChakraInput
-                            fontSize="md"
-                            size="lg"
-                            type="text"
-                            name="linkedin"
-                            placeholder={t("addLinkedin")}
-                          />
-                        </WrapItem>
-                      </Wrap>
-                    </Box>
-                  </Box>
-                  <Box w="100vw" mt="6" px="6">
+        <Box
+          bg="white"
+          w={["95vw", "85vw", "85vw", "85vw"]}
+          rounded={["5px", "15px", "15px", "15px"]}
+          p="6"
+          overflow="hidden"
+        >
+          <Box w="70vw">
+            <Wrap>
+              <WrapItem>
+                <Avatar
+                  size="2xl"
+                  name="Segun Adebayo"
+                  src="https://bit.ly/sage-adebayo"
+                />
+              </WrapItem>
+              <WrapItem alignItems="center">
+                <Input
+                  hidden
+                  ref={uploadInput}
+                  type="file"
+                  accept="image/png, image/jpeg"
+                />
+                <Button
+                  rounded="5px"
+                  backgroundColor="lightPurple"
+                  color="white"
+                  _hover={{ bg: "darkPurple" }}
+                  onClick={() => openFileUpload()}
+                >
+                  {t("uploadNewPhoto")}
+                </Button>
+              </WrapItem>
+            </Wrap>
+            {/* there is alot of repetative code here inside the Formik, this will be fixed later */}
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+            >
+              {() => {
+                return (
+                  <Form>
+                    <Wrap pt="8">
+                      <WrapItem alignItems="center" w="9em">
+                        <Text max> {t("name")}:</Text>
+                      </WrapItem>
+                      <WrapItem>
+                        <ChakraInput
+                          fontSize="md"
+                          size="lg"
+                          type="text"
+                          name="name"
+                          w={["80vw", "50vw", "30vw", "30vw"]}
+                          placeholder={t("addName")}
+                        />
+                      </WrapItem>
+                    </Wrap>
                     <Wrap>
-                      <WrapItem alignItems="center" w="15vw">
+                      <WrapItem alignItems="center" w="9em">
+                        <Text> {t("username")}:</Text>
+                      </WrapItem>
+                      <WrapItem>
+                        <ChakraInput
+                          fontSize="md"
+                          size="lg"
+                          type="text"
+                          name="username"
+                          w={["80vw", "50vw", "30vw", "30vw"]}
+                          placeholder={t("addUsername")}
+                        />
+                      </WrapItem>
+                    </Wrap>
+                    <Wrap>
+                      <WrapItem alignItems="center" w="9em">
+                        <Text> {t("email")}:</Text>
+                      </WrapItem>
+                      <WrapItem>
+                        <ChakraInput
+                          fontSize="md"
+                          size="lg"
+                          type="text"
+                          name="email"
+                          w={["80vw", "50vw", "30vw", "30vw"]}
+                          placeholder={t("addEmail")}
+                        />
+                      </WrapItem>
+                    </Wrap>
+                    <Wrap>
+                      <WrapItem alignItems="center" w="9em">
+                        <Text> {t("facebook")}:</Text>
+                      </WrapItem>
+                      <WrapItem>
+                        <ChakraInput
+                          fontSize="md"
+                          size="lg"
+                          type="text"
+                          name="facebook"
+                          w={["80vw", "50vw", "30vw", "30vw"]}
+                          placeholder={t("addFacebook")}
+                        />
+                      </WrapItem>
+                    </Wrap>
+                    <Wrap>
+                      <WrapItem alignItems="center" w="9em">
+                        <Text> {t("instagram")}:</Text>
+                      </WrapItem>
+                      <WrapItem>
+                        <ChakraInput
+                          fontSize="md"
+                          size="lg"
+                          type="text"
+                          name="instagram"
+                          w={["80vw", "50vw", "30vw", "30vw"]}
+                          placeholder={t("addInstagram")}
+                        />
+                      </WrapItem>
+                    </Wrap>
+                    <Wrap>
+                      <WrapItem alignItems="center" w="9em">
+                        <Text> {t("youtube")}</Text>
+                      </WrapItem>
+                      <WrapItem>
+                        <ChakraInput
+                          fontSize="md"
+                          size="lg"
+                          type="text"
+                          name="youtube"
+                          w={["80vw", "50vw", "30vw", "30vw"]}
+                          placeholder={t("addYoutube")}
+                        />
+                      </WrapItem>
+                    </Wrap>
+                    <Wrap>
+                      <WrapItem alignItems="center" w="9em">
+                        <Text> {t("linkedin")}:</Text>
+                      </WrapItem>
+                      <WrapItem>
+                        <ChakraInput
+                          fontSize="md"
+                          size="lg"
+                          type="text"
+                          name="linkedin"
+                          w={["80vw", "50vw", "30vw", "30vw"]}
+                          placeholder={t("addLinkedin")}
+                        />
+                      </WrapItem>
+                    </Wrap>
+                    <Wrap>
+                      <WrapItem alignItems="center" w="9em">
                         <Text>{t("bio")}:</Text>
                       </WrapItem>
                       <WrapItem>
                         <ChakraTextarea
                           placeholder={t("writeBio")}
                           name="bio"
-                          w="57vw"
+                          w={["80vw", "50vw", "50vw", "50vw"]}
                           h="10vw"
                         />
                       </WrapItem>
                     </Wrap>
                     <Wrap>
-                      <WrapItem alignItems="center" w="15vw">
+                      <WrapItem alignItems="center" w="9em">
                         <Text>{t("about")}:</Text>
                       </WrapItem>
                       <WrapItem>
                         <ChakraTextarea
                           placeholder={t("writeAbout")}
                           name="about"
-                          w="57vw"
+                          w={["80vw", "50vw", "50vw", "50vw"]}
                           h="10vw"
                         />
                       </WrapItem>
                     </Wrap>
                     <Wrap>
-                      <WrapItem alignItems="center" w="15vw">
+                      <WrapItem alignItems="center" w="9em">
                         <Text>{t("skillsAndHobbies")}:</Text>
                       </WrapItem>
                       <WrapItem>
                         <ChakraTextarea
                           placeholder={t("WriteSkillsAndHobbies")}
                           name="skillsAndHobbies"
-                          w="57vw"
+                          w={["80vw", "50vw", "50vw", "50vw"]}
                           h="10vw"
                         />
                       </WrapItem>
                     </Wrap>
                     <Wrap>
-                      <WrapItem alignItems="center" w="15vw">
+                      <WrapItem alignItems="center" w="9em">
                         <Text>{t("interests")}:</Text>
                       </WrapItem>
                       <WrapItem>
                         <ChakraInput
                           placeholder={t("writeInterests")}
+                          fontSize="md"
                           size="lg"
                           type="text"
                           name="intrests"
-                          w="57vw"
+                          w={["80vw", "50vw", "50vw", "50vw"]}
                         />
                       </WrapItem>
                     </Wrap>
-                  </Box>
-                </Form>
-              );
-            }}
-          </Formik>
+                  </Form>
+                );
+              }}
+            </Formik>
+          </Box>
           <Center>
             <Button
               mt="5"
