@@ -18,7 +18,7 @@ const AdvancedSearch = () => {
   const { locale } = useRouter();
 
   return (
-    <PopoverBody dir={locale === "ar" ? "ltr" : "rtl"}>
+    <PopoverBody dir={locale === "ar" ? "rtl" : "ltr"}>
       <FormControl id="country">
         <Text mt={4} fontWeight="bold" fontSize="xl">
           {t("search_fields")}
@@ -46,7 +46,7 @@ const AdvancedSearch = () => {
           <GridItem colSpan={1} h="10">
             <Text py={2}>{t("location")}</Text>
           </GridItem>
-          <GridItem colSpan={2} h="10">
+          <GridItem colSpan={2} h="10" dir="ltr">
             <Select placeholder={t("select")} maxW="400px">
               <option>{t("iraq")}</option>
               <option>{t("uae")}</option>
