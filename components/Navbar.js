@@ -6,16 +6,6 @@ import {
   Text,
   HStack,
   useToast,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuIcon,
-  MenuCommand,
-  MenuDivider,
   Avatar,
   Icon,
   Popover,
@@ -25,9 +15,7 @@ import {
   PopoverBody,
   PopoverFooter,
   PopoverArrow,
-  PopoverCloseButton,
   Stack,
-  Box,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { BiLogOut } from "react-icons/bi";
@@ -41,7 +29,6 @@ import { handleSignOut, resetStatus } from "../store/auth/authSlice";
 
 export default function Navbar() {
   const [display, setDisplay] = useState("none");
-  const [signedIn, setSignedIn] = useState(false);
   const dispatch = useDispatch();
   const signOut = useSelector((state) => state.auth.signOut);
   const toast = useToast();
@@ -67,10 +54,6 @@ export default function Navbar() {
       dispatch(resetStatus());
     }
   }, [signOut.status, toast, dispatch, signOut.errorMessage]);
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const authenticate = () => {
-    setSignedIn(!signedIn);
-  };
   function signOutHandler() {
     dispatch(handleSignOut(auth.currentUser?.uid));
   }
