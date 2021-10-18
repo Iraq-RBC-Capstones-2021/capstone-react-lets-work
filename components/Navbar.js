@@ -144,7 +144,6 @@ export default function Navbar() {
                 ml={{ base: "10px", md: "0px" }}
               >
                 <PopoverArrow />
-                <PopoverCloseButton />
                 <PopoverHeader
                   cursor="pointer"
                   _hover={{ bg: "gray.100" }}
