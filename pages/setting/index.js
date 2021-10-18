@@ -108,7 +108,13 @@ export default function Index() {
                           <Text> {t("name")}:</Text>
                         </WrapItem>
                         <WrapItem>
-                          <ChakraInput size="lg" type="text" name="name" />
+                          <ChakraInput
+                            fontSize="md"
+                            size="lg"
+                            type="text"
+                            name="name"
+                            placeholder={t("addName")}
+                          />
                         </WrapItem>
                       </Wrap>
                       <Wrap>
@@ -116,7 +122,13 @@ export default function Index() {
                           <Text> {t("username")}:</Text>
                         </WrapItem>
                         <WrapItem>
-                          <ChakraInput size="lg" type="text" name="username" />
+                          <ChakraInput
+                            fontSize="md"
+                            size="lg"
+                            type="text"
+                            name="username"
+                            placeholder={t("addUsername")}
+                          />
                         </WrapItem>
                       </Wrap>
                       <Wrap>
@@ -124,7 +136,13 @@ export default function Index() {
                           <Text> {t("email")}:</Text>
                         </WrapItem>
                         <WrapItem>
-                          <ChakraInput size="lg" type="text" name="email" />
+                          <ChakraInput
+                            fontSize="md"
+                            size="lg"
+                            type="text"
+                            name="email"
+                            placeholder={t("addEmail")}
+                          />
                         </WrapItem>
                       </Wrap>
                       <Wrap>
@@ -132,7 +150,13 @@ export default function Index() {
                           <Text> {t("facebook")}:</Text>
                         </WrapItem>
                         <WrapItem>
-                          <ChakraInput size="lg" type="text" name="facebook" />
+                          <ChakraInput
+                            fontSize="md"
+                            size="lg"
+                            type="text"
+                            name="facebook"
+                            placeholder={t("addFacebook")}
+                          />
                         </WrapItem>
                       </Wrap>
                       <Wrap>
@@ -140,7 +164,13 @@ export default function Index() {
                           <Text> {t("instagram")}:</Text>
                         </WrapItem>
                         <WrapItem>
-                          <ChakraInput size="lg" type="text" name="instagram" />
+                          <ChakraInput
+                            fontSize="md"
+                            size="lg"
+                            type="text"
+                            name="instagram"
+                            placeholder={t("addInstagram")}
+                          />
                         </WrapItem>
                       </Wrap>
                       <Wrap>
@@ -148,7 +178,13 @@ export default function Index() {
                           <Text> {t("youtube")}</Text>
                         </WrapItem>
                         <WrapItem>
-                          <ChakraInput size="lg" type="text" name="youtube" />
+                          <ChakraInput
+                            fontSize="md"
+                            size="lg"
+                            type="text"
+                            name="youtube"
+                            placeholder={t("addYoutube")}
+                          />
                         </WrapItem>
                       </Wrap>
                       <Wrap>
@@ -156,7 +192,13 @@ export default function Index() {
                           <Text> {t("linkedin")}:</Text>
                         </WrapItem>
                         <WrapItem>
-                          <ChakraInput size="lg" type="text" name="linkedin" />
+                          <ChakraInput
+                            fontSize="md"
+                            size="lg"
+                            type="text"
+                            name="linkedin"
+                            placeholder={t("addLinkedin")}
+                          />
                         </WrapItem>
                       </Wrap>
                     </Box>
