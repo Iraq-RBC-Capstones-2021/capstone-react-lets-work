@@ -1,3 +1,4 @@
+import Profile from "../../components/Profile/Profile";
 import IdeaCard from "../../components/Account/IdeaCard";
 import { Box, Stack, SimpleGrid, Center, Skeleton } from "@chakra-ui/react";
 import { auth } from "../../firebase/firebase";
@@ -26,6 +27,7 @@ export default function Account() {
     <Skeleton h="100%" size="100%" />
   ) : (
     <div>
+      <Profile />
       <Stack
         bg="secondary.main"
         py={{ base: 8, md: 16 }}
