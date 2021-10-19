@@ -12,18 +12,21 @@ import {
 } from "@chakra-ui/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import ChakraInput from "../../components/Shared/ChakraInput";
-import { Formik, Form } from "formik";
+import { Formik, Form, ErrorMessage, Field } from "formik";
+import TextError from "../../components/Shared/TextError";
 import { useRouter as router } from "next/dist/client/router";
 import { useTranslation } from "next-i18next";
 import * as Yup from "yup";
 import ChakraTextarea from "../../components/Shared/ChakraTextarea";
 import { useRef, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 export default function Index() {
   const [imageFileState, setImageFileState] = useState({
     file: null,
     imageUploadError: null,
   });
+  const [interestsArray, setInterestsArray] = useState(["lmao"]);
   const uploadInput = useRef();
   const { t } = useTranslation("setting");
   const initialValues = {
@@ -56,7 +59,7 @@ export default function Index() {
     bio: Yup.string().min(5, "Too Short!").max(100, "Too Long!"),
     about: Yup.string().min(5, "Too Short!").max(300, "Too Long!"),
     skillsAndHobbies: Yup.string().min(2, "Too Short!").max(100, "Too Long!"),
-    intrests: Yup.string().min(2, "Too Short!").max(100, "Too Long!"),
+    interests: Yup.string().min(5, "Too Short!").max(60, "Too Long!"),
   });
 
   function openFileUpload() {
@@ -89,7 +92,11 @@ export default function Index() {
     };
     fileReader.readAsDataURL(imageFile);
   };
-
+  const handleInterestArray = (e) => {
+    if (e.keyCode === 13) {
+      setInterestsArray((prev) => [...prev, e.target.value]);
+    }
+  };
   return (
     <Center p="6" dir={router().locale === "ar" ? "rtl" : "ltr"}>
       <Stack>
@@ -289,14 +296,41 @@ export default function Index() {
                         <Text>{t("interests")}:</Text>
                       </WrapItem>
                       <WrapItem>
-                        <ChakraInput
-                          placeholder={t("writeInterests")}
-                          fontSize="md"
-                          size="lg"
-                          type="text"
-                          name="intrests"
+                        <Box
                           w={["80vw", "50vw", "50vw", "50vw"]}
-                        />
+                          minH="10vw"
+                          borderWidth="1px"
+                          rounded="7"
+                        >
+                          <Wrap>
+                            {interestsArray.map((interest) => (
+                              <WrapItem key={uuidv4()}>
+                                <Button
+                                  type="button"
+                                  size="sm"
+                                  bgColor="blue.100"
+                                  rounded="100"
+                                  m="1"
+                                >
+                                  {interest}
+                                </Button>
+                              </WrapItem>
+                            ))}
+                            <WrapItem>
+                              <Field
+                                as={Input}
+                                placeholder={t("writeInterests")}
+                                name="interests"
+                                variant="ghost"
+                                onKeyDown={handleInterestArray}
+                              />
+                            </WrapItem>
+                          </Wrap>{" "}
+                          <ErrorMessage
+                            name="interests"
+                            component={TextError}
+                          />
+                        </Box>
                       </WrapItem>
                     </Wrap>
                   </Form>
