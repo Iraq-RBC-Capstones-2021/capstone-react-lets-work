@@ -17,9 +17,13 @@ import { useRouter as router } from "next/dist/client/router";
 import { useTranslation } from "next-i18next";
 import * as Yup from "yup";
 import ChakraTextarea from "../../components/Shared/ChakraTextarea";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export default function Index() {
+  const [imageFileState, setImageFileState] = useState({
+    file: null,
+    imageUploadError: null,
+  });
   const uploadInput = useRef();
   const { t } = useTranslation("setting");
   const initialValues = {
@@ -58,6 +62,34 @@ export default function Index() {
   function openFileUpload() {
     uploadInput.current.click();
   }
+  const onChangeFile = (event) => {
+    const imageFile = event.target.files[0];
+
+    if (!imageFile) {
+      return;
+    }
+
+    if (!imageFile.name.match(/\.(jpg|jpeg|png)$/)) {
+      setImageFileState({
+        imageUploadError: "Only jpg/jpeg/png extentions are allowed.",
+      });
+      return;
+    }
+    const fileReader = new FileReader();
+    fileReader.onload = (image) => {
+      const img = new Image();
+      img.onload = () => {
+        setImageFileState({ file: imageFile, imageUploadError: undefined });
+      };
+      img.onerror = () => {
+        setImageFileState({ imageUploadError: "Invalid image content." });
+        return false;
+      };
+      img.src = image.target.result;
+    };
+    fileReader.readAsDataURL(imageFile);
+  };
+
   return (
     <Center p="6" dir={router().locale === "ar" ? "rtl" : "ltr"}>
       <Stack>
@@ -70,7 +102,7 @@ export default function Index() {
           overflow="hidden"
         >
           <Box w="70vw">
-            <Wrap>
+            <Wrap align="center">
               <WrapItem>
                 <Avatar
                   size="2xl"
@@ -78,12 +110,13 @@ export default function Index() {
                   src="https://bit.ly/sage-adebayo"
                 />
               </WrapItem>
-              <WrapItem alignItems="center">
+              <WrapItem>
                 <Input
                   hidden
                   ref={uploadInput}
                   type="file"
                   accept="image/png, image/jpeg"
+                  onChange={onChangeFile}
                 />
                 <Button
                   rounded="5px"
@@ -94,7 +127,10 @@ export default function Index() {
                 >
                   {t("uploadNewPhoto")}
                 </Button>
-              </WrapItem>
+              </WrapItem>{" "}
+              {imageFileState.file === undefined ? (
+                <Text color="red.400">{imageFileState.imageUploadError}</Text>
+              ) : null}
             </Wrap>
             {/* there is alot of repetative code here inside the Formik, this will be fixed later */}
             <Formik
@@ -106,7 +142,7 @@ export default function Index() {
                   <Form>
                     <Wrap pt="8">
                       <WrapItem alignItems="center" w="9em">
-                        <Text max> {t("name")}:</Text>
+                        <Text> {t("name")}:</Text>
                       </WrapItem>
                       <WrapItem>
                         <ChakraInput
