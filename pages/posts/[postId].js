@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { BsHeartFill, BsHeart } from "react-icons/bs";
-import AvatarCollection from "../../../components/AvatarCollection";
+import AvatarCollection from "../../components/AvatarCollection";
 import {
   Box,
   Center,
