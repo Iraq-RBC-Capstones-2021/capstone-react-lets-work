@@ -1,3 +1,4 @@
+import { useTranslation } from "next-i18next";
 import {
   Box,
   Heading,
@@ -8,43 +9,63 @@ import {
   useToast,
   VStack,
   IconButton,
+  Text,
+  Wrap,
+  WrapItem,
 } from "@chakra-ui/react";
 import { FiSend, FiTrash2, FiImage, FiLink2 } from "react-icons/fi";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-
 import React from "react";
 import ChakraInput from "../components/Shared/ChakraInput";
+import { useRef, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 export default function AddProject() {
-  const toast = useToast();
-  const toastIdRef = React.useRef();
-  const tags = [
-    "Dev",
-    "Design",
-    "Javascript",
-    "C++",
-    "Design",
-    "Graphic",
-    "Java",
-  ];
-
-  function close() {
-    if (toastIdRef.current) {
-      toast.close(toastIdRef.current);
+  const [tagsArray, setTagsArray] = useState(["design"]);
+  const handleTagsArray = (e) => {
+    if (e.keyCode === 13) {
+      setTagsArray((prev) => [...prev, e.target.value]);
     }
-  }
+  };
+  const [imageFileState, setImageFileState] = useState({
+    file: null,
+    imageUploadError: null,
+  });
+  const uploadInput = useRef();
+  const { t } = useTranslation("setting");
 
-  function closeAll() {
-    // you may optionally pass an object of positions to exclusively close
-    // keeping other positions opened
-    // e.g. `{ positions: ['bottom'] }`
-    toast.closeAll();
+  function openFileUpload() {
+    uploadInput.current.click();
   }
+  const onChangeFile = (event) => {
+    const imageFile = event.target.files[0];
 
-  function addToast() {
-    toastIdRef.current = toast({ description: "tag added" });
-  }
+    if (!imageFile) {
+      return;
+    }
+
+    if (!imageFile.name.match(/\.(jpg|jpeg|png)$/)) {
+      setImageFileState({
+        imageUploadError: "Only jpg/jpeg/png extentions are allowed.",
+      });
+      return;
+    }
+    const fileReader = new FileReader();
+    fileReader.onload = (image) => {
+      const img = new Image();
+      img.onload = () => {
+        setImageFileState({ file: imageFile, imageUploadError: undefined });
+      };
+      img.onerror = () => {
+        setImageFileState({ imageUploadError: "Invalid image content." });
+        return false;
+      };
+      img.src = image.target.result;
+    };
+    fileReader.readAsDataURL(imageFile);
+  };
+
   return (
     <Formik
       initialValues={{ projectName: "", description: "", tags: "" }}
@@ -78,7 +99,7 @@ export default function AddProject() {
             borderRadius="xl"
             p={["5", "6", "8"]}
             h={{ base: "100%", md: "auto" }}
-            w={{ md: "auto", base: "100%" }}
+            w={{ md: "40rem", base: "auto" }}
           >
             <Stack spacing={3}>
               <VStack
@@ -93,12 +114,6 @@ export default function AddProject() {
                 >
                   New Project/idea
                 </Heading>
-                {/* <Input
-                  placeholder="Project name"
-                  variant="flushed"
-                  color="blue.500"
-                  fontSize={{ base: "18px", md: "15px" }}
-                /> */}
                 <ChakraInput
                   placeholder="Project name"
                   variant="flushed"
@@ -107,11 +122,6 @@ export default function AddProject() {
                   name="projectName"
                   w="100%"
                 />
-                {/* <Input
-                  placeholder="Description"
-                  variant="flushed"
-                  fontSize={{ base: "18px", md: "15px" }}
-                /> */}
                 <ChakraInput
                   placeholder="Description"
                   variant="flushed"
@@ -128,35 +138,58 @@ export default function AddProject() {
                 >
                   Tags
                 </Heading>
-                <Input
-                  placeholder="Write your categories here.."
-                  variant="flushed"
-                  fontSize={{ base: "18px", md: "15px" }}
-                />
-
                 <HStack wrap="wrap" spacing={3} flexShrink={0}>
-                  {tags.map((tag) => {
-                    return (
-                      <Button
-                        fontSize={{ base: "15px", md: "16px" }}
-                        key={tag}
-                        onClick={addToast}
-                        type="button"
-                        variant="secondary.main"
-                      >
-                        {tag}
-                      </Button>
-                    );
-                  })}
+                  <Box
+                    w={["18rem", "35rem"]}
+                    minH="4vw"
+                    borderWidth="1px"
+                    rounded="7"
+                    p="2"
+                  >
+                    <Wrap>
+                      {tagsArray.map((tag) => (
+                        <WrapItem key={uuidv4()}>
+                          <Button
+                            type="button"
+                            size="sm"
+                            bgColor="blue.100"
+                            rounded="100"
+                            m="1"
+                          >
+                            {tag}
+                          </Button>
+                        </WrapItem>
+                      ))}
+                      <WrapItem>
+                        <Field
+                          as={Input}
+                          placeholder={t("Write Tags")}
+                          name="interests"
+                          variant="ghost"
+                          onKeyDown={handleTagsArray}
+                        />
+                      </WrapItem>
+                    </Wrap>
+                  </Box>
                 </HStack>
               </VStack>
 
               <Stack isInline spacing={2} wrap="wrap">
-                <IconButton icon={<FiImage />} />
-                <IconButton icon={<FiLink2 />} />
-                <IconButton icon={<FiTrash2 />} />
+                <Input
+                  hidden
+                  ref={uploadInput}
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  onChange={onChangeFile}
+                />
+                <IconButton icon={<FiImage />} onClick={openFileUpload}>
+                  {t("uploadNewPhoto")}
+                </IconButton>
                 <IconButton icon={<FiSend />} type="submit" />
               </Stack>
+              {imageFileState.file === undefined ? (
+                <Text color="red.400">{imageFileState.imageUploadError}</Text>
+              ) : null}
             </Stack>
           </Box>
         </Stack>
