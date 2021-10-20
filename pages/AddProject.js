@@ -6,15 +6,14 @@ import {
   HStack,
   Stack,
   Button,
-  useToast,
   VStack,
   IconButton,
   Text,
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
-import { FiSend, FiTrash2, FiImage, FiLink2 } from "react-icons/fi";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import { FiSend, FiImage } from "react-icons/fi";
+import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
 import React from "react";
 import ChakraInput from "../components/Shared/ChakraInput";
