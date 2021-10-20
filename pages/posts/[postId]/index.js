@@ -18,7 +18,7 @@ import { useState } from "react";
 import { useRouter as router } from "next/dist/client/router";
 import { useTranslation } from "next-i18next";
 import PostOptionsMenu from "../../../components/PostOptionsMenu";
-
+//test
 export default function Index() {
   const { t } = useTranslation("postId");
   const [joinBtn, setJoinBtn] = useState(false);
