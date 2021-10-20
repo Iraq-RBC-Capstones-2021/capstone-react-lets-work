@@ -85,8 +85,6 @@ function NotificationsList() {
   return (
     <Menu>
       <MenuButton
-        mt="2"
-        ml="2"
         aria-label="Close menu"
         size="lg"
         icon={<BellIcon />}

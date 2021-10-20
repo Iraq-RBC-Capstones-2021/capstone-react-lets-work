@@ -1,22 +1,70 @@
-import { Box, Flex, Button, Text, Stack, Link, HStack } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Button,
+  Text,
+  Stack,
+  Link,
+  HStack,
+  useToast,
+  Skeleton,
+} from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import NextLink from "next/link";
 import * as Yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
 import { BiEnvelope, BiLock } from "react-icons/bi";
 import { FaRegUser } from "react-icons/fa";
 import Image from "next/image";
 import ChakraInput from "../Shared/ChakraInput";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/dist/client/router";
+import { handleSignUp, resetStatus } from "../../store/auth/authSlice";
+import { auth } from "../../firebase/firebase";
+import EmailVerification from "./EmailVerification";
+import { useEffect } from "react";
 function SignUp() {
+  const signUp = useSelector((state) => state.auth.signUp);
+  const toast = useToast();
   const { t } = useTranslation("form");
-  const { locale } = useRouter();
+  const router = useRouter();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (signUp.status === "error") {
+      toast({
+        title: signUp.errorMessage,
+        position: "top",
+        duration: 3000,
+        status: "error",
+        variant: "subtle",
+      });
+      dispatch(resetStatus());
+    }
+    if (signUp.status === "success") {
+      toast({
+        title: "Successfully Signed Up",
+        position: "top",
+        duration: 3000,
+        status: "success",
+        variant: "subtle",
+      });
+      dispatch(resetStatus());
+    }
+    //eslint-disable-next-line
+  }, [signUp.status]);
+
+  useEffect(() => {
+    if (auth.currentUser?.emailVerified) {
+      router.push("/");
+    }
+  }, [signUp.status, router]);
   const initialValues = {
     email: "",
     username: "",
     password: "",
     passConfirm: "",
   };
+
   const validationSchema = Yup.object({
     username: Yup.string()
       .min(2, "Too Short!")
@@ -34,18 +82,26 @@ function SignUp() {
       .oneOf([Yup.ref("password")], "Passwords must match")
       .required("Please confirm your password"),
   });
-  const onSubmit = (value, onSubmitProps) => {
+  const onSubmit = async (value, onSubmitProps) => {
     const userCredentials = {
       email: value.email.trim(),
       username: value.username.trim(),
       password: value.password.trim(),
     };
-    onSubmitProps.resetForm();
-    //TODO: send a sign up request with the userCredentials.
+    dispatch(
+      handleSignUp({
+        username: userCredentials.username,
+        email: userCredentials.email,
+        password: userCredentials.password,
+      })
+    );
+    // onSubmitProps.resetForm();
   };
-  return (
+  return auth.currentUser && auth.currentUser?.emailVerified ? (
+    <Skeleton h="100vh" size="100vh" />
+  ) : (
     <Flex
-      dir={locale === "ar" ? "rtl" : "ltr"}
+      dir={router.locale === "ar" ? "rtl" : "ltr"}
       width="full"
       h={{ md: "94vh", base: "92vh" }}
       justify="space-around"
@@ -72,93 +128,105 @@ function SignUp() {
           height="456"
         />
       </Flex>
-      <Flex
-        justify="space-evenly"
-        direction="column"
-        bg="secondary.main"
-        flexBasis={{ base: "100%", lg: "50%" }}
-        align="center"
-      >
-        <Stack align="center">
-          <Text fontWeight="semibold" fontSize="6xl">
-            {t("signUp")}
-          </Text>
-          <Text fontSize="md">{t("signUp_description")}</Text>
-        </Stack>
-        <Box>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={onSubmit}
-          >
-            {(Formik) => {
-              return (
-                <Form>
-                  <Stack align="center" justify="center" spacing="12">
-                    <Stack align="center" justify="center" spacing="4">
-                      <ChakraInput
-                        placeholder={t("username")}
+      {auth.currentUser && !auth.currentUser.emailVerified ? (
+        <EmailVerification />
+      ) : (
+        <Flex
+          justify="space-evenly"
+          direction="column"
+          bg="secondary.main"
+          flexBasis={{ base: "100%", lg: "50%" }}
+          align="center"
+        >
+          <Stack align="center">
+            <Text fontWeight="semibold" fontSize="6xl">
+              {t("signUp")}
+            </Text>
+            <Text fontSize="md">{t("signUp_description")}</Text>
+          </Stack>
+          <Box>
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={onSubmit}
+            >
+              {(Formik) => {
+                return (
+                  <Form>
+                    <Stack align="center" justify="center" spacing="12">
+                      <Stack align="center" justify="center" spacing="4">
+                        <ChakraInput
+                          placeholder={t("username")}
+                          w={{ base: "18.7rem", md: "21.8rem" }}
+                          size="lg"
+                          type="text"
+                          leftIcon={<FaRegUser size="20" />}
+                          name="username"
+                          isLoading={signUp.status === "loading"}
+                        />
+                        <Stack>
+                          <ChakraInput
+                            placeholder={t("email")}
+                            w={{ base: "18.7rem", md: "21.8rem" }}
+                            size="lg"
+                            type="email"
+                            name="email"
+                            leftIcon={<BiEnvelope size="20" />}
+                            isLoading={signUp.status === "loading"}
+                          />{" "}
+                        </Stack>
+                        <ChakraInput
+                          placeholder={t("password")}
+                          w={{ base: "18.7rem", md: "21.8rem" }}
+                          size="lg"
+                          boxShadow="sm"
+                          type="password"
+                          name="password"
+                          leftIcon={<BiLock size="20" />}
+                          isLoading={signUp.status === "loading"}
+                        />
+                        <ChakraInput
+                          placeholder={t("repeat_password")}
+                          w={{ base: "18.7rem", md: "21.8rem" }}
+                          size="lg"
+                          type="password"
+                          name="passConfirm"
+                          leftIcon={<BiLock size="20" />}
+                          isLoading={signUp.status === "loading"}
+                        />
+                      </Stack>
+
+                      <Button
+                        isLoading={signUp.status === "loading"}
+                        isDisabled={!Formik.isValid}
                         w={{ base: "18.7rem", md: "21.8rem" }}
                         size="lg"
-                        type="text"
-                        leftIcon={<FaRegUser size="20" />}
-                        name="username"
-                      />
-                      <ChakraInput
-                        placeholder={t("email")}
-                        w={{ base: "18.7rem", md: "21.8rem" }}
-                        size="lg"
-                        type="email"
-                        name="email"
-                        leftIcon={<BiEnvelope size="20" />}
-                      />
-                      <ChakraInput
-                        placeholder={t("password")}
-                        w={{ base: "18.7rem", md: "21.8rem" }}
-                        size="lg"
-                        boxShadow="sm"
-                        type="password"
-                        name="password"
-                        leftIcon={<BiLock size="20" />}
-                      />
-                      <ChakraInput
-                        placeholder={t("repeat_password")}
-                        w={{ base: "18.7rem", md: "21.8rem" }}
-                        size="lg"
-                        type="password"
-                        name="passConfirm"
-                        leftIcon={<BiLock size="20" />}
-                      />
+                        variant="primary"
+                        fontWeight="black"
+                        type="submit"
+                        _hover={{ _disabled: {} }}
+                        _disabled={{ cursor: "auto", bg: "#919bff" }}
+                      >
+                        {t("signUp")}
+                      </Button>
                     </Stack>
-                    <Button
-                      isDisabled={!Formik.isValid}
-                      w={{ base: "18.7rem", md: "21.8rem" }}
-                      size="lg"
-                      variant="primary"
-                      fontWeight="black"
-                      type="submit"
-                      _hover={{ _disabled: {} }}
-                      _disabled={{ cursor: "auto", bg: "#919bff" }}
-                    >
-                      {t("signUp")}
-                    </Button>
-                  </Stack>
-                </Form>
-              );
-            }}
-          </Formik>
-        </Box>
-        <HStack align="center" justify="center" wrap="wrap">
-          <Text fontSize="20" color="#121212" fontWeight="semibold">
-            {t("already_have_account")}
-          </Text>
-          <Text fontWeight="semibold" fontSize="20" color="primary.main">
-            <Link as={NextLink} href="/signin" color="primary.main">
-              {t("login_here")}
-            </Link>{" "}
-          </Text>
-        </HStack>
-      </Flex>
+                  </Form>
+                );
+              }}
+            </Formik>
+          </Box>
+          <HStack align="center" justify="center" wrap="wrap">
+            <Text fontSize="20" color="#121212" fontWeight="semibold">
+              {t("already_have_account")}
+            </Text>
+            <Text fontWeight="semibold" fontSize="20" color="primary.main">
+              <Link as={NextLink} href="/signin" color="primary.main">
+                {t("login_here")}
+              </Link>{" "}
+            </Text>
+          </HStack>
+        </Flex>
+      )}
     </Flex>
   );
 }
