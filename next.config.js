@@ -2,5 +2,5 @@ const { i18n } = require("./next-i18next.config");
 module.exports = {
   reactStrictMode: true,
   i18n,
-  target: "experimental-serverless-trace",
+  target: "serverless",
 };
