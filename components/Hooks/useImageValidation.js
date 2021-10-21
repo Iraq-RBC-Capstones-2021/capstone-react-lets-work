@@ -44,6 +44,7 @@ const useImageValidation = (originalUpload) => {
       img.src = image.target.result;
     };
     fileReader.readAsDataURL(originalUpload);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [originalUpload]);
 
   return imageFileState;
