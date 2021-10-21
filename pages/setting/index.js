@@ -22,6 +22,7 @@ import * as Yup from "yup";
 import ChakraTextarea from "../../components/Shared/ChakraTextarea";
 import { useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import SettingInputMap from "../../components/Setting/SettingInputMap";
 
 export default function Index() {
   const [imageFileState, setImageFileState] = useState({
@@ -105,6 +106,41 @@ export default function Index() {
   const deleteItemFromInterestArray = (id) => {
     setInterestsArray((prev) => prev.filter((interest) => interest.id !== id));
   };
+
+  //Below function will create all the input and textareas
+  //by iterating the inputs key located in public/locales/en/setting.json
+  //
+  const mapInputsArray = (inputListObject) => {
+    inputListObject = Object.entries(inputListObject);
+    let inputList = [];
+    for (let input = 0; input < 20; input = input + 2) {
+      if (input > 13) {
+        inputList.push(
+          <SettingInputMap
+            key={inputListObject[input][0]}
+            isTextarea={true}
+            name={inputListObject[input][0]}
+            label={t(inputListObject[input][1])}
+            placeholder={t(inputListObject[input + 1][1])}
+          />
+        );
+      } else {
+        inputList.push(
+          <SettingInputMap
+            key={inputListObject[input][0]}
+            isTextarea={false}
+            name={inputListObject[input][0]}
+            label={t(inputListObject[input][1])}
+            placeholder={t(inputListObject[input + 1][1])}
+          />
+        );
+      }
+    }
+    return inputList;
+  };
+
+  const inputList = mapInputsArray(t("inputs", { returnObjects: true }));
+
   return (
     <Center p="6" dir={router().locale === "ar" ? "rtl" : "ltr"}>
       <Stack>
@@ -117,7 +153,7 @@ export default function Index() {
           overflow="hidden"
         >
           <Box w="70vw">
-            <Wrap align="center">
+            <Wrap align="center" pb="8">
               <WrapItem>
                 <Avatar
                   size="2xl"
@@ -147,7 +183,6 @@ export default function Index() {
                 <Text color="red.400">{imageFileState.imageUploadError}</Text>
               ) : null}
             </Wrap>
-            {/* there is alot of repetative code here inside the Formik, this will be fixed later */}
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
@@ -155,153 +190,10 @@ export default function Index() {
               {() => {
                 return (
                   <Form>
-                    <Wrap pt="8">
-                      <WrapItem alignItems="center" w="9em">
-                        <Text> {t("name")}:</Text>
-                      </WrapItem>
-                      <WrapItem>
-                        <ChakraInput
-                          fontSize="md"
-                          size="lg"
-                          type="text"
-                          name="name"
-                          w={["80vw", "50vw", "30vw", "30vw"]}
-                          placeholder={t("addName")}
-                        />
-                      </WrapItem>
-                    </Wrap>
+                    {inputList}
                     <Wrap>
                       <WrapItem alignItems="center" w="9em">
-                        <Text> {t("username")}:</Text>
-                      </WrapItem>
-                      <WrapItem>
-                        <ChakraInput
-                          fontSize="md"
-                          size="lg"
-                          type="text"
-                          name="username"
-                          w={["80vw", "50vw", "30vw", "30vw"]}
-                          placeholder={t("addUsername")}
-                        />
-                      </WrapItem>
-                    </Wrap>
-                    <Wrap>
-                      <WrapItem alignItems="center" w="9em">
-                        <Text> {t("email")}:</Text>
-                      </WrapItem>
-                      <WrapItem>
-                        <ChakraInput
-                          fontSize="md"
-                          size="lg"
-                          type="text"
-                          name="email"
-                          w={["80vw", "50vw", "30vw", "30vw"]}
-                          placeholder={t("addEmail")}
-                        />
-                      </WrapItem>
-                    </Wrap>
-                    <Wrap>
-                      <WrapItem alignItems="center" w="9em">
-                        <Text> {t("facebook")}:</Text>
-                      </WrapItem>
-                      <WrapItem>
-                        <ChakraInput
-                          fontSize="md"
-                          size="lg"
-                          type="text"
-                          name="facebook"
-                          w={["80vw", "50vw", "30vw", "30vw"]}
-                          placeholder={t("addFacebook")}
-                        />
-                      </WrapItem>
-                    </Wrap>
-                    <Wrap>
-                      <WrapItem alignItems="center" w="9em">
-                        <Text> {t("instagram")}:</Text>
-                      </WrapItem>
-                      <WrapItem>
-                        <ChakraInput
-                          fontSize="md"
-                          size="lg"
-                          type="text"
-                          name="instagram"
-                          w={["80vw", "50vw", "30vw", "30vw"]}
-                          placeholder={t("addInstagram")}
-                        />
-                      </WrapItem>
-                    </Wrap>
-                    <Wrap>
-                      <WrapItem alignItems="center" w="9em">
-                        <Text> {t("youtube")}</Text>
-                      </WrapItem>
-                      <WrapItem>
-                        <ChakraInput
-                          fontSize="md"
-                          size="lg"
-                          type="text"
-                          name="youtube"
-                          w={["80vw", "50vw", "30vw", "30vw"]}
-                          placeholder={t("addYoutube")}
-                        />
-                      </WrapItem>
-                    </Wrap>
-                    <Wrap>
-                      <WrapItem alignItems="center" w="9em">
-                        <Text> {t("linkedin")}:</Text>
-                      </WrapItem>
-                      <WrapItem>
-                        <ChakraInput
-                          fontSize="md"
-                          size="lg"
-                          type="text"
-                          name="linkedin"
-                          w={["80vw", "50vw", "30vw", "30vw"]}
-                          placeholder={t("addLinkedin")}
-                        />
-                      </WrapItem>
-                    </Wrap>
-                    <Wrap>
-                      <WrapItem alignItems="center" w="9em">
-                        <Text>{t("bio")}:</Text>
-                      </WrapItem>
-                      <WrapItem>
-                        <ChakraTextarea
-                          placeholder={t("writeBio")}
-                          name="bio"
-                          w={["80vw", "50vw", "50vw", "50vw"]}
-                          h="10vw"
-                        />
-                      </WrapItem>
-                    </Wrap>
-                    <Wrap>
-                      <WrapItem alignItems="center" w="9em">
-                        <Text>{t("about")}:</Text>
-                      </WrapItem>
-                      <WrapItem>
-                        <ChakraTextarea
-                          placeholder={t("writeAbout")}
-                          name="about"
-                          w={["80vw", "50vw", "50vw", "50vw"]}
-                          h="10vw"
-                        />
-                      </WrapItem>
-                    </Wrap>
-                    <Wrap>
-                      <WrapItem alignItems="center" w="9em">
-                        <Text>{t("skillsAndHobbies")}:</Text>
-                      </WrapItem>
-                      <WrapItem>
-                        <ChakraTextarea
-                          placeholder={t("WriteSkillsAndHobbies")}
-                          name="skillsAndHobbies"
-                          w={["80vw", "50vw", "50vw", "50vw"]}
-                          h="10vw"
-                        />
-                      </WrapItem>
-                    </Wrap>
-                    <Wrap>
-                      <WrapItem alignItems="center" w="9em">
-                        <Text>{t("interests")}:</Text>
+                        <Text>{t("inputs.interests")}:</Text>
                       </WrapItem>
                       <WrapItem>
                         <Box
@@ -313,18 +205,17 @@ export default function Index() {
                           <Wrap>
                             {interestsArray.map((interest) => (
                               <WrapItem key={interest.id}>
-                                <Button
-                                  pr="0"
-                                  type="button"
+                                <Box
+                                  m="1"
                                   size="sm"
                                   color="blue.400"
                                   bgColor="blue.100"
                                   rounded="100"
-                                  m="1"
+                                  pl="2"
                                 >
                                   {interest.value}
-                                  {"  "}
                                   <IconButton
+                                    ml="2"
                                     size="sm"
                                     rounded="100"
                                     variant="ghost"
@@ -333,13 +224,13 @@ export default function Index() {
                                       deleteItemFromInterestArray(interest.id)
                                     }
                                   />
-                                </Button>
+                                </Box>
                               </WrapItem>
                             ))}
                             <WrapItem>
                               <Field
                                 as={Input}
-                                placeholder={t("writeInterests")}
+                                placeholder={t("inputs.writeInterests")}
                                 name="interests"
                                 variant="ghost"
                                 onKeyDown={addItemToInterestArray}
@@ -354,23 +245,24 @@ export default function Index() {
                         </Box>
                       </WrapItem>
                     </Wrap>
+                    <Center>
+                      <Button
+                        mt="5"
+                        w="20vw"
+                        rounded="5px"
+                        backgroundColor="lightPurple"
+                        color="white"
+                        _hover={{ bg: "darkPurple" }}
+                        type="submit"
+                      >
+                        {t("save")}
+                      </Button>
+                    </Center>
                   </Form>
                 );
               }}
             </Formik>
           </Box>
-          <Center>
-            <Button
-              mt="5"
-              w="20vw"
-              rounded="5px"
-              backgroundColor="lightPurple"
-              color="white"
-              _hover={{ bg: "darkPurple" }}
-            >
-              {t("save")}
-            </Button>
-          </Center>
         </Box>
       </Stack>
     </Center>
