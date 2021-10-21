@@ -13,25 +13,23 @@ import {
 } from "@chakra-ui/react";
 import { IoMdClose } from "react-icons/io";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import ChakraInput from "../../components/Shared/ChakraInput";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import TextError from "../../components/Shared/TextError";
 import { useRouter as router } from "next/dist/client/router";
 import { useTranslation } from "next-i18next";
 import * as Yup from "yup";
-import ChakraTextarea from "../../components/Shared/ChakraTextarea";
 import { useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import SettingInputMap from "../../components/Setting/SettingInputMap";
+import { useImageValidation } from "../../components/Hooks/useImageValidation";
 
 export default function Index() {
-  const [imageFileState, setImageFileState] = useState({
-    file: null,
-    imageUploadError: null,
-  });
   const [interestsArray, setInterestsArray] = useState([]);
   const uploadInput = useRef();
   const { t } = useTranslation("setting");
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const validatedImage = useImageValidation(uploadedImage);
+
   const initialValues = {
     name: "",
     username: "",
@@ -68,33 +66,11 @@ export default function Index() {
   function openFileUpload() {
     uploadInput.current.click();
   }
+
   const onChangeFile = (event) => {
-    const imageFile = event.target.files[0];
-
-    if (!imageFile) {
-      return;
-    }
-
-    if (!imageFile.name.match(/\.(jpg|jpeg|png)$/)) {
-      setImageFileState({
-        imageUploadError: "Only jpg/jpeg/png extentions are allowed.",
-      });
-      return;
-    }
-    const fileReader = new FileReader();
-    fileReader.onload = (image) => {
-      const img = new Image();
-      img.onload = () => {
-        setImageFileState({ file: imageFile, imageUploadError: undefined });
-      };
-      img.onerror = () => {
-        setImageFileState({ imageUploadError: "Invalid image content." });
-        return false;
-      };
-      img.src = image.target.result;
-    };
-    fileReader.readAsDataURL(imageFile);
+    setUploadedImage(event.target.files[0]);
   };
+
   const addItemToInterestArray = (e) => {
     if (e.keyCode === 13 || e.type === "blur") {
       setInterestsArray((prev) => [
@@ -107,6 +83,7 @@ export default function Index() {
     setInterestsArray((prev) => prev.filter((interest) => interest.id !== id));
   };
 
+  console.log(validatedImage);
   //Below function will create all the input and textareas
   //by iterating the inputs key located in public/locales/en/setting.json
   //
@@ -179,8 +156,8 @@ export default function Index() {
                   {t("uploadNewPhoto")}
                 </Button>
               </WrapItem>{" "}
-              {imageFileState.file === undefined ? (
-                <Text color="red.400">{imageFileState.imageUploadError}</Text>
+              {validatedImage.imageUploadError ? (
+                <Text color="red.400">{validatedImage.imageUploadError}</Text>
               ) : null}
             </Wrap>
             <Formik
@@ -211,6 +188,7 @@ export default function Index() {
                                   color="blue.400"
                                   bgColor="blue.100"
                                   rounded="100"
+                                  dir="ltr"
                                   pl="2"
                                 >
                                   {interest.value}
