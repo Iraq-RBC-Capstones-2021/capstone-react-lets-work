@@ -9,7 +9,9 @@ import {
   Wrap,
   WrapItem,
   Input,
+  IconButton,
 } from "@chakra-ui/react";
+import { IoMdClose } from "react-icons/io";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import ChakraInput from "../../components/Shared/ChakraInput";
 import { Formik, Form, ErrorMessage, Field } from "formik";
@@ -92,10 +94,16 @@ export default function Index() {
     };
     fileReader.readAsDataURL(imageFile);
   };
-  const handleInterestArray = (e) => {
-    if (e.keyCode === 13) {
-      setInterestsArray((prev) => [...prev, e.target.value]);
+  const addItemToInterestArray = (e) => {
+    if (e.keyCode === 13 || e.type === "blur") {
+      setInterestsArray((prev) => [
+        ...prev,
+        { id: uuidv4(), value: e.target.value },
+      ]);
     }
+  };
+  const deleteItemFromInterestArray = (id) => {
+    setInterestsArray((prev) => prev.filter((interest) => interest.id !== id));
   };
   return (
     <Center p="6" dir={router().locale === "ar" ? "rtl" : "ltr"}>
@@ -304,15 +312,27 @@ export default function Index() {
                         >
                           <Wrap>
                             {interestsArray.map((interest) => (
-                              <WrapItem key={uuidv4()}>
+                              <WrapItem key={interest.id}>
                                 <Button
+                                  pr="0"
                                   type="button"
                                   size="sm"
+                                  color="blue.400"
                                   bgColor="blue.100"
                                   rounded="100"
                                   m="1"
                                 >
-                                  {interest}
+                                  {interest.value}
+                                  {"  "}
+                                  <IconButton
+                                    size="sm"
+                                    rounded="100"
+                                    variant="ghost"
+                                    icon={<IoMdClose />}
+                                    onClick={() =>
+                                      deleteItemFromInterestArray(interest.id)
+                                    }
+                                  />
                                 </Button>
                               </WrapItem>
                             ))}
@@ -322,7 +342,8 @@ export default function Index() {
                                 placeholder={t("writeInterests")}
                                 name="interests"
                                 variant="ghost"
-                                onKeyDown={handleInterestArray}
+                                onKeyDown={addItemToInterestArray}
+                                onBlur={addItemToInterestArray}
                               />
                             </WrapItem>
                           </Wrap>{" "}
