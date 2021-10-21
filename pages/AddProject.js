@@ -75,7 +75,6 @@ export default function AddProject() {
         description: Yup.string()
           .max(200, "Must be 200 characters or less")
           .required("Required"),
-        tags: Yup.string().email("Invalid email address").required("Required"),
       })}
       onSubmit={(values, { setSubmitting }) => {
         setTimeout(() => {
@@ -98,7 +97,7 @@ export default function AddProject() {
             borderRadius="xl"
             p={["5", "6", "8"]}
             h={{ base: "100%", md: "auto" }}
-            w={{ md: "40rem", base: "auto" }}
+            w={{ md: "40rem", base: "100%" }}
           >
             <Stack spacing={3}>
               <VStack
@@ -154,6 +153,12 @@ export default function AddProject() {
                             bgColor="blue.100"
                             rounded="100"
                             m="1"
+                            onClick={() => {
+                              const newtags = tagsArray.filter(
+                                (t) => t !== tag
+                              );
+                              setTagsArray(newtags);
+                            }}
                           >
                             {tag}
                           </Button>
