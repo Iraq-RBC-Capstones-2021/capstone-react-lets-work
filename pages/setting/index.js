@@ -83,7 +83,6 @@ export default function Index() {
     setInterestsArray((prev) => prev.filter((interest) => interest.id !== id));
   };
 
-  console.log(validatedImage);
   //Below function will create all the input and textareas
   //by iterating the inputs key located in public/locales/en/setting.json
   //
@@ -158,7 +157,11 @@ export default function Index() {
               </WrapItem>{" "}
               {validatedImage.imageUploadError ? (
                 <Text color="red.400">{validatedImage.imageUploadError}</Text>
-              ) : null}
+              ) : (
+                <Text color="green.400">
+                  {validatedImage.imageUploadSuccess}
+                </Text>
+              )}
             </Wrap>
             <Formik
               initialValues={initialValues}
@@ -250,7 +253,10 @@ export default function Index() {
 export async function getStaticProps({ locale }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["setting"])),
+      ...(await serverSideTranslations(locale, [
+        "setting",
+        "useImageValidation",
+      ])),
     },
   };
 }
