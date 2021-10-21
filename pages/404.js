@@ -53,10 +53,9 @@ const Custom404 = () => {
             color="secondary.lighter"
             bg="primary.main"
             rounded="20px"
-            width={{ base: "46%", lg: "36%" }}
+            width={{ base: "180px", lg: "240px" }}
             px={8}
             py={4}
-            size="md"
             _hover={{
               bg: "primary.lighter",
             }}
