@@ -26,7 +26,7 @@ export default function Index() {
     file: null,
     imageUploadError: null,
   });
-  const [interestsArray, setInterestsArray] = useState(["lmao"]);
+  const [interestsArray, setInterestsArray] = useState([]);
   const uploadInput = useRef();
   const { t } = useTranslation("setting");
   const initialValues = {
