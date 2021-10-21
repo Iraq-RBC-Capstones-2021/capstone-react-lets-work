@@ -114,7 +114,7 @@ export default function Index() {
                 <Avatar
                   size="2xl"
                   name="Segun Adebayo"
-                  src="https://bit.ly/sage-adebayo"
+                  src="/images/avatar.png"
                 />
               </WrapItem>
               <WrapItem>
