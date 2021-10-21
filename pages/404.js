@@ -6,6 +6,7 @@ import {
   VStack,
   Text,
   Button,
+  Flex,
 } from "@chakra-ui/react";
 import { Image as NextImage } from "next/image";
 import { useTranslation } from "next-i18next";
@@ -18,52 +19,52 @@ const Custom404 = () => {
   const { locale } = useRouter();
 
   return (
-    <Center>
-      <SimpleGrid
-        columns={2}
-        my={4}
-        spacing={16}
+    <Center py={28}>
+      <Flex
+        direction={{ base: "column", lg: "row" }}
         dir={router().locale === "ar" ? "rtl" : "ltr"}
+        align="center"
       >
-        <Box>
-          <Center>
-            <Image
-              as={NextImage}
-              src="images/404.svg"
-              width={{ base: "24rem", lg: "429px" }}
-              alt="404"
-            />
-          </Center>
-        </Box>
-        <Box pt={16} width="80%">
-          <VStack spacing={8} align="left">
-            <Box>
-              <Text color="primary.main" fontSize={44} fontWeight={600}>
-                {t("oops")}
-              </Text>
-            </Box>
-            <Box>
-              <Text fontSize={24}>{t("text")}</Text>
-            </Box>
-            <Box>
-              <Button
-                fontSize={{ base: "1xl", sm: "1xl", md: "1xl" }}
-                color="secondary.lighter"
-                bg="primary.main"
-                rounded="20px"
-                px={8}
-                py={4}
-                size="md"
-                _hover={{
-                  bg: "primary.lighter",
-                }}
-              >
-                {t("button")}
-              </Button>
-            </Box>
-          </VStack>
-        </Box>
-      </SimpleGrid>
+        <Image
+          flex="1"
+          as={NextImage}
+          src="images/404.svg"
+          width={{ base: "24rem", lg: "429px" }}
+          alt="404"
+          mr={{ base: 0, lg: 24 }}
+        />
+
+        <VStack
+          flex="1"
+          spacing={8}
+          align={{ lg: "left" }}
+          px={{ base: 16, lg: 0 }}
+        >
+          <Text
+            color="primary.main"
+            fontSize={{ base: 48, lg: 52 }}
+            fontWeight={600}
+          >
+            {t("oops")}
+          </Text>
+          <Text fontSize={{ base: 26, lg: 32 }}>{t("text")}</Text>
+          <Button
+            fontSize={{ base: 20, lg: 24 }}
+            color="secondary.lighter"
+            bg="primary.main"
+            rounded="20px"
+            width={{ base: "46%", lg: "36%" }}
+            px={8}
+            py={4}
+            size="md"
+            _hover={{
+              bg: "primary.lighter",
+            }}
+          >
+            {t("button")}
+          </Button>
+        </VStack>
+      </Flex>
     </Center>
   );
 };
