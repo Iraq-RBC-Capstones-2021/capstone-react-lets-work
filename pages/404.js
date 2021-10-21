@@ -13,6 +13,7 @@ import { useTranslation } from "next-i18next";
 import { useRouter } from "next/dist/client/router";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter as router } from "next/dist/client/router";
+import NextLink from "next/link";
 
 const Custom404 = () => {
   const { t } = useTranslation("404");
@@ -48,20 +49,22 @@ const Custom404 = () => {
             {t("oops")}
           </Text>
           <Text fontSize={{ base: 26, lg: 32 }}>{t("text")}</Text>
-          <Button
-            fontSize={{ base: 20, lg: 24 }}
-            color="secondary.lighter"
-            bg="primary.main"
-            rounded="20px"
-            width={{ base: "180px", lg: "240px" }}
-            px={8}
-            py={4}
-            _hover={{
-              bg: "primary.lighter",
-            }}
-          >
-            {t("button")}
-          </Button>
+          <NextLink href="/" passHref>
+            <Button
+              fontSize={{ base: 20, lg: 24 }}
+              color="secondary.lighter"
+              bg="primary.main"
+              rounded="25px"
+              width={{ base: "180px", lg: "220px" }}
+              px={6}
+              py={6}
+              _hover={{
+                bg: "primary.lighter",
+              }}
+            >
+              {t("button")}
+            </Button>
+          </NextLink>
         </VStack>
       </Flex>
     </Center>
