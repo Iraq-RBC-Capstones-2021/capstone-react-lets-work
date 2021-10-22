@@ -22,9 +22,14 @@ import { v4 as uuidv4 } from "uuid";
 
 export default function AddProject() {
   const [tagsArray, setTagsArray] = useState(["design"]);
+  const [tagsValue, setTagsValue] = useState("");
   const handleTagsArray = (e) => {
     if (e.keyCode === 13) {
-      setTagsArray((prev) => [...prev, e.target.value]);
+      e.preventDefault();
+      if (tagsArray.length < 3) {
+        setTagsValue("");
+        setTagsArray((prev) => [...prev, e.target.value]);
+      }
     }
   };
   const [imageFileState, setImageFileState] = useState({
@@ -170,6 +175,10 @@ export default function AddProject() {
                           name="interests"
                           variant="ghost"
                           onKeyDown={handleTagsArray}
+                          value={tagsValue}
+                          onChange={(e) => {
+                            setTagsValue(e.target.value);
+                          }}
                         />
                       </WrapItem>
                     </Wrap>
