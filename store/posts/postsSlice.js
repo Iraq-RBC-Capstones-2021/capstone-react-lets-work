@@ -4,7 +4,7 @@ import axios from "axios";
 export const submitPost = createAsyncThunk(
   "posts/submitPost",
   async (postData) => {
-    return axios.post("/api/new-post", postData);
+    await axios.post("/api/posts", postData);
   }
 );
 

@@ -9,7 +9,7 @@ export default async function handler(req, res) {
         ...postData,
         createdAt: new Date(),
         likes: [],
-        likesCount: [],
+        likesCount: 0,
         users: [],
       });
       res.status(200);
