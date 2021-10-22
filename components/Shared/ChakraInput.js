@@ -27,7 +27,6 @@ function ChakraInput(props) {
                 variant={
                   form.errors[name] && form.touched[name] ? "error" : "primary"
                 }
-                w="18rem"
                 id={name}
                 {...rest}
                 {...field}
