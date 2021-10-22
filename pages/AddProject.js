@@ -165,8 +165,7 @@ export default function AddProject() {
                         </WrapItem>
                       ))}
                       <WrapItem>
-                        <Field
-                          as={Input}
+                        <Input
                           placeholder={t("Write Tags")}
                           name="interests"
                           variant="ghost"
