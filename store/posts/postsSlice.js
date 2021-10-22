@@ -1,20 +1,39 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { addPostToFirebase } from "../../firebase/firebaseFunctions";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
+export const submitPost = createAsyncThunk(
+  "posts/submitPost",
+  async (postData) => {
+    return axios.post("/api/new-post", postData);
+  }
+);
 
 const postsSlice = createSlice({
   name: "posts",
   initialState: {
-    entities: [],
+    list: [],
+    status: null,
   },
 
   reducers: {
-    postAdded(state, action) {
-      addPostToFirebase(action.payload);
-      state.entities.push(action.payload);
+    addPost(state, action) {
+      state.list = action.payload;
+    },
+  },
+
+  extraReducers: {
+    [addPost.pending]: (state, action) => {
+      state.status = "loading";
+    },
+
+    [addPost.fulfilled]: (state, action) => {
+      state.status = "success";
+    },
+
+    [addPost.rejected]: (state, action) => {
+      state.status = action.error.message;
     },
   },
 });
-
-export const { postAdded } = postsSlice.actions;
 
 export default postsSlice.reducer;
