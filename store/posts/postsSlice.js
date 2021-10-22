@@ -22,15 +22,15 @@ const postsSlice = createSlice({
   },
 
   extraReducers: {
-    [addPost.pending]: (state, action) => {
+    [submitPost.pending]: (state, action) => {
       state.status = "loading";
     },
 
-    [addPost.fulfilled]: (state, action) => {
+    [submitPost.fulfilled]: (state, action) => {
       state.status = "success";
     },
 
-    [addPost.rejected]: (state, action) => {
+    [submitPost.rejected]: (state, action) => {
       state.status = action.error.message;
     },
   },
