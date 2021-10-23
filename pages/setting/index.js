@@ -153,11 +153,7 @@ export default function Index() {
           <Box w="70vw">
             <Wrap align="center" pb="8">
               <WrapItem>
-                <Avatar
-                  size="2xl"
-                  name="Segun Adebayo"
-                  src="/images/avatar.png"
-                />
+                <Avatar size="2xl" src={auth.currentUser?.photoURL} />
               </WrapItem>
               <WrapItem>
                 <Input
