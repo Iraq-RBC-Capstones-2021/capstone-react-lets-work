@@ -166,6 +166,7 @@ export default function Index() {
             <Formik
               initialValues={initialValues}
               validationSchema={validationSchema}
+              onSubmit={(values) => console.log(values)}
             >
               {() => {
                 return (
@@ -217,7 +218,7 @@ export default function Index() {
                                 onChange={(e) =>
                                   setInterestValue(e.target.value)
                                 }
-                                onKeyUp={addItemToInterestArray}
+                                onKeyDown={addItemToInterestArray}
                                 onBlur={addItemToInterestArray}
                               />
                             </WrapItem>
