@@ -11,6 +11,13 @@ import {
   Text,
   Wrap,
   WrapItem,
+  Tooltip,
+  Popover,
+  PopoverContent,
+  PopoverCloseButton,
+  PopoverTrigger,
+  PopoverBody,
+  PopoverArrow,
 } from "@chakra-ui/react";
 import { FiSend, FiImage } from "react-icons/fi";
 import { Formik, Field, Form } from "formik";
@@ -19,6 +26,7 @@ import React from "react";
 import ChakraInput from "../components/Shared/ChakraInput";
 import { useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { InfoOutlineIcon } from "@chakra-ui/icons";
 
 export default function AddProject() {
   const [tagsArray, setTagsArray] = useState(["design"]);
@@ -134,13 +142,28 @@ export default function AddProject() {
                 />
               </VStack>
               <VStack align="flex-start" justify="flex-start">
-                <Heading
-                  as="h5"
-                  fontSize={{ base: "22px", md: "18px" }}
-                  color="black"
-                >
-                  Tags
-                </Heading>
+                <HStack>
+                  <Heading
+                    as="h5"
+                    fontSize={{ base: "22px", md: "18px" }}
+                    color="black"
+                  >
+                    Tags
+                  </Heading>
+                  <Popover isLazy>
+                    <PopoverTrigger>
+                      <InfoOutlineIcon />
+                    </PopoverTrigger>
+                    <PopoverContent>
+                      <PopoverCloseButton />
+                      <PopoverArrow />
+                      <PopoverBody>
+                        Press Enter to add a tag, You can't add more than 3 tags
+                      </PopoverBody>
+                    </PopoverContent>
+                  </Popover>
+                </HStack>
+
                 <HStack wrap="wrap" spacing={3} flexShrink={0}>
                   <Box
                     w={["18rem", "35rem"]}
@@ -171,7 +194,7 @@ export default function AddProject() {
                       ))}
                       <WrapItem>
                         <Input
-                          placeholder={t("Write Tags")}
+                          placeholder={t("Press Enter to add the tag")}
                           name="interests"
                           variant="ghost"
                           onKeyDown={handleTagsArray}
