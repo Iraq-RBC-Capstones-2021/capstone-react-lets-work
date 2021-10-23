@@ -1,36 +1,30 @@
 import React from "react";
 import TopSection from "./TopSection";
-import { Text, Tag } from "@chakra-ui/react";
+import { Tag, Skeleton } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
 
 function Profile() {
-  const user = {
-    username: "Segun Adebayo",
-    job: "Web Developer",
-    bio: "I love Web development and I have been coding for last ten years",
-    interests: ["Web", "Design", "HTML & Javascript"],
-    skills_hobbies: ["Web Development", "Hiking"],
-    social: { instagram: "", facebook: "", email: "", linkedIn: "" },
-    about:
-      "A mote of dust suspended in a sunbeam Sea of Tranquility vanquish the impossible shores of the cosmic ocean a billion trillion another world. Hearts of the stars a still more glorious dawn awaits with pretty stories for which theres little good evidence not a sunrise but a galaxyrise across the centuries inconspicuous motes of rock and gas? Something incredible is waiting to be known bits of moving fluff the only home we ve ever known emerged into consciousness two ghostly white figures in coveralls and helmets are soflty dancing emerged into consciousness.",
-  };
-  return (
+  const userInfo = useSelector((state) => state.profile.entities);
+  const loading = useSelector((state) => state.profile.loading);
+  console.log(userInfo);
+  return loading ? (
+    <Skeleton h="100%" size="100%" />
+  ) : (
     <TopSection
-      username={user.username}
-      bio={user.bio}
-      job={user.job}
-      about={user.about}
-      interests={user.interests.map((interest) => (
+      username={userInfo.username}
+      bio={userInfo.bio}
+      job={userInfo.job}
+      about={userInfo.about}
+      interests={userInfo.interests.map((interest) => (
         <Tag size="lg" variant="subtle" key={interest} m="1">
           {interest}
         </Tag>
       ))}
-      skills_hobbies={user.skills_hobbies.map((skill) => {
-        return <Text key={skill}>{skill}</Text>;
-      })}
-      email={user.social.email}
-      instagram={user.social.instagram}
-      facebook={user.social.facebook}
-      linkedIn={user.social.linkedIn}
+      skills_hobbies={userInfo.skills_hobbies}
+      email={userInfo.social.email}
+      instagram={userInfo.social.instagram}
+      facebook={userInfo.social.facebook}
+      linkedIn={userInfo.social.linkedIn}
     />
   );
 }

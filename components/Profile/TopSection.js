@@ -41,7 +41,7 @@ function TopSection({
               borderRadius="full"
               objectFit="cover"
               boxSize={{ base: "8rem", md: "10rem", lg: "13rem" }}
-              src="https://bit.ly/sage-adebayo"
+              src="/images/avatar.png"
               alt="Segun Adebayo"
             />
 

@@ -14,6 +14,8 @@ export function firebaseErrors(error) {
       return "Google Sign In Aborted";
     case "Firebase: Error (auth/cancelled-popup-request).":
       return "Google Sign In Aborted";
+    case "Firebase: Error (profile/profile-data-fetch-error).":
+      return "Failed getting profile data from server.";
     default:
       return "Something went wrong.";
   }

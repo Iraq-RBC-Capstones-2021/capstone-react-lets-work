@@ -6,7 +6,6 @@ import profileSlice from "./profile/profileSlice";
 const makeStore = () =>
   configureStore({
     reducer: {
-      [counterSlice.name]: counterSlice.reducer,
       auth: authSlice,
       profile: profileSlice,
     },
