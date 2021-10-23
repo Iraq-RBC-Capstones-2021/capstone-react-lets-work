@@ -158,7 +158,7 @@ export default function AddProject() {
                       <PopoverCloseButton />
                       <PopoverArrow />
                       <PopoverBody>
-                        Press Enter to add a tag, You can't add more than 3 tags
+                        Press Enter to add a tag, You cant add more than 3 tags
                       </PopoverBody>
                     </PopoverContent>
                   </Popover>
