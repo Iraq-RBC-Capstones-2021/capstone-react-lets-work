@@ -29,7 +29,7 @@ import {
   resetStatus,
 } from "../../store/auth/authSlice";
 import { auth } from "../../firebase/firebase";
-import { getUserProfileData } from "../../store/profile/profileSlice";
+
 function SignIn() {
   const { t } = useTranslation("form");
   const router = useRouter();
@@ -57,7 +57,6 @@ function SignIn() {
         duration: 3000,
       });
       dispatch(resetStatus());
-      dispatch(getUserProfileData(auth.currentUser.uid));
     }
 
     //eslint-disable-next-line
