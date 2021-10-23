@@ -1,3 +1,4 @@
+import { doc, updateDoc } from "@firebase/firestore";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { firebaseErrors } from "../../firebase/firebaseErrors";
@@ -7,6 +8,15 @@ export const getUserProfileData = createAsyncThunk(
   async (userId) => {
     const response = await axios.get(`/api/users/${userId}`);
     return response.data;
+  }
+);
+
+export const updateUserProfileData = createAsyncThunk(
+  "profile/updateUserProfileData",
+  async (userId, newData) => {
+    const userRef = doc(db, "users", userId);
+
+    await updateDoc(userRef, {});
   }
 );
 

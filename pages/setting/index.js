@@ -10,6 +10,7 @@ import {
   WrapItem,
   Input,
   IconButton,
+  Skeleton,
 } from "@chakra-ui/react";
 import { IoMdClose } from "react-icons/io";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -21,6 +22,10 @@ import { useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import SettingInputMap from "../../components/Setting/SettingInputMap";
 import { useImageValidation } from "../../components/Hooks/useImageValidation";
+import { getUserProfileData } from "../../store/user/userSlice";
+import { auth } from "../../firebase/firebase";
+import { useSelector } from "react-redux";
+import { usePopulateUserSlice } from "../../components/Hooks/usePopulateUserSlice";
 
 export default function Index() {
   const [interestsArray, setInterestsArray] = useState([]);
@@ -29,20 +34,34 @@ export default function Index() {
   const { t } = useTranslation("setting");
   const [uploadedImage, setUploadedImage] = useState(null);
   const validatedImage = useImageValidation(uploadedImage);
+  const userInfo = useSelector((state) => state.user.entities);
+  const loading = useSelector((state) => state.user.loading);
 
-  const initialValues = {
-    name: "",
-    username: "",
-    facebook: "",
-    instagram: "",
-    youtube: "",
-    linkedin: "",
-    email: "",
-    bio: "",
-    about: "",
-    skillsAndHobbies: "",
-    interests: "",
-  };
+  usePopulateUserSlice(getUserProfileData, auth.currentUser.uid);
+
+  const initialValues = !loading
+    ? {
+        name: userInfo.name,
+        username: userInfo.username,
+        email: userInfo.email,
+        bio: userInfo.bio,
+        about: userInfo.about,
+        skills_hobbies: userInfo.skills_hobbies,
+        ...userInfo.social,
+      }
+    : {
+        name: "",
+        username: "",
+        facebook: "",
+        instagram: "",
+        youtube: "",
+        linkedIn: "",
+        email: "",
+        bio: "",
+        about: "",
+        skills_hobbies: "",
+      };
+
   const validationSchema = Yup.object({
     name: Yup.string()
       .min(2, "Too Short!")
@@ -55,12 +74,11 @@ export default function Index() {
     facebook: Yup.string().url(),
     instagram: Yup.string().url(),
     youtube: Yup.string().url(),
-    linkedin: Yup.string().url(),
+    linkedIn: Yup.string().url(),
     email: Yup.string().email("Invalid email").required("Required"),
     bio: Yup.string().min(5, "Too Short!").max(100, "Too Long!"),
     about: Yup.string().min(5, "Too Short!").max(300, "Too Long!"),
-    skillsAndHobbies: Yup.string().min(2, "Too Short!").max(100, "Too Long!"),
-    interests: Yup.string().min(5, "Too Short!").max(60, "Too Long!"),
+    skills_hobbies: Yup.string().min(2, "Too Short!").max(100, "Too Long!"),
   });
 
   function openFileUpload() {
@@ -117,7 +135,11 @@ export default function Index() {
 
   const inputList = mapInputsArray(t("inputs", { returnObjects: true }));
 
-  return (
+  const submitSettingChanges = () => {};
+
+  return !auth.currentUser && loading ? (
+    <Skeleton h="100%" size="100%" />
+  ) : (
     <Center p="6" dir={router().locale === "ar" ? "rtl" : "ltr"}>
       <Stack>
         <Heading>{t("accountSetting")}</Heading>
@@ -164,9 +186,10 @@ export default function Index() {
               )}
             </Wrap>
             <Formik
+              enableReinitialize={true}
               initialValues={initialValues}
               validationSchema={validationSchema}
-              onSubmit={(values) => console.log(values)}
+              onSubmit={submitSettingChanges}
             >
               {() => {
                 return (
