@@ -1,7 +1,17 @@
+import Profile from "../../components/Profile/Profile";
 import IdeaCard from "../../components/Account/IdeaCard";
-import { Box, Stack, SimpleGrid, Center } from "@chakra-ui/react";
-
+import { Box, Stack, SimpleGrid, Center, Skeleton } from "@chakra-ui/react";
+import { auth } from "../../firebase/firebase";
+import { useEffect } from "react";
+import { useRouter } from "next/dist/client/router";
 export default function Account() {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!auth.currentUser) {
+      router.push("/");
+    }
+  }, [router]);
   const dummy_data = [
     {
       date: "12 hours ago",
@@ -13,8 +23,11 @@ export default function Account() {
     },
   ];
 
-  return (
+  return !auth.currentUser ? (
+    <Skeleton h="100%" size="100%" />
+  ) : (
     <div>
+      <Profile />
       <Stack
         bg="secondary.main"
         py={{ base: 8, md: 16 }}

@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { IoMdClose } from "react-icons/io";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import ChakraInput from "../../components/Shared/ChakraInput";
 import { Formik, Form, ErrorMessage, Field } from "formik";
 import TextError from "../../components/Shared/TextError";
 import { useRouter as router } from "next/dist/client/router";

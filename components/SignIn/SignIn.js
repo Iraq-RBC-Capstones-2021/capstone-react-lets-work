@@ -3,17 +3,12 @@ import {
   Flex,
   Button,
   Text,
-  FormControl,
-  Input,
-  InputLeftElement,
-  InputGroup,
   Stack,
   Link,
-  InputRightElement,
   IconButton,
-  Checkbox,
   HStack,
-  FormHelperText,
+  useToast,
+  Skeleton,
 } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -21,16 +16,55 @@ import { useTranslation } from "next-i18next";
 import { BiEnvelope, BiLock } from "react-icons/bi";
 import { FcGoogle } from "react-icons/fc";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NextLink from "next/link";
 import { useRouter } from "next/dist/client/router";
 import ChakraInput from "../Shared/ChakraInput";
 import ForgotPass from "./ForgotPass";
 import ChakraCheckbox from "../Shared/ChakraCheckbox";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  googleSignin,
+  handleSignIn,
+  resetStatus,
+} from "../../store/auth/authSlice";
+import { auth } from "../../firebase/firebase";
 function SignIn() {
   const { t } = useTranslation("form");
-  const { locale } = useRouter();
+  const router = useRouter();
   const [showResetPassForm, setShowResetPassForm] = useState(false);
+  const dispatch = useDispatch();
+  const toast = useToast();
+  const signIn = useSelector((state) => state.auth.signIn);
+  useEffect(() => {
+    if (signIn.status === "error") {
+      toast({
+        title: signIn.errorMessage,
+        status: "error",
+        variant: "subtle",
+        position: "top",
+        duration: 3000,
+      });
+      dispatch(resetStatus());
+    }
+    if (signIn.status === "success") {
+      toast({
+        title: "Successfully Signed In",
+        status: "success",
+        variant: "subtle",
+        position: "top",
+        duration: 3000,
+      });
+      dispatch(resetStatus());
+    }
+
+    //eslint-disable-next-line
+  }, [signIn.status]);
+  useEffect(() => {
+    if (signIn.status === "success" || auth.currentUser) {
+      router.push("/");
+    }
+  }, [signIn.status, router]);
   const initialValues = {
     email: "",
     password: "",
@@ -46,20 +80,28 @@ function SignIn() {
       .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
   });
   const onSubmit = (value, onSubmitProps) => {
-    const userData = {
+    const userCredentials = {
       email: value.email.trim(),
       password: value.password.trim(),
       rememberSession: value.checked,
     };
-    //TODO: Send a sign in request with the userData
+    dispatch(
+      handleSignIn({
+        email: userCredentials.email,
+        password: userCredentials.password,
+        rememberSession: userCredentials.rememberSession,
+      })
+    );
     onSubmitProps.resetForm();
   };
   const handleGoogleSignIn = () => {
-    //TODO: send a google sign in request
+    dispatch(googleSignin());
   };
-  return (
+  return auth.currentUser ? (
+    <Skeleton h="100vh" size="100%" />
+  ) : (
     <Flex
-      dir={locale === "ar" ? "rtl" : "ltr"}
+      dir={router.locale === "ar" ? "rtl" : "ltr"}
       width="full"
       h={{ md: "94vh", base: "92vh" }}
       justify="space-around"
@@ -95,7 +137,10 @@ function SignIn() {
         align="center"
       >
         <Stack align="center">
-          <Text fontWeight="semibold" fontSize={{ base: "4xl", md: "6xl" }}>
+          <Text
+            fontWeight="semibold"
+            fontSize={{ base: showResetPassForm ? "5xl" : "6xl", md: "6xl" }}
+          >
             {showResetPassForm ? t("reset_password") : t("signIn")}
           </Text>
           <Text fontSize="md">
@@ -123,6 +168,7 @@ function SignIn() {
                           size="lg"
                           w={{ base: "18.7rem", md: "21.8rem" }}
                           leftIcon={<BiEnvelope size="20" />}
+                          isLoading={signIn.status === "loading"}
                         />
                         <ChakraInput
                           placeholder={t("password")}
@@ -132,6 +178,7 @@ function SignIn() {
                           type="password"
                           name="password"
                           leftIcon={<BiLock size="20" />}
+                          isLoading={signIn.status === "loading"}
                         />
                       </Stack>
                       <ChakraCheckbox
@@ -145,6 +192,7 @@ function SignIn() {
                       />
 
                       <Button
+                        isLoading={signIn.status === "loading"}
                         isDisabled={!Formik.isValid}
                         w={{ base: "18.7rem", md: "21.8rem" }}
                         size="lg"

@@ -14,8 +14,8 @@ function PostList({ posts, list }) {
         justify="space-evenly"
       >
         {posts.map((post) => (
-          <Box mt="10" key={post.id}>
-            <PostCard {...post} key={post.id} />
+          <Box mt="10" key={post.postId}>
+            <PostCard {...post} />
           </Box>
         ))}
       </Flex>
