@@ -13,9 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { IoMdClose } from "react-icons/io";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import ChakraInput from "../../components/Shared/ChakraInput";
-import { Formik, Form, ErrorMessage, Field } from "formik";
-import TextError from "../../components/Shared/TextError";
+import { Formik, Form } from "formik";
 import { useRouter as router } from "next/dist/client/router";
 import { useTranslation } from "next-i18next";
 import * as Yup from "yup";
@@ -26,6 +24,7 @@ import { useImageValidation } from "../../components/Hooks/useImageValidation";
 
 export default function Index() {
   const [interestsArray, setInterestsArray] = useState([]);
+  const [interestValue, setInterestValue] = useState("");
   const uploadInput = useRef();
   const { t } = useTranslation("setting");
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -73,11 +72,14 @@ export default function Index() {
   };
 
   const addItemToInterestArray = (e) => {
+    e.preventDefault();
+    if (interestValue.length < 2) return;
     if (e.keyCode === 13 || e.type === "blur") {
       setInterestsArray((prev) => [
         ...prev,
-        { id: uuidv4(), value: e.target.value },
+        { id: uuidv4(), value: interestValue },
       ]);
+      setInterestValue("");
     }
   };
   const deleteItemFromInterestArray = (id) => {
@@ -210,20 +212,19 @@ export default function Index() {
                               </WrapItem>
                             ))}
                             <WrapItem>
-                              <Field
-                                as={Input}
+                              <Input
                                 placeholder={t("inputs.writeInterests")}
                                 name="interests"
                                 variant="ghost"
-                                onKeyDown={addItemToInterestArray}
+                                value={interestValue}
+                                onChange={(e) =>
+                                  setInterestValue(e.target.value)
+                                }
+                                onKeyUp={addItemToInterestArray}
                                 onBlur={addItemToInterestArray}
                               />
                             </WrapItem>
                           </Wrap>{" "}
-                          <ErrorMessage
-                            name="interests"
-                            component={TextError}
-                          />
                         </Box>
                       </WrapItem>
                     </Wrap>
