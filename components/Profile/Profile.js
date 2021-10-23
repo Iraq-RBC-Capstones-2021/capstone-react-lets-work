@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 function Profile() {
   const userInfo = useSelector((state) => state.profile.entities);
   const loading = useSelector((state) => state.profile.loading);
-  console.log(userInfo);
   return loading ? (
     <Skeleton h="100%" size="100%" />
   ) : (
