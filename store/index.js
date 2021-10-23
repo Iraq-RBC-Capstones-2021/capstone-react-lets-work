@@ -1,13 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
 import authSlice from "./auth/authSlice";
-import profileSlice from "./profile/profileSlice";
+import userSlice from "./user/userSlice";
 
 const makeStore = () =>
   configureStore({
     reducer: {
       auth: authSlice,
-      profile: profileSlice,
+      user: userSlice,
     },
 
     devTools: true,

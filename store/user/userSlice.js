@@ -10,8 +10,8 @@ export const getUserProfileData = createAsyncThunk(
   }
 );
 
-const profileSlice = createSlice({
-  name: "auth",
+const userSlice = createSlice({
+  name: "user",
   initialState: {
     entities: {
       username: "",
@@ -40,5 +40,5 @@ const profileSlice = createSlice({
   },
 });
 
-export const {} = profileSlice.actions;
-export default profileSlice.reducer;
+export const {} = userSlice.actions;
+export default userSlice.reducer;

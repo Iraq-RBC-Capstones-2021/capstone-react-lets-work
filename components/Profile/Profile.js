@@ -1,11 +1,9 @@
 import React from "react";
 import TopSection from "./TopSection";
 import { Tag, Skeleton } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
 
-function Profile() {
-  const userInfo = useSelector((state) => state.profile.entities);
-  const loading = useSelector((state) => state.profile.loading);
+function Profile({ userInfo, loading }) {
+  console.log(userInfo);
   return loading ? (
     <Skeleton h="100%" size="100%" />
   ) : (
