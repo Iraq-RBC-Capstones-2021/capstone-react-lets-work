@@ -86,9 +86,6 @@ export default function Index() {
     setInterestsArray((prev) => prev.filter((interest) => interest.id !== id));
   };
 
-  //Below function will create all the input and textareas
-  //by iterating the inputs key located in public/locales/en/setting.json
-  //
   const mapInputsArray = (inputListObject) => {
     inputListObject = Object.entries(inputListObject);
     let inputList = [];
