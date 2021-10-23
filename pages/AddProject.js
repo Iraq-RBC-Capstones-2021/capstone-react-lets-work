@@ -11,22 +11,26 @@ import {
   Text,
   Wrap,
   WrapItem,
+  Image as ChakraImage,
 } from "@chakra-ui/react";
 import { FiSend, FiImage } from "react-icons/fi";
-import { Formik, Field, Form } from "formik";
+import { Formik, Form } from "formik";
+import { auth, storage } from "../firebase/firebase";
 import * as Yup from "yup";
 import React from "react";
 import ChakraInput from "../components/Shared/ChakraInput";
 import { useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { getDownloadURL, ref, uploadBytesResumable } from "@firebase/storage";
 
 export default function AddProject() {
-  const [tagsArray, setTagsArray] = useState(["design"]);
+  const [tagsArray, setTagsArray] = useState([]);
   const [tagsValue, setTagsValue] = useState("");
+  const [imageURL, setImageURL] = useState("");
   const handleTagsArray = (e) => {
     if (e.keyCode === 13) {
       e.preventDefault();
-      if (tagsArray.length < 3) {
+      if (tagsArray.length < 3 && e.target.value.length < 10) {
         setTagsValue("");
         setTagsArray((prev) => [...prev, e.target.value]);
       }
@@ -60,6 +64,20 @@ export default function AddProject() {
       const img = new Image();
       img.onload = () => {
         setImageFileState({ file: imageFile, imageUploadError: undefined });
+        const storageRef = ref(storage, `images/${imageFile.name}`);
+
+        const uploadImage = uploadBytesResumable(storageRef, imageFile);
+
+        uploadImage.on(
+          "state_changed",
+          (snapshot) => {},
+          (error) => {},
+          () => {
+            getDownloadURL(uploadImage.snapshot.ref).then((downloadURL) => {
+              setImageURL(downloadURL);
+            });
+          }
+        );
       };
       img.onerror = () => {
         setImageFileState({ imageUploadError: "Invalid image content." });
@@ -68,6 +86,19 @@ export default function AddProject() {
       img.src = image.target.result;
     };
     fileReader.readAsDataURL(imageFile);
+  };
+  const onSubmit = (value, onSubmitProps) => {
+    const postData = {
+      imageURL,
+      tags: tagsArray,
+      title: value.projectName,
+      description: value.description,
+      userId: auth.currentUser?.uid,
+    };
+    //TODO: send a post request with the postData.
+    setTagsArray([]);
+    setImageURL("");
+    onSubmitProps.resetForm();
   };
 
   return (
@@ -81,12 +112,7 @@ export default function AddProject() {
           .max(200, "Must be 200 characters or less")
           .required("Required"),
       })}
-      onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-        }, 400);
-      }}
+      onSubmit={onSubmit}
     >
       <Form>
         <Stack
@@ -184,8 +210,10 @@ export default function AddProject() {
                     </Wrap>
                   </Box>
                 </HStack>
+                {imageURL && (
+                  <ChakraImage src={imageURL} boxSize="3rem" alt="img" />
+                )}
               </VStack>
-
               <Stack isInline spacing={2} wrap="wrap">
                 <Input
                   hidden
