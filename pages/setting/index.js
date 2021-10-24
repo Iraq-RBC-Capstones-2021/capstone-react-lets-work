@@ -18,16 +18,21 @@ import { Formik, Form } from "formik";
 import { useRouter as router } from "next/dist/client/router";
 import { useTranslation } from "next-i18next";
 import * as Yup from "yup";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import SettingInputMap from "../../components/Setting/SettingInputMap";
 import { useImageValidation } from "../../components/Hooks/useImageValidation";
-import { getUserProfileData } from "../../store/user/userSlice";
+import {
+  getUserProfileData,
+  updateUserProfileData,
+} from "../../store/user/userSlice";
 import { auth } from "../../firebase/firebase";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { usePopulateUserSlice } from "../../components/Hooks/usePopulateUserSlice";
+import { useToastHook } from "../../components/Hooks/useToastHook";
 
 export default function Index() {
+  const dispatch = useDispatch();
   const [interestsArray, setInterestsArray] = useState([]);
   const [interestValue, setInterestValue] = useState("");
   const uploadInput = useRef();
@@ -37,7 +42,10 @@ export default function Index() {
   const userInfo = useSelector((state) => state.user.entities);
   const loading = useSelector((state) => state.user.loading);
 
+  const request = useSelector((state) => state.user.updateRequest);
+
   usePopulateUserSlice(getUserProfileData, auth.currentUser.uid);
+  useToastHook(request);
 
   const initialValues = !loading
     ? {
@@ -81,6 +89,10 @@ export default function Index() {
     skills_hobbies: Yup.string().min(2, "Too Short!").max(100, "Too Long!"),
   });
 
+  useEffect(() => {
+    setInterestsArray((prev) => userInfo.interests);
+  }, [userInfo.interests]);
+
   function openFileUpload() {
     uploadInput.current.click();
   }
@@ -90,9 +102,9 @@ export default function Index() {
   };
 
   const addItemToInterestArray = (e) => {
-    e.preventDefault();
     if (interestValue.length < 2) return;
     if (e.keyCode === 13 || e.type === "blur") {
+      e.preventDefault();
       setInterestsArray((prev) => [
         ...prev,
         { id: uuidv4(), value: interestValue },
@@ -135,7 +147,12 @@ export default function Index() {
 
   const inputList = mapInputsArray(t("inputs", { returnObjects: true }));
 
-  const submitSettingChanges = () => {};
+  const submitSettingChanges = (values) => {
+    values = { ...values, interests: interestsArray };
+    dispatch(
+      updateUserProfileData({ userId: auth.currentUser.uid, newData: values })
+    );
+  };
 
   return !auth.currentUser && loading ? (
     <Skeleton h="100%" size="100%" />
