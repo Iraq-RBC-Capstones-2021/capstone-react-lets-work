@@ -25,7 +25,6 @@ function TopSection({
   skills_hobbies,
   imageURL,
 }) {
-  console.log(imageURL);
   return (
     <Stack>
       <Flex

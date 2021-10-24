@@ -32,13 +32,12 @@ export const updateUserProfileData = createAsyncThunk(
       },
     });
 
-    if (auth.currentUser.displayName !== newData.name) {
+    if (
+      auth.currentUser.displayName !== newData.name ||
+      auth.currentUser.photoURL !== newData.imageURL
+    ) {
       await updateProfile(auth.currentUser, {
         displayName: newData.name,
-      });
-    }
-    if (auth.currentUser.photoURL !== newData.imageURL) {
-      await updateProfile(auth.currentUser, {
         photoURL: newData.imageURL,
       });
     }

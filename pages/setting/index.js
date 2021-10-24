@@ -77,11 +77,11 @@ export default function Index() {
   const validationSchema = Yup.object({
     name: Yup.string()
       .min(2, "Too Short!")
-      .max(50, "Too Long!")
+      .max(40, "Too Long!")
       .required("Please enter your name"),
     username: Yup.string()
       .min(2, "Too Short!")
-      .max(50, "Too Long!")
+      .max(40, "Too Long!")
       .required("Please enter a valid username"),
     facebook: Yup.string().url(),
     instagram: Yup.string().url(),
