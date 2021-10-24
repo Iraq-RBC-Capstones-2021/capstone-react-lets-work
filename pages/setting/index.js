@@ -15,7 +15,7 @@ import {
 import { IoMdClose } from "react-icons/io";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Formik, Form } from "formik";
-import { useRouter as router } from "next/dist/client/router";
+import { useRouter as router, useRouter } from "next/dist/client/router";
 import { useTranslation } from "next-i18next";
 import * as Yup from "yup";
 import { useRef, useState, useEffect } from "react";
@@ -35,6 +35,7 @@ import { useUploadValidatedImage } from "../../components/Hooks/useUploadValidat
 
 export default function Index() {
   const dispatch = useDispatch();
+  const nextRouter = useRouter();
   const [interestsArray, setInterestsArray] = useState([]);
   const [interestValue, setInterestValue] = useState("");
   const [interestOrPhotoChanged, setInterestOrPhotoChanged] = useState(false);
@@ -47,7 +48,7 @@ export default function Index() {
 
   const request = useSelector((state) => state.user.updateRequest);
 
-  usePopulateUserSlice(getUserProfileData, auth.currentUser.uid);
+  usePopulateUserSlice(getUserProfileData, auth.currentUser?.uid);
   useToastHook(request, resetUpdateRequest);
   const imageURL = useUploadValidatedImage(userInfo.imageURL, validatedImage);
 
@@ -92,6 +93,13 @@ export default function Index() {
     about: Yup.string().min(5, "Too Short!").max(300, "Too Long!"),
     skills_hobbies: Yup.string().min(2, "Too Short!").max(100, "Too Long!"),
   });
+
+  useEffect(() => {
+    if (!auth.currentUser) {
+      nextRouter.push("/404");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     setInterestsArray((prev) => userInfo.interests);
