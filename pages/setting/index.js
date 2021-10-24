@@ -30,6 +30,7 @@ import { auth } from "../../firebase/firebase";
 import { useSelector, useDispatch } from "react-redux";
 import { usePopulateUserSlice } from "../../components/Hooks/usePopulateUserSlice";
 import { useToastHook } from "../../components/Hooks/useToastHook";
+import { useUploadValidatedImage } from "../../components/Hooks/useUploadValidatedImage";
 
 export default function Index() {
   const dispatch = useDispatch();
@@ -46,6 +47,7 @@ export default function Index() {
 
   usePopulateUserSlice(getUserProfileData, auth.currentUser.uid);
   useToastHook(request);
+  const imageURL = useUploadValidatedImage(validatedImage);
 
   const initialValues = !loading
     ? {
@@ -148,7 +150,7 @@ export default function Index() {
   const inputList = mapInputsArray(t("inputs", { returnObjects: true }));
 
   const submitSettingChanges = (values) => {
-    values = { ...values, interests: interestsArray };
+    values = { ...values, interests: interestsArray, imageURL: imageURL };
     dispatch(
       updateUserProfileData({ userId: auth.currentUser.uid, newData: values })
     );
@@ -170,7 +172,10 @@ export default function Index() {
           <Box w="70vw">
             <Wrap align="center" pb="8">
               <WrapItem>
-                <Avatar size="2xl" src={auth.currentUser?.photoURL} />
+                <Avatar
+                  size="2xl"
+                  src={imageURL === "" ? auth.currentUser.photoURL : imageURL}
+                />
               </WrapItem>
               <WrapItem>
                 <Input
