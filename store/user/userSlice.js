@@ -1,8 +1,6 @@
-import { doc, updateDoc } from "@firebase/firestore";
 import { getAuth, updateProfile } from "firebase/auth";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { db } from "../../firebase/firebase";
 import { firebaseErrors } from "../../firebase/firebaseErrors";
 
 export const getUserProfileData = createAsyncThunk(
@@ -16,9 +14,8 @@ export const getUserProfileData = createAsyncThunk(
 export const updateUserProfileData = createAsyncThunk(
   "profile/updateUserProfileData",
   async ({ newData }) => {
-    const userRef = doc(db, "users", getAuth().currentUser.uid);
-
-    await updateDoc(userRef, {
+    const auth = getAuth();
+    await axios.put(`/api/users/${getAuth().currentUser.uid}`, {
       name: newData.name,
       username: newData.username,
       email: newData.email,
@@ -34,10 +31,17 @@ export const updateUserProfileData = createAsyncThunk(
         linkedIn: newData.linkedIn,
       },
     });
-    await updateProfile(getAuth().currentUser, {
-      displayName: newData.name,
-      photoURL: newData.imageURL,
-    });
+
+    if (auth.currentUser.displayName !== newData.name) {
+      await updateProfile(auth.currentUser, {
+        displayName: newData.name,
+      });
+    }
+    if (auth.currentUser.photoURL !== newData.imageURL) {
+      await updateProfile(auth.currentUser, {
+        photoURL: newData.imageURL,
+      });
+    }
   }
 );
 
@@ -52,6 +56,7 @@ const userSlice = createSlice({
       skills_hobbies: "",
       social: { instagram: "", facebook: "", email: "", linkedIn: "" },
       about: "",
+      imageURL: "",
     },
     loading: true,
     updateRequest: {

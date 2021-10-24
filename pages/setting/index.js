@@ -48,7 +48,7 @@ export default function Index() {
 
   usePopulateUserSlice(getUserProfileData, auth.currentUser.uid);
   useToastHook(request, resetUpdateRequest);
-  const imageURL = useUploadValidatedImage(validatedImage);
+  const imageURL = useUploadValidatedImage(userInfo.imageURL, validatedImage);
 
   const initialValues = !loading
     ? {

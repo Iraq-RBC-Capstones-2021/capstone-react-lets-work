@@ -6,8 +6,8 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 
-const useUploadValidatedImage = (validatedImage) => {
-  const [imageURL, serImageURL] = useState("");
+const useUploadValidatedImage = (initialSrc, validatedImage) => {
+  const [imageURL, serImageURL] = useState(initialSrc);
 
   useEffect(() => {
     if (validatedImage.file) {
