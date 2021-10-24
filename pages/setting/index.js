@@ -37,6 +37,7 @@ export default function Index() {
   const dispatch = useDispatch();
   const [interestsArray, setInterestsArray] = useState([]);
   const [interestValue, setInterestValue] = useState("");
+  const [interestsChanged, setInterestsChanged] = useState(false);
   const uploadInput = useRef();
   const { t } = useTranslation("setting");
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -113,10 +114,12 @@ export default function Index() {
         { id: uuidv4(), value: interestValue },
       ]);
       setInterestValue("");
+      setInterestsChanged(true);
     }
   };
   const deleteItemFromInterestArray = (id) => {
     setInterestsArray((prev) => prev.filter((interest) => interest.id !== id));
+    setInterestsChanged(true);
   };
 
   const mapInputsArray = (inputListObject) => {
@@ -153,6 +156,7 @@ export default function Index() {
   const submitSettingChanges = (values) => {
     values = { ...values, interests: interestsArray, imageURL: imageURL };
     dispatch(updateUserProfileData({ newData: values }));
+    setInterestsChanged(false);
   };
 
   return !auth.currentUser && loading ? (
@@ -208,7 +212,7 @@ export default function Index() {
               validationSchema={validationSchema}
               onSubmit={submitSettingChanges}
             >
-              {() => {
+              {(formik) => {
                 return (
                   <Form>
                     {inputList}
@@ -275,6 +279,12 @@ export default function Index() {
                         color="white"
                         _hover={{ bg: "darkPurple" }}
                         type="submit"
+                        disabled={
+                          !(
+                            (formik.isValid && formik.dirty) ||
+                            interestsChanged
+                          )
+                        }
                       >
                         {t("save")}
                       </Button>
