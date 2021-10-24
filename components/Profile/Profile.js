@@ -13,8 +13,8 @@ function Profile({ userInfo, loading }) {
       job={userInfo.job}
       about={userInfo.about}
       interests={userInfo.interests.map((interest) => (
-        <Tag size="lg" variant="subtle" key={interest} m="1">
-          {interest}
+        <Tag size="lg" variant="subtle" key={interest.id} m="1">
+          {interest.value}
         </Tag>
       ))}
       skills_hobbies={userInfo.skills_hobbies}

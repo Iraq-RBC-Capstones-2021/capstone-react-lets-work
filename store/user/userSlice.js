@@ -32,7 +32,6 @@ export const updateUserProfileData = createAsyncThunk(
         linkedIn: newData.linkedIn,
       },
     });
-    console.log();
   }
 );
 
