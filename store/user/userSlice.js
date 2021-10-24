@@ -1,4 +1,5 @@
 import { doc, updateDoc } from "@firebase/firestore";
+import { getAuth, updateProfile } from "firebase/auth";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { db } from "../../firebase/firebase";
@@ -14,8 +15,8 @@ export const getUserProfileData = createAsyncThunk(
 
 export const updateUserProfileData = createAsyncThunk(
   "profile/updateUserProfileData",
-  async ({ userId, newData }) => {
-    const userRef = doc(db, "users", userId);
+  async ({ newData }) => {
+    const userRef = doc(db, "users", getAuth().currentUser.uid);
 
     await updateDoc(userRef, {
       name: newData.name,
@@ -25,12 +26,17 @@ export const updateUserProfileData = createAsyncThunk(
       about: newData.about,
       skills_hobbies: newData.skills_hobbies,
       interests: newData.interests,
+      imageURL: newData.imageURL,
       social: {
         facebook: newData.facebook,
         instagram: newData.instagram,
         youtube: newData.youtube,
         linkedIn: newData.linkedIn,
       },
+    });
+    await updateProfile(getAuth().currentUser, {
+      displayName: newData.name,
+      photoURL: newData.imageURL,
     });
   }
 );
@@ -55,13 +61,21 @@ const userSlice = createSlice({
     },
     error: "",
   },
-  reducers: {},
+  reducers: {
+    resetUpdateRequest(state) {
+      state.updateRequest = {
+        error: "",
+        success: "",
+        status: "",
+      };
+    },
+  },
   extraReducers: {
     [getUserProfileData.fulfilled]: (state, action) => {
       state.entities = action.payload;
       state.loading = false;
     },
-    [getUserProfileData.rejected]: (state, action) => {
+    [getUserProfileData.rejected]: (state) => {
       state.error = firebaseErrors(
         "Firebase: Error (profile/profile-data-fetch-error)."
       );
@@ -84,5 +98,5 @@ const userSlice = createSlice({
   },
 });
 
-export const {} = userSlice.actions;
+export const { resetUpdateRequest } = userSlice.actions;
 export default userSlice.reducer;

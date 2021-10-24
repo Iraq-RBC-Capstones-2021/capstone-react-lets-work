@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { useToast } from "@chakra-ui/react";
+import { useDispatch } from "react-redux";
 
-const useToastHook = (request) => {
+const useToastHook = (request, resetToast) => {
+  const dispatch = useDispatch();
   const toast = useToast();
   useEffect(() => {
     if (request.status === "fail") {
@@ -12,6 +14,7 @@ const useToastHook = (request) => {
         position: "top",
         duration: 4000,
       });
+      dispatch(resetToast());
     }
     if (request.status === "success") {
       toast({
@@ -21,6 +24,7 @@ const useToastHook = (request) => {
         position: "top",
         duration: 4000,
       });
+      dispatch(resetToast());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [request]);

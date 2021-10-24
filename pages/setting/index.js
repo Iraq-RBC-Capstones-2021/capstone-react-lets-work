@@ -24,6 +24,7 @@ import SettingInputMap from "../../components/Setting/SettingInputMap";
 import { useImageValidation } from "../../components/Hooks/useImageValidation";
 import {
   getUserProfileData,
+  resetUpdateRequest,
   updateUserProfileData,
 } from "../../store/user/userSlice";
 import { auth } from "../../firebase/firebase";
@@ -46,7 +47,7 @@ export default function Index() {
   const request = useSelector((state) => state.user.updateRequest);
 
   usePopulateUserSlice(getUserProfileData, auth.currentUser.uid);
-  useToastHook(request);
+  useToastHook(request, resetUpdateRequest);
   const imageURL = useUploadValidatedImage(validatedImage);
 
   const initialValues = !loading
@@ -151,9 +152,7 @@ export default function Index() {
 
   const submitSettingChanges = (values) => {
     values = { ...values, interests: interestsArray, imageURL: imageURL };
-    dispatch(
-      updateUserProfileData({ userId: auth.currentUser.uid, newData: values })
-    );
+    dispatch(updateUserProfileData({ newData: values }));
   };
 
   return !auth.currentUser && loading ? (

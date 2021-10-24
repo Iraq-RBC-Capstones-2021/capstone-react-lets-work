@@ -21,6 +21,7 @@ function Profile({ userInfo, loading }) {
       instagram={userInfo.social.instagram}
       facebook={userInfo.social.facebook}
       linkedIn={userInfo.social.linkedIn}
+      imageURL={userInfo.imageURL}
     />
   );
 }

@@ -23,6 +23,7 @@ function TopSection({
   linkedIn,
   interests,
   skills_hobbies,
+  imageURL,
 }) {
   return (
     <Stack>
@@ -41,7 +42,7 @@ function TopSection({
               borderRadius="full"
               objectFit="cover"
               boxSize={{ base: "8rem", md: "10rem", lg: "13rem" }}
-              src="/images/avatar.png"
+              src={imageURL}
               alt="Segun Adebayo"
             />
 
