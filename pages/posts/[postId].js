@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { BsHeartFill, BsHeart } from "react-icons/bs";
-import AvatarCollection from "../../../components/AvatarCollection";
+import AvatarCollection from "../../components/AvatarCollection";
 import {
   Box,
   Center,
@@ -17,11 +17,10 @@ import {
 import { useState } from "react";
 import { useRouter as router } from "next/dist/client/router";
 import { useTranslation } from "next-i18next";
-import PostOptionsMenu from "../../../components/PostOptionsMenu";
+
 export default function Index() {
   const { t } = useTranslation("postId");
   const [joinBtn, setJoinBtn] = useState(false);
-  const [isPostOwner, setIsPostOwner] = useState(true);
   const [liked, setLiked] = useState(false);
   return (
     <Center p="6" dir={router().locale === "ar" ? "rtl" : "ltr"}>
@@ -42,7 +41,6 @@ export default function Index() {
             <Button rounded="15px" onClick={() => setJoinBtn(!joinBtn)}>
               {joinBtn ? t("joined") : t("join")}
             </Button>
-            {isPostOwner ? <PostOptionsMenu /> : null}
           </HStack>
           <AvatarCollection users={usersDummyData} />
 
