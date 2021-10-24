@@ -30,11 +30,16 @@ import { v4 as uuidv4 } from "uuid";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 import { auth, storage } from "../firebase/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "@firebase/storage";
+import { useDispatch } from "react-redux";
+import { submitPost } from "../store/posts/postsSlice";
 
 export default function AddProject() {
+  const dispatch = useDispatch();
+
   const [tagsArray, setTagsArray] = useState([]);
   const [tagsValue, setTagsValue] = useState("");
   const [imageURL, setImageURL] = useState("");
+
   const handleTagsArray = (e) => {
     if (e.keyCode === 13) {
       e.preventDefault();
@@ -116,10 +121,8 @@ export default function AddProject() {
       title: value.projectName,
       description: value.description,
       userId: auth.currentUser?.uid,
-      username: auth.currentUser?.displayName,
-      userImage: auth.currentUser?.photoURL,
     };
-    //TODO: send a post request with the postData.
+    dispatch(submitPost(postData));
     setTagsArray([]);
     setImageURL("");
     onSubmitProps.resetForm();
