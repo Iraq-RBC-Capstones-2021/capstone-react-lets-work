@@ -37,7 +37,7 @@ export default function Index() {
   const dispatch = useDispatch();
   const [interestsArray, setInterestsArray] = useState([]);
   const [interestValue, setInterestValue] = useState("");
-  const [interestsChanged, setInterestsChanged] = useState(false);
+  const [interestOrPhotoChanged, setInterestOrPhotoChanged] = useState(false);
   const uploadInput = useRef();
   const { t } = useTranslation("setting");
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -103,6 +103,7 @@ export default function Index() {
 
   const onChangeFile = (event) => {
     setUploadedImage(event.target.files[0]);
+    setInterestOrPhotoChanged(true);
   };
 
   const addItemToInterestArray = (e) => {
@@ -114,12 +115,12 @@ export default function Index() {
         { id: uuidv4(), value: interestValue },
       ]);
       setInterestValue("");
-      setInterestsChanged(true);
+      setInterestOrPhotoChanged(true);
     }
   };
   const deleteItemFromInterestArray = (id) => {
     setInterestsArray((prev) => prev.filter((interest) => interest.id !== id));
-    setInterestsChanged(true);
+    setInterestOrPhotoChanged(true);
   };
 
   const mapInputsArray = (inputListObject) => {
@@ -156,7 +157,7 @@ export default function Index() {
   const submitSettingChanges = (values) => {
     values = { ...values, interests: interestsArray, imageURL: imageURL };
     dispatch(updateUserProfileData({ newData: values }));
-    setInterestsChanged(false);
+    setInterestOrPhotoChanged(false);
   };
 
   return !auth.currentUser && loading ? (
@@ -282,7 +283,7 @@ export default function Index() {
                         disabled={
                           !(
                             (formik.isValid && formik.dirty) ||
-                            interestsChanged
+                            interestOrPhotoChanged
                           )
                         }
                       >
