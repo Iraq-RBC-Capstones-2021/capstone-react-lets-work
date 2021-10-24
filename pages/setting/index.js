@@ -154,9 +154,10 @@ export default function Index() {
 
   const inputList = mapInputsArray(t("inputs", { returnObjects: true }));
 
-  const submitSettingChanges = (values) => {
+  const submitSettingChanges = (values, { resetForm }) => {
     values = { ...values, interests: interestsArray, imageURL: imageURL };
     dispatch(updateUserProfileData({ newData: values }));
+    resetForm({ values });
     setInterestOrPhotoChanged(false);
   };
 
