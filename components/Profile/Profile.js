@@ -3,7 +3,6 @@ import TopSection from "./TopSection";
 import { Tag, Skeleton } from "@chakra-ui/react";
 
 function Profile({ userInfo, loading }) {
-  console.log(userInfo);
   return loading ? (
     <Skeleton h="100%" size="100%" />
   ) : (
