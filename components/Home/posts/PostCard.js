@@ -20,29 +20,18 @@ import { handleLike, likeHandler } from "../../../store/posts/postSlice";
 import { auth } from "../../../firebase/firebase";
 import { useSelector } from "react-redux";
 function PostCard({
-  // createdAt,
-  // description,
-  // title,
-  // userId,
-  // likes,
-  // tags,
-  // // imageURL,
+  createdAt,
+  description,
+  title,
+  userId,
+  likes,
+  tags,
+  imageURL,
   postId,
   user,
-  // id,
+  id,
   post,
 }) {
-  const {
-    id,
-    users,
-    imageURL,
-    userId,
-    title,
-    description,
-    createdAt,
-    tags,
-    likes,
-  } = post;
   const [likeError, setLikeError] = useState("");
   const likeStatus = useSelector((state) => state.posts.likeStatus);
   const dispatch = useDispatch();
@@ -75,6 +64,7 @@ function PostCard({
         h={imageURL ? { md: "37.87rem", base: "30rem" } : "15.1rem"}
         maxH="37.875rem"
         maxW={{ md: "21.8rem", base: "auto" }}
+        w={{ md: "21.8rem", base: "auto" }}
         borderRadius="lg"
       >
         {imageURL && (
