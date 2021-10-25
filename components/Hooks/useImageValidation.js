@@ -14,6 +14,7 @@ const useImageValidation = (originalUpload) => {
   const [imageFileState, setImageFileState] = useState({
     file: null,
     imageUploadError: null,
+    imageUploadSuccess: null,
   });
 
   useEffect(() => {

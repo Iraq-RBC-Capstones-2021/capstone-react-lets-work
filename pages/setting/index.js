@@ -10,58 +10,103 @@ import {
   WrapItem,
   Input,
   IconButton,
+  Skeleton,
 } from "@chakra-ui/react";
 import { IoMdClose } from "react-icons/io";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { Formik, Form } from "formik";
-import { useRouter as router } from "next/dist/client/router";
+import { useRouter as router, useRouter } from "next/dist/client/router";
 import { useTranslation } from "next-i18next";
 import * as Yup from "yup";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import SettingInputMap from "../../components/Setting/SettingInputMap";
 import { useImageValidation } from "../../components/Hooks/useImageValidation";
+import {
+  getUserProfileData,
+  resetUpdateRequest,
+  updateUserProfileData,
+} from "../../store/user/userSlice";
+import { auth } from "../../firebase/firebase";
+import { useSelector, useDispatch } from "react-redux";
+import { usePopulateUserSlice } from "../../components/Hooks/usePopulateUserSlice";
+import { useToastHook } from "../../components/Hooks/useToastHook";
+import { useUploadValidatedImage } from "../../components/Hooks/useUploadValidatedImage";
 
 export default function Index() {
+  const dispatch = useDispatch();
+  const nextRouter = useRouter();
   const [interestsArray, setInterestsArray] = useState([]);
   const [interestValue, setInterestValue] = useState("");
+  const [interestOrPhotoChanged, setInterestOrPhotoChanged] = useState(false);
   const uploadInput = useRef();
   const { t } = useTranslation("setting");
   const [uploadedImage, setUploadedImage] = useState(null);
   const validatedImage = useImageValidation(uploadedImage);
+  const userInfo = useSelector((state) => state.user.entities);
+  const loading = useSelector((state) => state.user.loading);
 
-  const initialValues = {
-    name: "",
-    username: "",
-    facebook: "",
-    instagram: "",
-    youtube: "",
-    linkedin: "",
-    email: "",
-    bio: "",
-    about: "",
-    skillsAndHobbies: "",
-    interests: "",
-  };
+  const request = useSelector((state) => state.user.updateRequest);
+
+  usePopulateUserSlice(getUserProfileData, auth.currentUser?.uid);
+  useToastHook(request, resetUpdateRequest);
+  const imageURL = useUploadValidatedImage(
+    auth.currentUser.photoURL,
+    validatedImage
+  );
+
+  const initialValues = !loading
+    ? {
+        name: userInfo.name,
+        username: userInfo.username,
+        email: userInfo.email,
+        bio: userInfo.bio,
+        about: userInfo.about,
+        skills_hobbies: userInfo.skills_hobbies,
+        ...userInfo.social,
+      }
+    : {
+        name: "",
+        username: "",
+        facebook: "",
+        instagram: "",
+        youtube: "",
+        linkedIn: "",
+        email: "",
+        bio: "",
+        about: "",
+        skills_hobbies: "",
+      };
+
   const validationSchema = Yup.object({
     name: Yup.string()
       .min(2, "Too Short!")
-      .max(50, "Too Long!")
+      .max(40, "Too Long!")
       .required("Please enter your name"),
     username: Yup.string()
       .min(2, "Too Short!")
-      .max(50, "Too Long!")
+      .max(40, "Too Long!")
       .required("Please enter a valid username"),
     facebook: Yup.string().url(),
     instagram: Yup.string().url(),
     youtube: Yup.string().url(),
-    linkedin: Yup.string().url(),
+    linkedIn: Yup.string().url(),
     email: Yup.string().email("Invalid email").required("Required"),
     bio: Yup.string().min(5, "Too Short!").max(100, "Too Long!"),
     about: Yup.string().min(5, "Too Short!").max(300, "Too Long!"),
-    skillsAndHobbies: Yup.string().min(2, "Too Short!").max(100, "Too Long!"),
-    interests: Yup.string().min(5, "Too Short!").max(60, "Too Long!"),
+    skills_hobbies: Yup.string().min(2, "Too Short!").max(100, "Too Long!"),
   });
+
+  useEffect(() => {
+    if (!auth.currentUser) {
+      nextRouter.push("/404");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    setInterestsArray((prev) => userInfo.interests);
+  }, [userInfo.interests]);
 
   function openFileUpload() {
     uploadInput.current.click();
@@ -69,21 +114,24 @@ export default function Index() {
 
   const onChangeFile = (event) => {
     setUploadedImage(event.target.files[0]);
+    setInterestOrPhotoChanged(true);
   };
 
   const addItemToInterestArray = (e) => {
-    e.preventDefault();
     if (interestValue.length < 2) return;
     if (e.keyCode === 13 || e.type === "blur") {
+      e.preventDefault();
       setInterestsArray((prev) => [
         ...prev,
         { id: uuidv4(), value: interestValue },
       ]);
       setInterestValue("");
+      setInterestOrPhotoChanged(true);
     }
   };
   const deleteItemFromInterestArray = (id) => {
     setInterestsArray((prev) => prev.filter((interest) => interest.id !== id));
+    setInterestOrPhotoChanged(true);
   };
 
   const mapInputsArray = (inputListObject) => {
@@ -117,7 +165,20 @@ export default function Index() {
 
   const inputList = mapInputsArray(t("inputs", { returnObjects: true }));
 
-  return (
+  const submitSettingChanges = (values, { resetForm }) => {
+    const newData = {
+      ...values,
+      interests: interestsArray,
+      imageURL: imageURL,
+    };
+    dispatch(updateUserProfileData({ newData }));
+    resetForm({ values });
+    setInterestOrPhotoChanged(false);
+  };
+
+  return !auth.currentUser && loading ? (
+    <Skeleton h="100%" size="100%" />
+  ) : (
     <Center p="6" dir={router().locale === "ar" ? "rtl" : "ltr"}>
       <Stack>
         <Heading>{t("accountSetting")}</Heading>
@@ -133,8 +194,7 @@ export default function Index() {
               <WrapItem>
                 <Avatar
                   size="2xl"
-                  name="Segun Adebayo"
-                  src="/images/avatar.png"
+                  src={imageURL === "" ? auth.currentUser.photoURL : imageURL}
                 />
               </WrapItem>
               <WrapItem>
@@ -164,10 +224,12 @@ export default function Index() {
               )}
             </Wrap>
             <Formik
+              enableReinitialize={true}
               initialValues={initialValues}
               validationSchema={validationSchema}
+              onSubmit={submitSettingChanges}
             >
-              {() => {
+              {(formik) => {
                 return (
                   <Form>
                     {inputList}
@@ -217,7 +279,7 @@ export default function Index() {
                                 onChange={(e) =>
                                   setInterestValue(e.target.value)
                                 }
-                                onKeyUp={addItemToInterestArray}
+                                onKeyDown={addItemToInterestArray}
                                 onBlur={addItemToInterestArray}
                               />
                             </WrapItem>
@@ -234,6 +296,12 @@ export default function Index() {
                         color="white"
                         _hover={{ bg: "darkPurple" }}
                         type="submit"
+                        disabled={
+                          !(
+                            (formik.isValid && formik.dirty) ||
+                            interestOrPhotoChanged
+                          )
+                        }
                       >
                         {t("save")}
                       </Button>

@@ -4,14 +4,23 @@ import { Box, Stack, SimpleGrid, Center, Skeleton } from "@chakra-ui/react";
 import { auth } from "../../firebase/firebase";
 import { useEffect } from "react";
 import { useRouter } from "next/dist/client/router";
-export default function Account() {
+import { getUserProfileData } from "../../store/user/userSlice";
+import { useSelector } from "react-redux";
+import { usePopulateUserSlice } from "../../components/Hooks/usePopulateUserSlice";
+
+export default function AccountId({ params }) {
   const router = useRouter();
+
+  const userInfo = useSelector((state) => state.user.entities);
+  const loading = useSelector((state) => state.user.loading);
+  usePopulateUserSlice(getUserProfileData, params.accountId);
 
   useEffect(() => {
     if (!auth.currentUser) {
       router.push("/");
     }
   }, [router]);
+
   const dummy_data = [
     {
       date: "12 hours ago",
@@ -22,12 +31,11 @@ export default function Account() {
       id: 1,
     },
   ];
-
-  return !auth.currentUser ? (
+  return !auth.currentUser && params.accountId ? (
     <Skeleton h="100%" size="100%" />
   ) : (
     <div>
-      <Profile />
+      <Profile userInfo={userInfo} loading={loading} />
       <Stack
         bg="secondary.main"
         py={{ base: 8, md: 16 }}
@@ -54,4 +62,11 @@ export default function Account() {
       </Stack>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const params = context.params;
+  return {
+    props: { params },
+  };
 }
