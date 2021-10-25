@@ -50,7 +50,10 @@ export default function Index() {
 
   usePopulateUserSlice(getUserProfileData, auth.currentUser?.uid);
   useToastHook(request, resetUpdateRequest);
-  const imageURL = useUploadValidatedImage(userInfo.imageURL, validatedImage);
+  const imageURL = useUploadValidatedImage(
+    auth.currentUser.photoURL,
+    validatedImage
+  );
 
   const initialValues = !loading
     ? {
@@ -163,8 +166,12 @@ export default function Index() {
   const inputList = mapInputsArray(t("inputs", { returnObjects: true }));
 
   const submitSettingChanges = (values, { resetForm }) => {
-    values = { ...values, interests: interestsArray, imageURL: imageURL };
-    dispatch(updateUserProfileData({ newData: values }));
+    const newData = {
+      ...values,
+      interests: interestsArray,
+      imageURL: imageURL,
+    };
+    dispatch(updateUserProfileData({ newData }));
     resetForm({ values });
     setInterestOrPhotoChanged(false);
   };

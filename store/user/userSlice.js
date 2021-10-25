@@ -15,7 +15,7 @@ export const updateUserProfileData = createAsyncThunk(
   "profile/updateUserProfileData",
   async ({ newData }) => {
     const auth = getAuth();
-    await axios.put(`/api/users/${getAuth().currentUser.uid}`, {
+    newData = {
       name: newData.name,
       username: newData.username,
       email: newData.email,
@@ -30,7 +30,8 @@ export const updateUserProfileData = createAsyncThunk(
         youtube: newData.youtube,
         linkedIn: newData.linkedIn,
       },
-    });
+    };
+    await axios.put(`/api/users/${getAuth().currentUser.uid}`, newData);
 
     if (
       auth.currentUser.displayName !== newData.name ||
@@ -41,6 +42,7 @@ export const updateUserProfileData = createAsyncThunk(
         photoURL: newData.imageURL,
       });
     }
+    return newData;
   }
 );
 
@@ -48,8 +50,9 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     entities: {
+      name: "",
       username: "",
-      job: "",
+      email: "",
       bio: "",
       interests: [],
       skills_hobbies: "",
@@ -85,14 +88,15 @@ const userSlice = createSlice({
       );
       state.loading = true;
     },
-    [updateUserProfileData.fulfilled]: (state) => {
+    [updateUserProfileData.fulfilled]: (state, action) => {
+      state.entities = action.payload;
       state.updateRequest = {
         status: "success",
         success: "Your data was succesfully updated",
         error: null,
       };
     },
-    [updateUserProfileData.rejected]: (state) => {
+    [updateUserProfileData.rejected]: (state, action) => {
       state.updateRequest = {
         status: "fail",
         error: "Failed updating your data",
