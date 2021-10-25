@@ -30,6 +30,7 @@ import { v4 as uuidv4 } from "uuid";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 import { auth, storage } from "../firebase/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "@firebase/storage";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export default function AddProject() {
   const [tagsArray, setTagsArray] = useState([]);
@@ -280,4 +281,12 @@ export default function AddProject() {
       </Form>
     </Formik>
   );
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["navbar"])),
+    },
+  };
 }

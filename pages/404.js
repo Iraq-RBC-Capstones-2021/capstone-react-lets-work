@@ -76,7 +76,7 @@ export default Custom404;
 export async function getStaticProps({ locale }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["404"])),
+      ...(await serverSideTranslations(locale, ["404", "navbar"])),
     },
   };
 }

@@ -105,7 +105,7 @@ const post = {
 export async function getServerSideProps({ locale }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["postId"])),
+      ...(await serverSideTranslations(locale, ["postId", "navbar"])),
     },
   };
 }
