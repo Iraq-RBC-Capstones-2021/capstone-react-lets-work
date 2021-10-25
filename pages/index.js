@@ -32,7 +32,6 @@ export default function Home({
     dispatch(getMostRecentProjects());
     dispatch(getFavPosts());
   }, [dispatch]);
-  console.log(topPosts.data);
   return (
     <Box mb="20">
       <TopSection />
