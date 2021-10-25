@@ -20,7 +20,7 @@ function PostList({ posts, list, status, users }) {
         })}
         {status === "loading" &&
           [1, 2, 3].map((key) => (
-            <Box mt="10" mx="10" key={key}>
+            <Box mt="10" mx={{ md: "2", lg: "8" }} key={key}>
               {" "}
               <LoadingPost />{" "}
             </Box>
