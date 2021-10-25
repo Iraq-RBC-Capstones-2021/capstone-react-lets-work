@@ -32,6 +32,7 @@ export default function Home({
     dispatch(getMostRecentProjects());
     dispatch(getFavPosts());
   }, [dispatch]);
+  console.log(topPosts.data);
   return (
     <Box mb="20">
       <TopSection />
@@ -40,7 +41,7 @@ export default function Home({
           users={users}
           status={topPosts.status}
           list="Top Projects"
-          posts={topPosts ? topPosts.data : initialTopPosts}
+          posts={topPosts.data.length > 0 ? topPosts.data : initialTopPosts}
         />
         {lastTopPost && topPosts.data.length % 3 === 0 && (
           <Button
@@ -78,7 +79,9 @@ export default function Home({
               status={mostRecentPosts.status}
               list="New Projects"
               posts={
-                mostRecentPosts ? mostRecentPosts.data : initialMostRecentPosts
+                mostRecentPosts.data.length > 0
+                  ? mostRecentPosts.data
+                  : initialMostRecentPosts
               }
             />
             {lastRecentPost && mostRecentPosts.data.length % 3 === 0 && (
