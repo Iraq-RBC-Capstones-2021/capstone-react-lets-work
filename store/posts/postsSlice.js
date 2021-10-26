@@ -34,7 +34,7 @@ const postsSlice = createSlice({
     },
 
     [submitPost.rejected]: (state, action) => {
-      state.status = action.error.message;
+      state.status = "error";
     },
   },
 });
