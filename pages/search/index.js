@@ -24,6 +24,7 @@ import PostList from "../../components/Home/posts/PostList";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/dist/client/router";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import GetGeoLocation from "../components/GeoLocation/GetGeoLocation";
 
 export default function Search() {
   const { t } = useTranslation("search");
@@ -71,6 +72,10 @@ export default function Search() {
   ];
 
   const [searchValue, setSearchValue] = useState("");
+  const [geoLocation, setGeolocation] = useState({
+    latidute: 0,
+    longtitude: 0,
+  });
 
   function handleChangeSearch(event) {
     setSearchValue(event.target.value);
@@ -82,6 +87,7 @@ export default function Search() {
 
   return (
     <Box w="100%" bg="secondary.main" py={4}>
+      <GetGeoLocation />
       <Stack>
         <Container mt={8}>
           <Center>
