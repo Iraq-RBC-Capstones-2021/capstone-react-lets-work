@@ -82,7 +82,7 @@ function PostCard({
 
         <Stack px="4" py="2" flexBasis="40%" bg="white">
           <HStack justify="space-between">
-            <NextLink href={`posts/${postId}`}>
+            <NextLink href={`posts/${id}`}>
               <LinkOverlay cursor="pointer">
                 <Text noOfLines={1} fontSize="30px">
                   {title}

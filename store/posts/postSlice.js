@@ -1,5 +1,7 @@
 import {
   collection,
+  doc,
+  getDoc,
   getDocs,
   limit,
   orderBy,
@@ -113,6 +115,18 @@ export const getInitialPosts = createAsyncThunk(
     return posts;
   }
 );
+export const getSinglePost = createAsyncThunk(
+  "getSinglePost/posts",
+  async (postId) => {
+    const post = await getDoc(doc(db, "posts", postId));
+    const newPost = {
+      ...post.data(),
+      createdAt: moment(post.data().createdAt.toDate()).calendar(),
+      id: post.id,
+    };
+    return newPost;
+  }
+);
 
 export const handleLike = createAsyncThunk(
   "handleLike/posts",
@@ -135,6 +149,7 @@ const postSlice = createSlice({
     likeStatus: "",
     status: "",
     list: [],
+    singlePost: { status: "", data: [] },
   },
   reducers: {
     setLastTopPost(state, action) {
@@ -238,6 +253,16 @@ const postSlice = createSlice({
     },
     [getInitialPosts.rejected]: (state, action) => {
       state.initialPosts = action.payload;
+    },
+    [getSinglePost.fulfilled]: (state, action) => {
+      state.singlePost.data = action.payload;
+      state.singlePost.status = "success";
+    },
+    [getSinglePost.rejected]: (state, action) => {
+      state.singlePost.status = "error";
+    },
+    [getSinglePost.pending]: (state, action) => {
+      state.singlePost.status = "loading";
     },
 
     [handleLike.pending]: (state) => {
