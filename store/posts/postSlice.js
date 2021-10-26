@@ -12,6 +12,12 @@ import axios from "axios";
 import moment from "moment";
 import { auth, db } from "../../firebase/firebase";
 
+export const submitPost = createAsyncThunk(
+  "posts/submitPost",
+  async (postData) => {
+    await axios.post("/api/posts", postData);
+  }
+);
 export const getTopProjects = createAsyncThunk(
   "getTopProjects/posts",
   async (limits = 3, { getState, dispatch }) => {
@@ -127,6 +133,8 @@ const postSlice = createSlice({
     lastFavPost: "",
     initialPosts: [],
     likeStatus: "",
+    status: "",
+    list: [],
   },
   reducers: {
     setLastTopPost(state, action) {
@@ -147,6 +155,10 @@ const postSlice = createSlice({
       } else if (!isthere) {
         state.favPosts.data.push(post);
       }
+    },
+
+    resetPostStatus(state, action) {
+      state.status = "";
     },
     likeHandler(state, action) {
       const { post, userId } = action.payload;
@@ -237,6 +249,17 @@ const postSlice = createSlice({
     [handleLike.rejected]: (state) => {
       state.likeStatus = "error";
     },
+    [submitPost.pending]: (state) => {
+      state.status = "loading";
+    },
+
+    [submitPost.fulfilled]: (state) => {
+      state.status = "success";
+    },
+
+    [submitPost.rejected]: (state) => {
+      state.status = "error";
+    },
   },
 });
 export const {
@@ -245,5 +268,6 @@ export const {
   likeHandler,
   setLastFavPost,
   favHandler,
+  resetPostStatus,
 } = postSlice.actions;
 export default postSlice.reducer;

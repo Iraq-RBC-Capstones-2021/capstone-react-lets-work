@@ -132,7 +132,7 @@ export default function Navbar() {
                   _hover={{ bg: "gray.100" }}
                   mt="3"
                 >
-                  <NextLink href="/account">
+                  <NextLink href={`/account/${auth.currentUser.uid}`}>
                     <HStack>
                       <Icon h="5" w="5" as={CgProfile} />
                       <Text>Profile </Text>

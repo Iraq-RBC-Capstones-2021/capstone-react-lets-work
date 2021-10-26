@@ -1,14 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
-import counterSlice from "./counter/counterSlice";
 import authSlice from "./auth/authSlice";
 import postSlice from "./posts/postSlice";
+import userSlice from "./user/userSlice";
+
 const makeStore = () =>
   configureStore({
     reducer: {
-      [counterSlice.name]: counterSlice.reducer,
       auth: authSlice,
       posts: postSlice,
+      user: userSlice,
     },
 
     devTools: true,
@@ -20,4 +21,3 @@ const makeStore = () =>
   });
 
 export const wrapper = createWrapper(makeStore);
-export const selectCounter = () => (state) => state?.[counterSlice.name]?.value;

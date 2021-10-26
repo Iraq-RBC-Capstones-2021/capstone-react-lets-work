@@ -10,7 +10,7 @@ import {
   getMostRecentProjects,
   getTopProjects,
 } from "../store/posts/postSlice";
-import { Button, Stack, Box, Text } from "@chakra-ui/react";
+import { Button, Stack, Box } from "@chakra-ui/react";
 import { wrapper } from "../store";
 import { collection, getDocs } from "@firebase/firestore";
 import { auth, db } from "../firebase/firebase";
