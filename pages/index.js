@@ -1,6 +1,7 @@
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import TopSection from "../components/Home/TopSection";
 import PostList from "../components/Home/posts/PostList";
+
 const postSample = [
   {
     createdAt: "posted 12/12/2021",
@@ -41,6 +42,7 @@ const postSample = [
     postId: "3",
   },
 ];
+
 export default function Home() {
   return (
     <div>
