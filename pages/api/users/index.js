@@ -23,7 +23,8 @@ export default async function handler(req, res) {
         bio: "",
         about: "",
         interests: [],
-        skills_hobbies: [],
+        skills_hobbies: "",
+        name: user.username,
         likedPosts: [],
         social: {
           facebook: "",

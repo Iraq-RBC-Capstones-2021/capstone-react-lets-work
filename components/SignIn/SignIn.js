@@ -29,6 +29,7 @@ import {
   resetStatus,
 } from "../../store/auth/authSlice";
 import { auth } from "../../firebase/firebase";
+
 function SignIn() {
   const { t } = useTranslation("form");
   const router = useRouter();

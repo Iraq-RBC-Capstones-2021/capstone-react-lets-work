@@ -3,7 +3,7 @@ import {
   Stack,
   Box,
   Text,
-  Image,
+  Avatar,
   VStack,
   Button,
   IconButton,
@@ -23,6 +23,7 @@ function TopSection({
   linkedIn,
   interests,
   skills_hobbies,
+  imageURL,
 }) {
   return (
     <Stack>
@@ -37,13 +38,7 @@ function TopSection({
             justify="space-around"
             align={{ base: "flex-start", md: "center" }}
           >
-            <Image
-              borderRadius="full"
-              objectFit="cover"
-              boxSize={{ base: "8rem", md: "10rem", lg: "13rem" }}
-              src="https://bit.ly/sage-adebayo"
-              alt="Segun Adebayo"
-            />
+            <Avatar size="2xl" src={imageURL ? imageURL : ""} />
 
             <Stack mx={["15", "7"]}>
               <Heading fontSize={{ base: "25px", md: "27px" }}>
