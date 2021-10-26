@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NextLink from "next/link";
 import {
   Box,
@@ -12,8 +12,13 @@ import {
   LinkBox,
   LinkOverlay,
   Skeleton,
+  useToast,
 } from "@chakra-ui/react";
 import { FaPlus, FaHeart } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { handleLike, likeHandler } from "../../../store/posts/postSlice";
+import { auth } from "../../../firebase/firebase";
+import { useSelector } from "react-redux";
 function PostCard({
   createdAt,
   description,
@@ -23,15 +28,34 @@ function PostCard({
   tags,
   imageURL,
   postId,
+  user,
+  id,
+  post,
 }) {
-  //TODO: fetch user details from userId
-  const sampleUser = {
-    username: "Bruce Lee",
-    imageURL: "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-  };
-  function handleLike() {
-    //TODO: send a post request with the postId to /users/${userId}/likedPosts
-    //TODO: send the currentUser uid to /posts/${postId}/likes
+  const [likeError, setLikeError] = useState("");
+  const likeStatus = useSelector((state) => state.posts.likeStatus);
+  const dispatch = useDispatch();
+  const toast = useToast();
+  useEffect(() => {
+    if (likeError) {
+      toast({
+        title: likeError,
+        position: "top",
+        duration: 3000,
+        status: "error",
+        variant: "subtle",
+      });
+      setLikeError("");
+    }
+  }, [likeError, toast]);
+  function handleLikeClick() {
+    if (auth.currentUser && likeStatus !== "loading") {
+      dispatch(handleLike({ postId: id, userId: auth.currentUser.uid }));
+      dispatch(likeHandler({ post, userId: auth.currentUser.uid }));
+      // dispatch(favHandler(post));
+    } else if (!auth.currentUser) {
+      setLikeError("Login first!");
+    }
   }
   return (
     <LinkBox bg="secondary.main" _hover={{ transform: "scale(1.01)" }}>
@@ -40,6 +64,7 @@ function PostCard({
         h={imageURL ? { md: "37.87rem", base: "30rem" } : "15.1rem"}
         maxH="37.875rem"
         maxW={{ md: "21.8rem", base: "auto" }}
+        w={{ md: "21.8rem", base: "auto" }}
         borderRadius="lg"
       >
         {imageURL && (
@@ -54,6 +79,7 @@ function PostCard({
             />
           </Box>
         )}
+
         <Stack px="4" py="2" flexBasis="40%" bg="white">
           <HStack justify="space-between">
             <NextLink href={`posts/${postId}`}>
@@ -72,7 +98,7 @@ function PostCard({
               _active={{ bg: "primary.lighter" }}
             />
           </HStack>
-          <Stack>
+          <Stack pb="3" justify="space-between" h="100%">
             <Text fontWeight="light" noOfLines={2}>
               {description}
             </Text>
@@ -97,23 +123,27 @@ function PostCard({
             <HStack justify="space-between">
               <NextLink href={`account/${userId}`}>
                 <HStack _hover={{ opacity: "0.8" }}>
-                  <Avatar
-                    cursor={"pointer"}
-                    size="sm"
-                    src="https://randomuser.me/api/portraits/thumb/men/75.jpg"
-                  />
-                  <Text> {sampleUser.username} </Text>
+                  <Avatar cursor={"pointer"} size="sm" src={user.imageURL} />
+                  <Text> {user.username} </Text>
                 </HStack>
               </NextLink>
               <HStack>
                 <Text> {likes.length} </Text>
                 <IconButton
-                  // TODO: check if the current user.likes array includes the postId if false then the icon color will be white
                   // eslint-disable-next-line react/no-children-prop
-                  children={<FaHeart size="19" color="red" />}
+                  children={
+                    <FaHeart
+                      size="19"
+                      color={
+                        auth.currentUser && likes.includes(auth.currentUser.uid)
+                          ? "red"
+                          : "white"
+                      }
+                    />
+                  }
                   bg="#4D7AB6"
                   size="sm"
-                  onClick={handleLike}
+                  onClick={handleLikeClick}
                   borderRadius="50%"
                   _hover={{ bg: "#456da3" }}
                   _active={{ bg: "#5e87bd" }}

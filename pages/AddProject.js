@@ -32,10 +32,10 @@ import { InfoOutlineIcon } from "@chakra-ui/icons";
 import { auth, storage } from "../firebase/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "@firebase/storage";
 import { useDispatch } from "react-redux";
-import { submitPost } from "../store/posts/postsSlice";
+import { submitPost } from "../store/posts/postSlice";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/dist/client/router";
-import { resetPostStatus } from "../store/posts/postsSlice";
+import { resetPostStatus } from "../store/posts/postSlice";
 
 export default function AddProject() {
   const [tagsArray, setTagsArray] = useState([]);
