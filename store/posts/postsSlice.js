@@ -12,12 +12,15 @@ const postsSlice = createSlice({
   name: "posts",
   initialState: {
     list: [],
-    status: null,
+    status: "",
   },
 
   reducers: {
     addPost(state, action) {
       state.list = action.payload;
+    },
+    resetPostStatus(state, action) {
+      state.postStatus = "";
     },
   },
 
@@ -36,4 +39,5 @@ const postsSlice = createSlice({
   },
 });
 
+export const { resetPostStatus } = postsSlice.actions;
 export default postsSlice.reducer;
