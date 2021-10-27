@@ -19,6 +19,7 @@ import {
   InputRightElement,
   Flex,
   Image as ChakraImage,
+  IconButton,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useRouter as router } from "next/dist/client/router";
@@ -33,14 +34,26 @@ import { collection, doc, getDoc, onSnapshot } from "@firebase/firestore";
 import { auth, db } from "../../firebase/firebase";
 import moment from "moment";
 import PostOptionsMenu from "../../components/PostOptionsMenu";
+import { getComments, postComment } from "../../store/comments/commentSlice";
+import Comment from "../../components/Comment";
+import { Form, Formik } from "formik";
+import * as Yup from "yup";
+import ChakraInput from "../../components/Shared/ChakraInput";
 
-export default function Index({ post, user }) {
+export default function Index({ post, user, some }) {
   const { t } = useTranslation("postId");
   const [joinBtn, setJoinBtn] = useState(false);
   const likeStatus = useSelector((state) => state.posts.likeStatus);
-  const [commentValue, setCommentValue] = useState("");
+  const [comments, setComments] = useState(some);
+  // const [comments, setComments] = useState([]);
   const dispatch = useDispatch();
-
+  // console.log(comments);
+  const validationSchema = Yup.object({
+    comment: Yup.string()
+      .required("Write a comment")
+      .trim()
+      .min(1, "Comments can not be empty"),
+  });
   function handleLikeClick() {
     if (likeStatus !== "loading" && auth.currentUser) {
       dispatch(handleLike({ postId: post.id, userId: auth.currentUser.uid }));
@@ -54,10 +67,10 @@ export default function Index({ post, user }) {
       }
     }
   }
-  function handleComments() {
-    if (commentValue.trim().length > 0) {
+  function handleComments(value, onSubmitProps) {
+    {
       const newComment = {
-        content: commentValue.trim(),
+        content: value.comment.trim(),
         userId: auth.currentUser.uid,
         createdAt: new Date(),
         postId: post.id,
@@ -65,6 +78,15 @@ export default function Index({ post, user }) {
         username: auth.currentUser.displayName,
         userImage: auth.currentUser.photoURL,
       };
+      setComments((c) => [newComment, ...c]);
+
+      dispatch(
+        postComment({
+          postId: post.id,
+          comment: newComment,
+        })
+      );
+      onSubmitProps.resetForm();
     }
   }
   return (
@@ -148,28 +170,38 @@ export default function Index({ post, user }) {
 
               <Text color="lightPurple">{post.likes.length}</Text>
             </HStack>
-
-            <InputGroup>
-              <Input
-                borderBottomWidth="2px"
-                borderColor="#5D5FEF"
-                variant="flushed"
-                size="lg"
-                placeholder="write a comment"
-                onChange={(e) => setCommentValue(e.target.value)}
-                value={commentValue}
-              />
-              <InputRightElement
-                onClick={handleComments}
-                _hover={{ bg: "gray.100" }}
-                borderRadius="xl"
-                cursor="pointer"
-                //eslint-disable-next-line
-                children={<RiSendPlaneFill size="23" color="#5D5FEF" />}
-              />
-            </InputGroup>
+            <Formik
+              validationSchema={validationSchema}
+              initialValues={{ comment: "" }}
+              onSubmit={handleComments}
+            >
+              <Form>
+                <InputGroup>
+                  <HStack w="100%" justify="space-between">
+                    <ChakraInput
+                      variant="flushed"
+                      placeholder="write a comment"
+                      name="comment"
+                      borderColor="#5D5FEF"
+                    />
+                    <IconButton
+                      _hover={{ bg: "gray.100" }}
+                      borderRadius="xl"
+                      bg="transparent"
+                      cursor="pointer"
+                      type="submit"
+                      //eslint-disable-next-line
+                      children={<RiSendPlaneFill size="23" color="#5D5FEF" />}
+                    />
+                  </HStack>
+                </InputGroup>{" "}
+              </Form>
+            </Formik>
           </Stack>
         </Box>
+        {comments.map((comm) => (
+          <Comment key={comm.id} sampleComment={comm} />
+        ))}
       </Stack>
     </Flex>
   );
@@ -186,11 +218,13 @@ export const getServerSideProps = wrapper.getServerSideProps(
         ...user,
         createdAt: moment(user.createdAt.toDate()).calendar(),
       };
-
+      await store.dispatch(getComments(post.id));
+      const comments = store.getState().comments.comments.data;
       return {
         props: {
           post,
           user: newUser,
+          some: comments,
           ...(await serverSideTranslations(locale, ["postId"])),
         },
       };
