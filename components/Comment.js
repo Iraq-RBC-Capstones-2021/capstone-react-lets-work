@@ -42,7 +42,7 @@ function Comment({ sampleComment }) {
     <Box
       bg="white"
       // w={["90%", "90%", "50%", "35%"]}
-      w="38%"
+      w={{ lg: "40%", base: "60%" }}
       p="2"
       m="5"
       rounded="xl"
@@ -50,7 +50,7 @@ function Comment({ sampleComment }) {
     >
       <VStack align="flex-start">
         <Flex w="100%" wrap="wrap" justify="space-between" align="center">
-          <HStack>
+          <HStack spacing="0">
             <Avatar size="sm" src={sampleComment.userImage} mr="2">
               <AvatarBadge boxSize="1em" bg="green.500" />
             </Avatar>
@@ -62,14 +62,10 @@ function Comment({ sampleComment }) {
               {sampleComment.username}
             </Text>
           </HStack>
-          <Text fontSize="sm" fontWeight="light">
-            {" "}
-            {moment(sampleComment.createdAt).fromNow()}
-          </Text>
         </Flex>
         <Text
           w="100%"
-          fontSize={{ base: "10px", md: "14" }}
+          fontSize={{ base: "md", md: "md" }}
           fontWeight="medium"
           color="#5D6F88"
           paddingX="10px"
@@ -107,6 +103,10 @@ function Comment({ sampleComment }) {
               {sampleComment.likes.length}
             </Text>
           </HStack>
+          <Text fontSize="xs" fontWeight="light">
+            {" "}
+            {moment(sampleComment.createdAt).fromNow()}
+          </Text>
         </Flex>
       </VStack>
     </Box>

@@ -50,7 +50,7 @@ export default function Index({ post, user, some }) {
   // console.log(comments);
   const validationSchema = Yup.object({
     comment: Yup.string()
-      .required("Write a comment")
+      .required("")
       .trim()
       .min(1, "Comments can not be empty"),
   });
@@ -90,14 +90,14 @@ export default function Index({ post, user, some }) {
     }
   }
   return (
-    <Flex justify="center">
+    <Flex mt={{ base: "6", md: "" }} align="center" justify="center">
       <Stack
         p={{ md: "6", base: "0" }}
         dir={router().locale === "ar" ? "rtl" : "ltr"}
       >
         <Box
           maxW="780px"
-          w="full"
+          minW={{ base: "300px", md: "600px", lg: "780px" }}
           bg="white"
           rounded="15px"
           p="6"
@@ -135,7 +135,7 @@ export default function Index({ post, user, some }) {
               />
             </Box>
           )}
-          <HStack>
+          <HStack mt={post.imageURL || "6"}>
             {post.tags.map((tag) => (
               <Badge
                 textTransform="auto"
@@ -172,33 +172,35 @@ export default function Index({ post, user, some }) {
 
               <Text color="lightPurple">{post.likes.length}</Text>
             </HStack>
-            <Formik
-              validationSchema={validationSchema}
-              initialValues={{ comment: "" }}
-              onSubmit={handleComments}
-            >
-              <Form>
-                <InputGroup>
-                  <HStack w="100%" justify="space-between">
-                    <ChakraInput
-                      variant="flushed"
-                      placeholder="write a comment"
-                      name="comment"
-                      borderColor="#5D5FEF"
-                    />
-                    <IconButton
-                      _hover={{ bg: "gray.100" }}
-                      borderRadius="xl"
-                      bg="transparent"
-                      cursor="pointer"
-                      type="submit"
-                      //eslint-disable-next-line
-                      children={<RiSendPlaneFill size="23" color="#5D5FEF" />}
-                    />
-                  </HStack>
-                </InputGroup>{" "}
-              </Form>
-            </Formik>
+            {auth.currentUser && (
+              <Formik
+                validationSchema={validationSchema}
+                initialValues={{ comment: "" }}
+                onSubmit={handleComments}
+              >
+                <Form>
+                  <InputGroup>
+                    <HStack w="100%" justify="space-between">
+                      <ChakraInput
+                        variant="flushed"
+                        placeholder="Write a comment"
+                        name="comment"
+                        borderColor="#5D5FEF"
+                      />
+                      <IconButton
+                        _hover={{ bg: "gray.100" }}
+                        borderRadius="xl"
+                        bg="transparent"
+                        cursor="pointer"
+                        type="submit"
+                        //eslint-disable-next-line
+                        children={<RiSendPlaneFill size="23" color="#5D5FEF" />}
+                      />
+                    </HStack>
+                  </InputGroup>{" "}
+                </Form>
+              </Formik>
+            )}
           </Stack>
         </Box>
         {comments.map((comm) => (
