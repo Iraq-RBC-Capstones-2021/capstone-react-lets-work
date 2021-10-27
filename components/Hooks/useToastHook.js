@@ -6,7 +6,7 @@ const useToastHook = (request, resetToast) => {
   const dispatch = useDispatch();
   const toast = useToast();
   useEffect(() => {
-    if (request.status === "fail") {
+    if (request.status === "fail" || request.status === "error") {
       toast({
         title: request.error,
         status: "error",

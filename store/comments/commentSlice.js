@@ -62,7 +62,6 @@ const commentSlice = createSlice({
       state.comments.status = "loading";
     },
     [getComments.rejected]: (state, action) => {
-      console.log(action.error.message);
       state.comments.status = "error";
     },
     [handleCommentLike.fulfilled]: (state, action) => {
@@ -72,7 +71,6 @@ const commentSlice = createSlice({
       state.likeStatus = "loading";
     },
     [handleCommentLike.rejected]: (state, action) => {
-      console.log(action.error.message);
       state.likeStatus = "error";
     },
   },

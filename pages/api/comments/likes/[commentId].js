@@ -16,7 +16,6 @@ export default async function handler(req, res) {
       const currentComment = await (
         await getDoc(doc(db, `posts/${postId}/comments`, commentId))
       ).data();
-      console.log(currentComment);
       if (!currentComment.likes.includes(userId)) {
         await updateDoc(doc(db, `posts/${postId}/comments`, commentId), {
           likes: arrayUnion(userId),
@@ -29,7 +28,6 @@ export default async function handler(req, res) {
         res.status(200).json("success");
       }
     } catch (err) {
-      console.log(err);
       res.status(404).end();
     }
   }

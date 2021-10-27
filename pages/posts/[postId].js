@@ -112,7 +112,9 @@ export default function Index({ post, user, some }) {
               <Button rounded="15px" onClick={() => setJoinBtn(!joinBtn)}>
                 {joinBtn ? t("joined") : t("join")}
               </Button>
-              {auth.currentUser?.uid === post.userId && <PostOptionsMenu />}
+              {auth.currentUser?.uid === post.userId && (
+                <PostOptionsMenu postId={post.id} />
+              )}
             </HStack>
             <AvatarCollection users={post.users} />
 
@@ -210,23 +212,29 @@ export default function Index({ post, user, some }) {
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
     async ({ locale, params }) => {
-      const { postId } = params;
-      await store.dispatch(getSinglePost(postId));
-      const post = store.getState().posts.singlePost.data;
-      const user = await (await getDoc(doc(db, "users", post.userId))).data();
-      const newUser = {
-        ...user,
-        createdAt: moment(user.createdAt.toDate()).calendar(),
-      };
-      await store.dispatch(getComments(post.id));
-      const comments = store.getState().comments.comments.data;
-      return {
-        props: {
-          post,
-          user: newUser,
-          some: comments,
-          ...(await serverSideTranslations(locale, ["postId"])),
-        },
-      };
+      try {
+        const { postId } = params;
+        await store.dispatch(getSinglePost(postId));
+        const post = store.getState().posts.singlePost.data;
+        const user = await (await getDoc(doc(db, "users", post.userId))).data();
+        const newUser = {
+          ...user,
+          createdAt: moment(user.createdAt.toDate()).calendar(),
+        };
+        await store.dispatch(getComments(post.id));
+        const comments = store.getState().comments.comments.data;
+        return {
+          props: {
+            post,
+            user: newUser,
+            some: comments,
+            ...(await serverSideTranslations(locale, ["postId"])),
+          },
+        };
+      } catch (err) {
+        return {
+          notFound: true,
+        };
+      }
     }
 );

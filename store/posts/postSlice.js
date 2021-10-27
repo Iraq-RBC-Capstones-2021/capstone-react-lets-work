@@ -127,6 +127,12 @@ export const getSinglePost = createAsyncThunk(
     return newPost;
   }
 );
+export const deletePost = createAsyncThunk(
+  "deletePost/posts",
+  async (postId) => {
+    await axios.delete(`/api/posts/${postId}`);
+  }
+);
 
 export const handleLike = createAsyncThunk(
   "handleLike/posts",
@@ -150,6 +156,7 @@ const postSlice = createSlice({
     status: "",
     list: [],
     singlePost: { status: "", data: [] },
+    deletePostStatus: "",
   },
   reducers: {
     setLastTopPost(state, action) {
@@ -174,6 +181,9 @@ const postSlice = createSlice({
 
     resetPostStatus(state, action) {
       state.status = "";
+    },
+    resetEditStatus(state) {
+      state.deletePostStatus = "";
     },
     likeHandler(state, action) {
       const { post, userId } = action.payload;
@@ -285,6 +295,17 @@ const postSlice = createSlice({
     [submitPost.rejected]: (state) => {
       state.status = "error";
     },
+    [deletePost.pending]: (state) => {
+      state.deletePostStatus = "loading";
+    },
+
+    [deletePost.fulfilled]: (state) => {
+      state.deletePostStatus = "success";
+    },
+
+    [deletePost.rejected]: (state) => {
+      state.deletePostStatus = "error";
+    },
   },
 });
 export const {
@@ -294,5 +315,6 @@ export const {
   setLastFavPost,
   favHandler,
   resetPostStatus,
+  resetEditStatus,
 } = postSlice.actions;
 export default postSlice.reducer;
