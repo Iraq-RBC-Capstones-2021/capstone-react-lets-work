@@ -18,12 +18,13 @@ import {
   PopoverTrigger,
   PopoverBody,
   PopoverArrow,
+  useToast,
   Image as ChakraImage,
 } from "@chakra-ui/react";
 import { FiSend, FiImage } from "react-icons/fi";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
-import React from "react";
+import React, { useEffect } from "react";
 import ChakraInput from "../components/Shared/ChakraInput";
 import { useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
@@ -31,11 +32,46 @@ import { InfoOutlineIcon } from "@chakra-ui/icons";
 import { auth, storage } from "../firebase/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "@firebase/storage";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useDispatch } from "react-redux";
+import { submitPost } from "../store/posts/postSlice";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/dist/client/router";
+import { resetPostStatus } from "../store/posts/postSlice";
 
 export default function AddProject() {
   const [tagsArray, setTagsArray] = useState([]);
   const [tagsValue, setTagsValue] = useState("");
   const [imageURL, setImageURL] = useState("");
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const toast = useToast();
+  const postStatus = useSelector((state) => state.posts.status);
+  console.log(postStatus);
+
+  useEffect(() => {
+    if (postStatus === "error") {
+      toast({
+        title: "The post could not be added. Please try again.",
+        status: "error",
+        variant: "subtle",
+        position: "top",
+        duration: 3000,
+      });
+    }
+
+    if (postStatus === "success") {
+      toast({
+        title: "The post was added successfully.",
+        status: "success",
+        variant: "subtle",
+        position: "top",
+        duration: 3000,
+      });
+      router.push("/");
+    }
+    return () => dispatch(resetPostStatus());
+  }, [postStatus, toast, router, dispatch]);
+
   const handleTagsArray = (e) => {
     if (e.keyCode === 13) {
       e.preventDefault();
@@ -117,10 +153,8 @@ export default function AddProject() {
       title: value.projectName,
       description: value.description,
       userId: auth.currentUser?.uid,
-      username: auth.currentUser?.displayName,
-      userImage: auth.currentUser?.photoURL,
     };
-    //TODO: send a post request with the postData.
+    dispatch(submitPost(postData));
     setTagsArray([]);
     setImageURL("");
     onSubmitProps.resetForm();
