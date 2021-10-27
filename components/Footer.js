@@ -14,10 +14,35 @@ import {
   Input,
   Button,
   InputGroup,
+  FormControl,
 } from "@chakra-ui/react";
 import { PhoneIcon, AtSignIcon } from "@chakra-ui/icons";
-import Image from "next/image";
+import React, { useRef } from "react";
+import emailjs from "emailjs-com";
+
 function Footer() {
+  const form = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm(
+        "service_th0e88m",
+        "template_rd6cisi",
+        e.target,
+        "user_KhJ47OC9g6wyXA1O4IWuR"
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
+    e.target.reset();
+  };
   return (
     <Flex
       bg="#1C3341"
@@ -101,21 +126,40 @@ function Footer() {
           <Heading fontSize={{ base: "35px", md: "30px" }}>Contact us</Heading>
           <Text>Send us messages</Text>
           <InputGroup w={{ base: "15rem", lg: "auto" }}>
-            <Stack
-              width={("sm", "sm", "sm", "xs")}
-              display={["flow", "flow", "flex"]}
-            >
-              <Input variant="filled" placeholder="Name" />
-              <Input variant="filled" placeholder="Email" />
-              <Input
-                as={Textarea}
-                variant="filled"
-                placeholder="Your Message"
-              />
-              <Button bg="blue.400" variant="primary" width="100%">
-                Submit
-              </Button>
-            </Stack>
+            <form ref={form} onSubmit={sendEmail}>
+              <Stack
+                width={("sm", "sm", "sm", "xs")}
+                display={["flow", "flow", "flex"]}
+              >
+                <Input
+                  variant="filled"
+                  placeholder="Name"
+                  type="text"
+                  name="user_name"
+                />
+                <Input
+                  variant="filled"
+                  placeholder="Email"
+                  type="email"
+                  name="email"
+                />
+                <Input
+                  as={Textarea}
+                  variant="filled"
+                  placeholder="Your Message"
+                  name="message"
+                />
+                <Button
+                  bg="blue.400"
+                  variant="primary"
+                  width="100%"
+                  type="submit"
+                  value="Send"
+                >
+                  Submit
+                </Button>
+              </Stack>
+            </form>
           </InputGroup>
         </Stack>
       </Box>
