@@ -13,11 +13,9 @@ import {
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/dist/client/router";
-import { useState } from "react";
 
-const Sort = () => {
+const Sort = ({ setSortOption, sortOption }) => {
   const { t } = useTranslation("search");
-  const [sortOption, setSortOption] = useState("latest");
   const { locale } = useRouter();
 
   const handleSortChange = (value) => {

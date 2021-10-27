@@ -39,6 +39,8 @@ export default function Search({ users }) {
   const dispatch = useDispatch();
   const { data, status } = useSelector((state) => state.posts.allPosts);
   const [searchValue, setSearchValue] = useState("");
+  const [sortOption, setSortOption] = useState("latest");
+  const [posts, setPosts] = useState([]);
   const [geoLocation, setGeolocation] = useState({
     latidute: 0,
     longtitude: 0,
@@ -48,14 +50,40 @@ export default function Search({ users }) {
     dispatch(getAllPosts());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  useEffect(() => {
+    dispatch(getAllPosts());
+    if (status === "success") {
+      setPosts(data);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status]);
 
   function handleChangeSearch(event) {
     setSearchValue(event.target.value);
   }
 
-  const filteredPosts = data.filter((post) => {
-    return post.title.toLowerCase().includes(searchValue.toLowerCase());
-  });
+  const sortFilter = (posts) => {
+    switch (sortOption) {
+      case "latest" || "oldest":
+        return posts.sort((a, b) => {
+          let dateA = new Date(a.createdAt).getTime();
+          let dateB = new Date(b.createdAt).getTime();
+          if (sortOption === "oldest") return dateA > dateB ? 1 : -1;
+          return dateA < dateB ? 1 : -1;
+        });
+
+      case "most":
+        return posts.sort((a, b) => b.likesCount - a.likesCount);
+      default:
+        return posts;
+    }
+  };
+
+  const filteredPosts = sortFilter(
+    posts.filter((post) => {
+      return post.title.toLowerCase().includes(searchValue.toLowerCase());
+    })
+  );
 
   return (
     <Box w="100%" bg="secondary.main" py={4}>
@@ -65,7 +93,7 @@ export default function Search({ users }) {
           <Center>
             <InputGroup size="md" mr={8}>
               <InputLeftElement height="100%">
-                <Sort />
+                <Sort setSortOption={setSortOption} sortOption={sortOption} />
               </InputLeftElement>
               <Input
                 dir={locale === "ar" ? "rtl" : "ltr"}

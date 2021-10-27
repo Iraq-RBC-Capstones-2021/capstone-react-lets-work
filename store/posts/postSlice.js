@@ -46,16 +46,19 @@ export const getTopProjects = createAsyncThunk(
 );
 
 export const getAllPosts = createAsyncThunk("getAllPosts/posts", async () => {
-  try {
-    let posts = [];
-    const querySnapshot = await getDocs(collection(db, "posts"));
-    querySnapshot.forEach((doc) => {
-      posts.push(doc.data());
-    });
-    return posts;
-  } catch (err) {
-    console.log(err);
-  }
+  let posts = [];
+  const querySnapshot = await getDocs(collection(db, "posts"));
+  querySnapshot.forEach((doc) => {
+    posts.push(doc.data());
+  });
+  posts = posts.map((post) => {
+    return {
+      ...post,
+      createdAt: moment(post.createdAt.toDate()).format("YYYY-MM-DD HH:mm"),
+    };
+  });
+
+  return posts;
 });
 
 export const getMostRecentProjects = createAsyncThunk(
