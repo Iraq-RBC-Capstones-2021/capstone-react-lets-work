@@ -122,12 +122,15 @@ export const getStaticProps = wrapper.getStaticProps(
             users: newUsers,
             initialTopPosts: topPosts,
             initialMostRecentPosts: mostRecentPosts,
-            ...(await serverSideTranslations(locale, ["home"])),
+            ...(await serverSideTranslations(locale, ["home", "navbar"])),
           },
           revalidate: 10,
         };
       } catch (err) {
         return {
+          props: {
+            ...(await serverSideTranslations(locale, ["home", "navbar"])),
+          },
           notFound: true,
         };
       }
