@@ -4,17 +4,20 @@ import {
   MenuList,
   MenuItem,
   IconButton,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
 import { HiDotsVertical } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePost, resetEditStatus } from "../store/posts/postSlice";
 import { useToastHook } from "./Hooks/useToastHook";
+import Modal from "./Shared/Modal";
 
 export default function PostOptionsMenu({ postId }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const deleteStatus = useSelector((state) => state.posts.deletePostStatus);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   useToastHook(
     {
       status: deleteStatus,
@@ -39,11 +42,19 @@ export default function PostOptionsMenu({ postId }) {
         rounded="100"
       />
       <MenuList>
-        <MenuItem>Edit Post</MenuItem>
-        <MenuItem onClick={handleDelete} textColor="red.500">
+        <MenuItem onClick={() => router.push(`/posts/edit/${postId}`)}>
+          Edit Post
+        </MenuItem>
+        <MenuItem onClick={onOpen} textColor="red.500">
           Delete Post
         </MenuItem>
       </MenuList>
+      <Modal
+        status={deleteStatus}
+        handleDelete={handleDelete}
+        onClose={onClose}
+        isOpen={isOpen}
+      />
     </Menu>
   );
 }

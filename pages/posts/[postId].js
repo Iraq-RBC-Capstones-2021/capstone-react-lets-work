@@ -1,10 +1,8 @@
-import Image from "next/image";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { BsHeartFill, BsHeart } from "react-icons/bs";
 import AvatarCollection from "../../components/AvatarCollection";
 import {
   Box,
-  Center,
   Heading,
   Text,
   Stack,
@@ -14,46 +12,56 @@ import {
   Spacer,
   Icon,
   Badge,
-  Input,
   InputGroup,
-  InputRightElement,
   Flex,
   Image as ChakraImage,
   IconButton,
+  Skeleton,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useRouter as router } from "next/dist/client/router";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { useTranslation } from "next-i18next";
 import { wrapper } from "../../store";
-import { async } from "@firebase/util";
 import { getSinglePost, handleLike } from "../../store/posts/postSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserProfileData } from "../../store/user/userSlice";
-import { collection, doc, getDoc, onSnapshot } from "@firebase/firestore";
+import { doc, getDoc } from "@firebase/firestore";
 import { auth, db } from "../../firebase/firebase";
 import moment from "moment";
 import PostOptionsMenu from "../../components/PostOptionsMenu";
-import { getComments, postComment } from "../../store/comments/commentSlice";
+import {
+  getComments,
+  postComment,
+  resetCommentStatus,
+} from "../../store/comments/commentSlice";
 import Comment from "../../components/Comment";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import ChakraInput from "../../components/Shared/ChakraInput";
+import { useToastHook } from "../../components/Hooks/useToastHook";
 
 export default function Index({ post, user, some }) {
   const { t } = useTranslation("postId");
   const [joinBtn, setJoinBtn] = useState(false);
   const likeStatus = useSelector((state) => state.posts.likeStatus);
+  const postCommentStatus = useSelector(
+    (state) => state.comments.postCommentStatus
+  );
   const [comments, setComments] = useState(some);
-  // const [comments, setComments] = useState([]);
   const dispatch = useDispatch();
-  // console.log(comments);
   const validationSchema = Yup.object({
     comment: Yup.string()
       .required("")
       .trim()
       .min(1, "Comments can not be empty"),
   });
+  useToastHook(
+    {
+      status: postCommentStatus,
+      error: "Something went wrong",
+    },
+    resetCommentStatus
+  );
   function handleLikeClick() {
     if (likeStatus !== "loading" && auth.currentUser) {
       dispatch(handleLike({ postId: post.id, userId: auth.currentUser.uid }));
@@ -78,7 +86,7 @@ export default function Index({ post, user, some }) {
         username: auth.currentUser.displayName,
         userImage: auth.currentUser.photoURL,
       };
-      setComments((c) => [newComment, ...c]);
+      setComments((prevComments) => [newComment, ...prevComments]);
 
       dispatch(
         postComment({
@@ -132,6 +140,7 @@ export default function Index({ post, user, some }) {
                 alt=""
                 height="100%"
                 width="100%"
+                fallbackSrc={<Skeleton h="100%" />}
               />
             </Box>
           )}
@@ -188,6 +197,7 @@ export default function Index({ post, user, some }) {
                         borderColor="#5D5FEF"
                       />
                       <IconButton
+                        isLoading={postCommentStatus === "loading"}
                         _hover={{ bg: "gray.100" }}
                         borderRadius="xl"
                         bg="transparent"

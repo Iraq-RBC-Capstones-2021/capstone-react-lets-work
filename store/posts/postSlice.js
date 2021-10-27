@@ -133,6 +133,12 @@ export const deletePost = createAsyncThunk(
     await axios.delete(`/api/posts/${postId}`);
   }
 );
+export const editPost = createAsyncThunk(
+  "editPost/posts",
+  async ({ postId, post }) => {
+    await axios.put(`/api/posts/${postId}`, post);
+  }
+);
 
 export const handleLike = createAsyncThunk(
   "handleLike/posts",
@@ -142,6 +148,7 @@ export const handleLike = createAsyncThunk(
     });
   }
 );
+
 const postSlice = createSlice({
   name: "posts",
   initialState: {
@@ -157,6 +164,7 @@ const postSlice = createSlice({
     list: [],
     singlePost: { status: "", data: [] },
     deletePostStatus: "",
+    editPostStatus: "",
   },
   reducers: {
     setLastTopPost(state, action) {
@@ -184,6 +192,7 @@ const postSlice = createSlice({
     },
     resetEditStatus(state) {
       state.deletePostStatus = "";
+      state.editPostStatus = "";
     },
     likeHandler(state, action) {
       const { post, userId } = action.payload;
@@ -305,6 +314,17 @@ const postSlice = createSlice({
 
     [deletePost.rejected]: (state) => {
       state.deletePostStatus = "error";
+    },
+    [editPost.pending]: (state) => {
+      state.editPostStatus = "loading";
+    },
+
+    [editPost.fulfilled]: (state) => {
+      state.editPostStatus = "success";
+    },
+
+    [editPost.rejected]: (state) => {
+      state.editPostStatus = "error";
     },
   },
 });

@@ -16,7 +16,7 @@ const useToastHook = (request, resetToast) => {
       });
       dispatch(resetToast());
     }
-    if (request.status === "success") {
+    if (request.status === "success" && request.success) {
       toast({
         title: request.success,
         status: "success",
