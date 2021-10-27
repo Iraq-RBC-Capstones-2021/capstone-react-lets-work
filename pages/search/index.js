@@ -13,6 +13,7 @@ import {
   PopoverContent,
   PopoverArrow,
   PopoverCloseButton,
+  Skeleton,
   Box,
 } from "@chakra-ui/react";
 import { Search2Icon } from "@chakra-ui/icons";
@@ -27,51 +28,13 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import GetGeoLocation from "../../components/GeoLocation/GetGeoLocation";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllPosts } from "../../store/posts/postSlice";
+import { collection, getDocs } from "@firebase/firestore";
+import { db } from "../../firebase/firebase";
+import moment from "moment";
 
-export default function Search() {
+export default function Search({ users }) {
   const { t } = useTranslation("search");
   const { locale } = useRouter();
-
-  const postSample = [
-    {
-      createdAt: "posted 12/12/2021",
-      description:
-        "Hidden universe revealed in stunning first images from German telescope",
-      imageURL: "https://source.unsplash.com/random",
-      isCompleted: "false",
-      likes: ["userId", "userId"],
-      tags: ["Design", "Rocket", "Telescope"],
-      title: "Coding challenge",
-      userId: "",
-      postId: "1",
-    },
-
-    {
-      createdAt: "12/12/2021",
-      description:
-        "Hidden universe revealed in stunning first images from German telescope",
-      imageURL: "https://source.unsplash.com/random/2",
-      isCompleted: "false",
-      likes: ["userId"],
-      tags: ["Design", "Rocket", "Telescope"],
-      title: "Coding challenge",
-      userId: "",
-      postId: "2",
-    },
-
-    {
-      createdAt: "12/12/2021",
-      description:
-        "Hidden universe revealed in stunning first images from German telescope Hidden universe revealed in stunning first images from German telescope",
-      imageURL: "",
-      isCompleted: "false",
-      likes: ["userId", "userId", "userId", "userId"],
-      tags: ["Design", "Rocket", "Telescope"],
-      title: "Health Care System",
-      userId: "",
-      postId: "3",
-    },
-  ];
 
   const dispatch = useDispatch();
   const { data, status } = useSelector((state) => state.posts.allPosts);
@@ -86,12 +49,11 @@ export default function Search() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(data);
   function handleChangeSearch(event) {
     setSearchValue(event.target.value);
   }
 
-  const filteredPosts = postSample.filter((post) => {
+  const filteredPosts = data.filter((post) => {
     return post.title.toLowerCase().includes(searchValue.toLowerCase());
   });
 
@@ -157,15 +119,37 @@ export default function Search() {
           </Center>
         </Container>
       </Stack>
-      {/* <PostList list="" posts={filteredPosts} /> */}
+      <PostList list="" posts={filteredPosts} users={users} />
     </Box>
   );
 }
 
 export async function getStaticProps({ locale }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ["search", "navbar"])),
-    },
-  };
+  try {
+    const users = await (
+      await getDocs(collection(db, "users"))
+    ).docs.map((user) => {
+      return user.data();
+    });
+    const newUsers = users.map((user) => {
+      return {
+        ...user,
+        createdAt: moment(user.createdAt.toDate()).calendar(),
+      };
+    });
+    return {
+      props: {
+        users: newUsers,
+        ...(await serverSideTranslations(locale, ["search", "navbar"])),
+      },
+    };
+  } catch (err) {
+    return {
+      props: {
+        users: [],
+        ...(await serverSideTranslations(locale, ["search", "navbar"])),
+      },
+      notFound: true,
+    };
+  }
 }

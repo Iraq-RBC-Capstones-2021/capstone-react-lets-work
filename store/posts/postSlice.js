@@ -46,12 +46,16 @@ export const getTopProjects = createAsyncThunk(
 );
 
 export const getAllPosts = createAsyncThunk("getAllPosts/posts", async () => {
-  let posts = [];
-  const querySnapshot = await getDocs(collection(db, "posts"));
-  querySnapshot.forEach((doc) => {
-    posts.push(doc.data());
-  });
-  return posts;
+  try {
+    let posts = [];
+    const querySnapshot = await getDocs(collection(db, "posts"));
+    querySnapshot.forEach((doc) => {
+      posts.push(doc.data());
+    });
+    return posts;
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 export const getMostRecentProjects = createAsyncThunk(
