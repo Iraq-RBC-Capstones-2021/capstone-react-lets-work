@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../firebase/firebase";
 import { handleCommentLike } from "../store/comments/commentSlice";
 
-function Comment({ sampleComment }) {
+function Comment({ sampleComment, postUser }) {
   const [showMore, setShowMore] = useState(false);
   const dispatch = useDispatch();
   const likeStatus = useSelector((state) => state.comments.likeStatus);
@@ -41,7 +41,6 @@ function Comment({ sampleComment }) {
   return (
     <Box
       bg="white"
-      // w={["90%", "90%", "50%", "35%"]}
       w={{ lg: "40%", base: "60%" }}
       p="2"
       m="5"
@@ -54,13 +53,20 @@ function Comment({ sampleComment }) {
             <Avatar size="sm" src={sampleComment.userImage} mr="2">
               <AvatarBadge boxSize="1em" bg="green.500" />
             </Avatar>
-            <Text
-              fontSize={{ base: "10px", md: "14px" }}
-              color="#3F3B3B"
-              fontWeight="bold"
-            >
-              {sampleComment.username}
-            </Text>
+            <VStack align="flex-start" spacing="0">
+              <Text
+                fontSize={{ base: "10px", md: "14px" }}
+                color="#3F3B3B"
+                fontWeight="bold"
+              >
+                {sampleComment.username}
+              </Text>
+              {sampleComment.userId === postUser && (
+                <Text fontWeight="light" fontSize="11px">
+                  author{" "}
+                </Text>
+              )}
+            </VStack>
           </HStack>
         </Flex>
         <Text

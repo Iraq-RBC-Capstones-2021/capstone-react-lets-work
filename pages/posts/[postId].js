@@ -204,7 +204,7 @@ export default function Index({ post, user, some }) {
           </Stack>
         </Box>
         {comments.map((comm) => (
-          <Comment key={comm.id} sampleComment={comm} />
+          <Comment key={comm.id} postUser={post.userId} sampleComment={comm} />
         ))}
       </Stack>
     </Flex>
