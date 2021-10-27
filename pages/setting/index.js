@@ -323,6 +323,7 @@ export async function getStaticProps({ locale }) {
       ...(await serverSideTranslations(locale, [
         "setting",
         "useImageValidation",
+        "navbar",
       ])),
     },
   };

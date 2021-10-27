@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { BsHeartFill, BsHeart } from "react-icons/bs";
-import AvatarCollection from "../../components/AvatarCollection";
+import AvatarCollection from "../../../components/AvatarCollection";
 import {
   Box,
   Center,
@@ -17,7 +17,7 @@ import {
 import { useState } from "react";
 import { useRouter as router } from "next/dist/client/router";
 import { useTranslation } from "next-i18next";
-import PostOptionsMenu from "../../components/PostOptionsMenu";
+import PostOptionsMenu from "../../../components/PostOptionsMenu";
 export default function Index() {
   const { t } = useTranslation("postId");
   const [joinBtn, setJoinBtn] = useState(false);

@@ -7,6 +7,7 @@ import { useRouter } from "next/dist/client/router";
 import { getUserProfileData } from "../../store/user/userSlice";
 import { useSelector } from "react-redux";
 import { usePopulateUserSlice } from "../../components/Hooks/usePopulateUserSlice";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export default function AccountId({ params }) {
   const router = useRouter();
@@ -67,6 +68,9 @@ export default function AccountId({ params }) {
 export async function getServerSideProps(context) {
   const params = context.params;
   return {
-    props: { params },
+    props: {
+      params,
+      ...(await serverSideTranslations(context.locale, ["navbar"])),
+    },
   };
 }
