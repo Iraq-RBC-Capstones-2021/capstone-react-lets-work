@@ -10,7 +10,6 @@ const makeStore = () =>
       auth: authSlice,
       posts: postSlice,
       user: userSlice,
-      search: searchSlice,
     },
 
     devTools: true,

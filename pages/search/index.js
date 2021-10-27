@@ -16,7 +16,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { Search2Icon } from "@chakra-ui/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BiSliderAlt } from "react-icons/bi";
 import AdvancedSearch from "../../components/Search/AdvancedSearch";
 import Sort from "../../components/Search/Sort";
@@ -24,7 +24,9 @@ import PostList from "../../components/Home/posts/PostList";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/dist/client/router";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import GetGeoLocation from "../components/GeoLocation/GetGeoLocation";
+import GetGeoLocation from "../../components/GeoLocation/GetGeoLocation";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllPosts } from "../../store/posts/postSlice";
 
 export default function Search() {
   const { t } = useTranslation("search");
@@ -71,12 +73,20 @@ export default function Search() {
     },
   ];
 
+  const dispatch = useDispatch();
+  const { data, status } = useSelector((state) => state.posts.allPosts);
   const [searchValue, setSearchValue] = useState("");
   const [geoLocation, setGeolocation] = useState({
     latidute: 0,
     longtitude: 0,
   });
 
+  useEffect(() => {
+    dispatch(getAllPosts());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  console.log(data);
   function handleChangeSearch(event) {
     setSearchValue(event.target.value);
   }
@@ -87,7 +97,7 @@ export default function Search() {
 
   return (
     <Box w="100%" bg="secondary.main" py={4}>
-      <GetGeoLocation />
+      {/* /<GetGeoLocation /> */}
       <Stack>
         <Container mt={8}>
           <Center>
@@ -147,7 +157,7 @@ export default function Search() {
           </Center>
         </Container>
       </Stack>
-      <PostList list="" posts={filteredPosts} />
+      {/* <PostList list="" posts={filteredPosts} /> */}
     </Box>
   );
 }

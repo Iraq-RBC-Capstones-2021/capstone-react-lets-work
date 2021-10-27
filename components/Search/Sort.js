@@ -13,10 +13,16 @@ import {
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/dist/client/router";
+import { useState } from "react";
 
 const Sort = () => {
   const { t } = useTranslation("search");
+  const [sortOption, setSortOption] = useState("latest");
   const { locale } = useRouter();
+
+  const handleSortChange = (value) => {
+    setSortOption(value);
+  };
 
   return (
     <Popover>
@@ -38,12 +44,16 @@ const Sort = () => {
         <PopoverArrow />
         <PopoverCloseButton />
         <PopoverBody dir={locale === "ar" ? "rtl" : "ltr"}>
-          <RadioGroup defaultValue="1" dir={locale === "ar" ? "rtl" : "ltr"}>
+          <RadioGroup
+            onChange={handleSortChange}
+            value={sortOption}
+            dir={locale === "ar" ? "rtl" : "ltr"}
+          >
             <Stack pl="1rem" mt={4}>
-              <Radio value="1">{t("latest")}</Radio>
-              <Radio value="2">{t("oldest")}</Radio>
-              <Radio value="3">{t("most")}</Radio>
-              <Radio value="4">{t("nearest")}</Radio>
+              <Radio value="latest">{t("latest")}</Radio>
+              <Radio value="oldest">{t("oldest")}</Radio>
+              <Radio value="most">{t("most")}</Radio>
+              <Radio value="nearest">{t("nearest")}</Radio>
             </Stack>
           </RadioGroup>
         </PopoverBody>
