@@ -25,8 +25,13 @@ import {
 import { BiSend } from "react-icons/bi";
 import { auth } from "../../firebase/firebase";
 import { v4 as uuidv4 } from "uuid";
+import { useTranslation } from "next-i18next";
+import { useRouter } from "next/dist/client/router";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export default function Chat() {
+  const { t } = useTranslation("chat");
+  const { locale } = useRouter();
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([
     { id: 1, userId: 2, content: "hello" },
@@ -58,13 +63,13 @@ export default function Chat() {
                   _focus={{ boxShadow: "none" }}
                   _selected={{ color: "white", bg: "primary.main" }}
                 >
-                  Individual
+                  {t("private")}
                 </Tab>
                 <Tab
                   _focus={{ boxShadow: "none" }}
                   _selected={{ color: "white", bg: "primary.main" }}
                 >
-                  Group
+                  {t("group")}
                 </Tab>
               </TabList>
               <TabPanels>
@@ -337,4 +342,12 @@ export default function Chat() {
       </Box>
     </Center>
   );
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["chat"])),
+    },
+  };
 }
