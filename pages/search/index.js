@@ -13,7 +13,6 @@ import {
   PopoverContent,
   PopoverArrow,
   PopoverCloseButton,
-  Skeleton,
   Box,
 } from "@chakra-ui/react";
 import { Search2Icon } from "@chakra-ui/icons";
@@ -31,6 +30,15 @@ import { getAllPosts } from "../../store/posts/postSlice";
 import { collection, getDocs } from "@firebase/firestore";
 import { db } from "../../firebase/firebase";
 import moment from "moment";
+import {
+  Pagination,
+  usePagination,
+  PaginationNext,
+  PaginationPage,
+  PaginationPrevious,
+  PaginationContainer,
+  PaginationPageGroup,
+} from "@ajna/pagination";
 
 export default function Search({ users }) {
   const { t } = useTranslation("search");
@@ -79,11 +87,19 @@ export default function Search({ users }) {
     }
   };
 
-  const filteredPosts = sortFilter(
+  let filteredPosts = sortFilter(
     posts.filter((post) => {
       return post.title.toLowerCase().includes(searchValue.toLowerCase());
     })
   );
+
+  const { currentPage, setCurrentPage, pagesCount, pages } = usePagination({
+    pagesCount: Math.ceil(filteredPosts.length / 6),
+    initialState: { currentPage: 1 },
+  });
+
+  let sliceStartRange = (currentPage - 1) * 6;
+  filteredPosts = filteredPosts.slice(sliceStartRange, sliceStartRange + 6);
 
   return (
     <Box w="100%" bg="secondary.main" py={4}>
@@ -148,6 +164,23 @@ export default function Search({ users }) {
         </Container>
       </Stack>
       <PostList list="" posts={filteredPosts} users={users} />
+      <Center my="5">
+        <Pagination
+          pagesCount={pagesCount}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+        >
+          <PaginationContainer>
+            <PaginationPrevious>Previous</PaginationPrevious>
+            <PaginationPageGroup>
+              {pages.map((page) => (
+                <PaginationPage key={`pagination_page_${page}`} page={page} />
+              ))}
+            </PaginationPageGroup>
+            <PaginationNext>Next</PaginationNext>
+          </PaginationContainer>
+        </Pagination>
+      </Center>
     </Box>
   );
 }
