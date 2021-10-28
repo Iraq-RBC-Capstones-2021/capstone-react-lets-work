@@ -49,7 +49,7 @@ function Footer() {
       });
       setStatus("");
     }
-  }, [status]);
+  }, [status, toast]);
   const sendEmail = (values, onSubmitProps) => {
     emailjs
       .send(
