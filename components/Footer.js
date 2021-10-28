@@ -188,6 +188,7 @@ function Footer() {
                   />
                   <ChakraInput
                     color="black"
+                    bg="white"
                     as={Textarea}
                     variant="primary"
                     placeholder="Your Message"
