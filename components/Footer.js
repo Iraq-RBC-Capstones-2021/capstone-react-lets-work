@@ -51,7 +51,6 @@ function Footer() {
     }
   }, [status]);
   const sendEmail = (values, onSubmitProps) => {
-    e.preventDefault();
     emailjs
       .send(
         "service_th0e88m",
