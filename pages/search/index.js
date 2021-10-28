@@ -48,6 +48,11 @@ export default function Search({ users }) {
   const { data, status } = useSelector((state) => state.posts.allPosts);
   const [searchValue, setSearchValue] = useState("");
   const [sortOption, setSortOption] = useState("latest");
+  const [advanceSearch, setAdvanceSearch] = useState({
+    word: "",
+    location: "",
+    dateRange: { start: "", end: "" },
+  });
   const [posts, setPosts] = useState([]);
   const [geoLocation, setGeolocation] = useState({
     latidute: 0,
@@ -157,7 +162,7 @@ export default function Search({ users }) {
               >
                 <PopoverArrow />
                 <PopoverCloseButton />
-                <AdvancedSearch />
+                <AdvancedSearch setAdvanceSearch={setAdvanceSearch} />
               </PopoverContent>
             </Popover>
           </Center>
