@@ -49,6 +49,7 @@ export default function Search({ users }) {
   const [searchValue, setSearchValue] = useState("");
   const [sortOption, setSortOption] = useState("latest");
   const [advanceSearch, setAdvanceSearch] = useState({
+    apply: "notApplied",
     word: "",
     location: "",
     dateRange: { start: "", end: "" },
@@ -94,6 +95,16 @@ export default function Search({ users }) {
 
   let filteredPosts = sortFilter(
     posts.filter((post) => {
+      if (advanceSearch.apply === "applied") {
+        const startDate = Date.parse(advanceSearch.dateRange.start);
+        const postCreatedDate = Date.parse(post.createdAt);
+        const endDate = Date.parse(advanceSearch.dateRange.end);
+        return (
+          post.title.toLowerCase().includes(advanceSearch.word.toLowerCase()) &&
+          postCreatedDate <= endDate &&
+          postCreatedDate >= startDate
+        );
+      }
       return post.title.toLowerCase().includes(searchValue.toLowerCase());
     })
   );
@@ -162,7 +173,10 @@ export default function Search({ users }) {
               >
                 <PopoverArrow />
                 <PopoverCloseButton />
-                <AdvancedSearch setAdvanceSearch={setAdvanceSearch} />
+                <AdvancedSearch
+                  setAdvanceSearch={setAdvanceSearch}
+                  advanceSearch={advanceSearch}
+                />
               </PopoverContent>
             </Popover>
           </Center>

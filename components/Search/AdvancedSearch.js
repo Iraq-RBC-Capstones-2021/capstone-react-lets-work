@@ -13,18 +13,44 @@ import {
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/dist/client/router";
 
-const AdvancedSearch = ({ setAdvanceSearch }) => {
+const AdvancedSearch = ({
+  setAdvanceSearch,
+  advanceSearch: { word, location, dateRange },
+}) => {
   const { t } = useTranslation("search");
   const { locale } = useRouter();
 
   const handleAdvancedSearch = (e) => {
     e.preventDefault();
     setAdvanceSearch({
+      apply: "applied",
       word: e.target.word.value,
       location: e.target.location.value,
       dateRange: {
         start: e.target.dateStart.value,
         end: e.target.dateEnd.value,
+      },
+    });
+  };
+
+  const handleFormChange = (e) => {
+    setAdvanceSearch({
+      apply: "notApplied",
+      word,
+      location,
+      dateRange,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleRemoveApply = () => {
+    setAdvanceSearch({
+      apply: "notApplied",
+      word: "",
+      location: "",
+      dateRange: {
+        start: "",
+        end: "",
       },
     });
   };
@@ -46,7 +72,13 @@ const AdvancedSearch = ({ setAdvanceSearch }) => {
             <Text py={{ base: 0, md: 2 }}>{t("post_contains")}</Text>
           </GridItem>
           <GridItem colSpan={2} h="10">
-            <Input placeholder={t("words")} maxW="400px" name="word" />
+            <Input
+              placeholder={t("words")}
+              maxW="400px"
+              name="word"
+              value={word}
+              onChange={handleFormChange}
+            />
           </GridItem>
         </Grid>
 
@@ -59,7 +91,13 @@ const AdvancedSearch = ({ setAdvanceSearch }) => {
             <Text py={2}>{t("location")}</Text>
           </GridItem>
           <GridItem colSpan={2} h="10" dir="ltr">
-            <Select placeholder={t("select")} maxW="400px" name="location">
+            <Select
+              placeholder={t("select")}
+              maxW="400px"
+              name="location"
+              value={location}
+              onChange={handleFormChange}
+            >
               <option>{t("iraq")}</option>
               <option>{t("uae")}</option>
               <option>{t("usa")}</option>
@@ -81,7 +119,13 @@ const AdvancedSearch = ({ setAdvanceSearch }) => {
             <Text py={2}>{t("between")}</Text>
           </GridItem>
           <GridItem colSpan={2} h="10">
-            <Input type="date" maxW="400px" name="dateStart" />
+            <Input
+              type="date"
+              maxW="400px"
+              name="dateStart"
+              value={dateRange.dateStart}
+              onChange={handleFormChange}
+            />
           </GridItem>
           <GridItem colSpan={1} h="10">
             <Center display={{ base: "none", md: "flex" }}>
@@ -94,7 +138,13 @@ const AdvancedSearch = ({ setAdvanceSearch }) => {
           </GridItem>
 
           <GridItem colSpan={2} h="10">
-            <Input type="date" maxW="400px" name="dateEnd" />
+            <Input
+              type="date"
+              maxW="400px"
+              name="dateEnd"
+              value={dateRange.dateEnd}
+              onChange={handleFormChange}
+            />
           </GridItem>
         </Grid>
         <Center>
@@ -112,6 +162,19 @@ const AdvancedSearch = ({ setAdvanceSearch }) => {
             }}
           >
             {t("apply")}
+          </Button>
+          <Button
+            type="submit"
+            fontSize="xl"
+            color="secondary"
+            variant="ghost"
+            rounded="5px"
+            px={6}
+            py={4}
+            size="md"
+            onClick={handleRemoveApply}
+          >
+            {t("removeApply")}
           </Button>
         </Center>
       </form>
