@@ -17,7 +17,9 @@
     "uae":"United Arab Emirates",
     "usa":"USA",
     "canada":"Canada",
-    "removeApply":"Remove Apply"
+    "removeApply":"Remove Apply",
+    "previous":"previous",
+    "next":"next"
 }
 
 

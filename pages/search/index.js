@@ -118,7 +118,6 @@ export default function Search({ users }) {
   let sliceStartRange = (currentPage - 1) * 6;
   filteredPosts = filteredPosts.slice(sliceStartRange, sliceStartRange + 6);
 
-  console.log(advanceSearch);
   return (
     <Box w="100%" bg="secondary.main" py={4}>
       {/* /<GetGeoLocation /> */}
@@ -192,13 +191,13 @@ export default function Search({ users }) {
           onPageChange={setCurrentPage}
         >
           <PaginationContainer>
-            <PaginationPrevious>Previous</PaginationPrevious>
+            <PaginationPrevious>{t("previous")}</PaginationPrevious>
             <PaginationPageGroup>
               {pages.map((page) => (
                 <PaginationPage key={`pagination_page_${page}`} page={page} />
               ))}
             </PaginationPageGroup>
-            <PaginationNext>Next</PaginationNext>
+            <PaginationNext>{t("next")}</PaginationNext>
           </PaginationContainer>
         </Pagination>
       </Center>
