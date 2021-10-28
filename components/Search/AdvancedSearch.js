@@ -15,7 +15,7 @@ import { useRouter } from "next/dist/client/router";
 
 const AdvancedSearch = ({
   setAdvanceSearch,
-  advanceSearch: { word, location, dateRange },
+  advanceSearch: { word, location, startDate, endDate },
 }) => {
   const { t } = useTranslation("search");
   const { locale } = useRouter();
@@ -26,21 +26,17 @@ const AdvancedSearch = ({
       apply: "applied",
       word: e.target.word.value,
       location: e.target.location.value,
-      dateRange: {
-        start: e.target.dateStart.value,
-        end: e.target.dateEnd.value,
-      },
+      startDate: e.target.startDate.value,
+      endDate: e.target.endDate.value,
     });
   };
 
   const handleFormChange = (e) => {
-    setAdvanceSearch({
+    setAdvanceSearch((prev) => ({
+      ...prev,
       apply: "notApplied",
-      word,
-      location,
-      dateRange,
       [e.target.name]: e.target.value,
-    });
+    }));
   };
 
   const handleRemoveApply = () => {
@@ -48,10 +44,8 @@ const AdvancedSearch = ({
       apply: "notApplied",
       word: "",
       location: "",
-      dateRange: {
-        start: "",
-        end: "",
-      },
+      startDate: "",
+      endDate: "",
     });
   };
 
@@ -122,8 +116,8 @@ const AdvancedSearch = ({
             <Input
               type="date"
               maxW="400px"
-              name="dateStart"
-              value={dateRange.dateStart}
+              name="startDate"
+              value={startDate}
               onChange={handleFormChange}
             />
           </GridItem>
@@ -141,8 +135,8 @@ const AdvancedSearch = ({
             <Input
               type="date"
               maxW="400px"
-              name="dateEnd"
-              value={dateRange.dateEnd}
+              name="endDate"
+              value={endDate}
               onChange={handleFormChange}
             />
           </GridItem>
@@ -164,7 +158,6 @@ const AdvancedSearch = ({
             {t("apply")}
           </Button>
           <Button
-            type="submit"
             fontSize="xl"
             color="secondary"
             variant="ghost"

@@ -52,7 +52,8 @@ export default function Search({ users }) {
     apply: "notApplied",
     word: "",
     location: "",
-    dateRange: { start: "", end: "" },
+    startDate: "",
+    endDate: "",
   });
   const [posts, setPosts] = useState([]);
   const [geoLocation, setGeolocation] = useState({
@@ -96,9 +97,9 @@ export default function Search({ users }) {
   let filteredPosts = sortFilter(
     posts.filter((post) => {
       if (advanceSearch.apply === "applied") {
-        const startDate = Date.parse(advanceSearch.dateRange.start);
+        const startDate = Date.parse(advanceSearch.startDate);
         const postCreatedDate = Date.parse(post.createdAt);
-        const endDate = Date.parse(advanceSearch.dateRange.end);
+        const endDate = Date.parse(advanceSearch.endDate);
         return (
           post.title.toLowerCase().includes(advanceSearch.word.toLowerCase()) &&
           postCreatedDate <= endDate &&
@@ -117,6 +118,7 @@ export default function Search({ users }) {
   let sliceStartRange = (currentPage - 1) * 6;
   filteredPosts = filteredPosts.slice(sliceStartRange, sliceStartRange + 6);
 
+  console.log(advanceSearch);
   return (
     <Box w="100%" bg="secondary.main" py={4}>
       {/* /<GetGeoLocation /> */}
