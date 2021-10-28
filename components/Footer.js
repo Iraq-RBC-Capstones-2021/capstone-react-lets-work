@@ -17,7 +17,8 @@ import {
   FormControl,
 } from "@chakra-ui/react";
 import { PhoneIcon, AtSignIcon } from "@chakra-ui/icons";
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
+import { useToast } from "@chakra-ui/toast";
 import emailjs from "emailjs-com";
 import { Formik, Form } from "formik";
 import ChakraInput from "./Shared/ChakraInput";
@@ -25,26 +26,48 @@ import * as Yup from "yup";
 
 function Footer() {
   const form = useRef();
-
-  const sendEmail = (e) => {
+  const [status, setStatus] = useState("");
+  const toast = useToast();
+  useEffect(() => {
+    if (status === "error") {
+      toast({
+        title: "Failed to send email",
+        position: "top",
+        duration: "3000",
+        status: "error",
+        variant: "subtle",
+      });
+      setStatus("");
+    }
+    if (status === "success") {
+      toast({
+        title: "Email sent",
+        position: "top",
+        duration: "3000",
+        status: "success",
+        variant: "subtle",
+      });
+      setStatus("");
+    }
+  }, [status]);
+  const sendEmail = (values, onSubmitProps) => {
     e.preventDefault();
-
     emailjs
-      .sendForm(
+      .send(
         "service_th0e88m",
         "template_rd6cisi",
-        e.target,
+        values,
         "user_KhJ47OC9g6wyXA1O4IWuR"
       )
       .then(
         (result) => {
-          console.log(result.text);
+          setStatus("success");
         },
         (error) => {
-          console.log(error.text);
+          setStatus("error");
         }
       );
-    e.target.reset();
+    onSubmitProps.resetForm();
   };
 
   return (
@@ -131,7 +154,7 @@ function Footer() {
           <Text>Send us messages</Text>
           <InputGroup w={{ base: "15rem", lg: "auto" }}>
             <Formik
-              initialValues={{ projectName: "", description: "", tags: "" }}
+              initialValues={{ user_name: "", email: "", message: "" }}
               validationSchema={Yup.object({
                 user_name: Yup.string()
                   .max(15, "Must be 15 characters or less")
@@ -143,22 +166,23 @@ function Footer() {
                   .email("Please enter a valid email")
                   .required("Please enter your email address"),
               })}
+              onSubmit={sendEmail}
             >
-              <Form ref={form} onSubmit={sendEmail}>
+              <Form>
                 <Stack
                   width={("sm", "sm", "sm", "xs")}
                   display={["flow", "flow", "flex"]}
                 >
                   <ChakraInput
                     color="black"
-                    variant="filled"
+                    variant="primary"
                     placeholder="Name"
                     type="text"
                     name="user_name"
                   />
                   <ChakraInput
                     color="black"
-                    variant="filled"
+                    variant="primary"
                     placeholder="Email"
                     type="email"
                     name="email"
@@ -166,7 +190,7 @@ function Footer() {
                   <ChakraInput
                     color="black"
                     as={Textarea}
-                    variant="filled"
+                    variant="primary"
                     placeholder="Your Message"
                     name="message"
                   />
