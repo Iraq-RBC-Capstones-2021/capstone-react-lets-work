@@ -14,7 +14,9 @@ import {
   PopoverArrow,
   PopoverCloseButton,
   Box,
+  Image,
 } from "@chakra-ui/react";
+import { Image as NextImage } from "next/image";
 import { Search2Icon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { BiSliderAlt } from "react-icons/bi";
@@ -63,10 +65,6 @@ export default function Search({ users }) {
 
   useEffect(() => {
     dispatch(getAllPosts());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  useEffect(() => {
-    dispatch(getAllPosts());
     if (status === "success") {
       setPosts(data);
     }
@@ -102,9 +100,14 @@ export default function Search({ users }) {
         const postCreatedDate = Date.parse(post.createdAt);
         const endDate = Date.parse(advanceSearch.endDate);
         return (
-          post.title.toLowerCase().includes(advanceSearch.word.toLowerCase()) &&
-          postCreatedDate <= endDate &&
-          postCreatedDate >= startDate
+          post.description
+            .toLowerCase()
+            .includes(advanceSearch.word.toLowerCase()) ||
+          (post.title
+            .toLowerCase()
+            .includes(advanceSearch.word.toLowerCase()) &&
+            postCreatedDate <= endDate &&
+            postCreatedDate >= startDate)
         );
       });
     }
@@ -192,7 +195,18 @@ export default function Search({ users }) {
           </Center>
         </Container>
       </Stack>
-      <PostList list="" posts={filteredPosts} users={users} />
+      {filteredPosts.length === 0 && status === "success" ? (
+        <Center>
+          <Image
+            as={NextImage}
+            src="images/noResult.png"
+            width={{ base: "24rem", lg: "429px" }}
+            alt=""
+          />
+        </Center>
+      ) : (
+        <PostList list="" posts={filteredPosts} users={users} />
+      )}
       <Center my="5">
         <Pagination
           pagesCount={pagesCount}
