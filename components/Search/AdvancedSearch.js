@@ -62,18 +62,20 @@ const AdvancedSearch = ({
           gap={{ base: 0, md: 4 }}
           mb={4}
         >
-          <GridItem colSpan={1} h="10">
-            <Text py={{ base: 0, md: 2 }}>{t("post_contains")}</Text>
-          </GridItem>
-          <GridItem colSpan={2} h="10">
-            <Input
-              placeholder={t("words")}
-              maxW="400px"
-              name="word"
-              value={word}
-              onChange={handleFormChange}
-            />
-          </GridItem>
+          <FormControl isRequired>
+            <GridItem colSpan={1} h="10">
+              <Text py={{ base: 0, md: 2 }}>{t("post_contains")}</Text>
+            </GridItem>
+            <GridItem colSpan={2} h="10">
+              <Input
+                placeholder={t("words")}
+                maxW="400px"
+                name="word"
+                value={word}
+                onChange={handleFormChange}
+              />
+            </GridItem>
+          </FormControl>
         </Grid>
 
         <Grid
@@ -113,32 +115,32 @@ const AdvancedSearch = ({
             <Text py={2}>{t("between")}</Text>
           </GridItem>
           <GridItem colSpan={2} h="10">
-            <Input
-              type="date"
-              maxW="400px"
-              name="startDate"
-              value={startDate}
-              onChange={handleFormChange}
-            />
+            <FormControl isRequired>
+              <Input
+                type="date"
+                maxW="400px"
+                name="startDate"
+                value={startDate}
+                onChange={handleFormChange}
+              />
+            </FormControl>
           </GridItem>
           <GridItem colSpan={1} h="10">
             <Center display={{ base: "none", md: "flex" }}>
               <Text py={2}>{t("and")}</Text>
             </Center>
-
-            <Text py={2} display={{ base: "block", md: "none" }}>
-              {/* {t("and")} */}
-            </Text>
           </GridItem>
 
           <GridItem colSpan={2} h="10">
-            <Input
-              type="date"
-              maxW="400px"
-              name="endDate"
-              value={endDate}
-              onChange={handleFormChange}
-            />
+            <FormControl isRequired>
+              <Input
+                type="date"
+                maxW="400px"
+                name="endDate"
+                value={endDate}
+                onChange={handleFormChange}
+              />
+            </FormControl>
           </GridItem>
         </Grid>
         <Center>
