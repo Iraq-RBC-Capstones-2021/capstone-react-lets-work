@@ -79,7 +79,8 @@ export default function Search({ users }) {
 
   const sortFilter = (posts) => {
     switch (sortOption) {
-      case "latest" || "oldest":
+      case "latest":
+      case "oldest":
         return posts.sort((a, b) => {
           let dateA = new Date(a.createdAt).getTime();
           let dateB = new Date(b.createdAt).getTime();
@@ -94,9 +95,9 @@ export default function Search({ users }) {
     }
   };
 
-  let filteredPosts = sortFilter(
-    posts.filter((post) => {
-      if (advanceSearch.apply === "applied") {
+  const applyAdvanedSearch = (posts) => {
+    if (advanceSearch.apply === "applied") {
+      return posts.filter((post) => {
         const startDate = Date.parse(advanceSearch.startDate);
         const postCreatedDate = Date.parse(post.createdAt);
         const endDate = Date.parse(advanceSearch.endDate);
@@ -105,9 +106,17 @@ export default function Search({ users }) {
           postCreatedDate <= endDate &&
           postCreatedDate >= startDate
         );
-      }
-      return post.title.toLowerCase().includes(searchValue.toLowerCase());
-    })
+      });
+    }
+    return posts;
+  };
+
+  let filteredPosts = sortFilter(
+    applyAdvanedSearch(
+      posts.filter((post) => {
+        return post.title.toLowerCase().includes(searchValue.toLowerCase());
+      })
+    )
   );
 
   const { currentPage, setCurrentPage, pagesCount, pages } = usePagination({
