@@ -11,11 +11,11 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { SiGmail, SiInstagram, SiFacebook, SiLinkedin } from "react-icons/si";
+import { useTranslation } from "next-i18next";
 
 function TopSection({
   username,
   bio,
-  job,
   about,
   email,
   instagram,
@@ -25,6 +25,8 @@ function TopSection({
   skills_hobbies,
   imageURL,
 }) {
+  const { t } = useTranslation("profile");
+
   return (
     <Stack>
       <Flex
@@ -44,10 +46,6 @@ function TopSection({
               <Heading fontSize={{ base: "25px", md: "27px" }}>
                 {username}
               </Heading>
-              <Text color="gray.500" fontWeight="light">
-                {" "}
-                {job}
-              </Text>
               <Flex align="center">
                 <IconButton as={Link} href={email} icon={<SiGmail />} />
                 <IconButton as={Link} href={instagram} icon={<SiInstagram />} />
@@ -59,48 +57,70 @@ function TopSection({
                 {bio}
               </Text>
               <VStack align="flex-start">
-                <Button variant="primary">Message</Button>
+                <Button variant="primary">{t("message")}</Button>
               </VStack>
             </Stack>
           </Flex>
         </Box>
       </Flex>
-      <Flex
-        direction={["column", "column", "row", "row"]}
-        align={{ base: "flex-start", md: "center" }}
-        bg="white"
-      >
-        <Box px={["50px", "100px", "150px"]} paddingY="30px" bg="white">
-          <Heading paddingBottom="20px" fontSize={{ base: "25px", md: "27px" }}>
-            Interests
-          </Heading>
-          <Flex wrap="wrap">{interests}</Flex>
-        </Box>
-      </Flex>
-      <Flex
-        direction={["column", "column", "row", "row"]}
-        align={{ base: "flex-start", md: "flex-start" }}
-        bg="white"
-      >
-        <Box px={["50px", "100px", "150px"]} py="20px" spacing={25} bg="white">
-          <Heading paddingBottom="20px" fontSize={{ base: "25px", md: "27px" }}>
-            About
-          </Heading>
-          <Text>{about}</Text>
-        </Box>
-      </Flex>
-      <Flex
-        direction={["column", "column", "row", "row"]}
-        align={{ base: "flex-start", md: "flex-start" }}
-        bg="secondary.main"
-      >
-        <Box px={["50px", "100px", "150px"]} py="35px">
-          <Heading paddingBottom="20px" fontSize={{ base: "25px", md: "27px" }}>
-            Skills & Hobbies
-          </Heading>
-          {skills_hobbies}
-        </Box>
-      </Flex>
+      {interests === "" ? null : (
+        <Flex
+          direction={["column", "column", "row", "row"]}
+          align={{ base: "flex-start", md: "center" }}
+          bg="white"
+        >
+          <Box px={["50px", "100px", "150px"]} paddingY="30px" bg="white">
+            <Heading
+              paddingBottom="20px"
+              fontSize={{ base: "25px", md: "27px" }}
+            >
+              {t("interests")}
+            </Heading>
+            <Flex wrap="wrap">{interests}</Flex>
+          </Box>
+        </Flex>
+      )}
+
+      {about === "" ? null : (
+        <Flex
+          direction={["column", "column", "row", "row"]}
+          align={{ base: "flex-start", md: "flex-start" }}
+          bg="white"
+        >
+          <Box
+            px={["50px", "100px", "150px"]}
+            py="20px"
+            spacing={25}
+            bg="white"
+          >
+            <Heading
+              paddingBottom="20px"
+              fontSize={{ base: "25px", md: "27px" }}
+            >
+              {t("about")}
+            </Heading>
+            <Text>{about}</Text>
+          </Box>
+        </Flex>
+      )}
+
+      {skills_hobbies === "" ? null : (
+        <Flex
+          direction={["column", "column", "row", "row"]}
+          align={{ base: "flex-start", md: "flex-start" }}
+          bg="secondary.main"
+        >
+          <Box px={["50px", "100px", "150px"]} py="35px">
+            <Heading
+              paddingBottom="20px"
+              fontSize={{ base: "25px", md: "27px" }}
+            >
+              {t("skills_hobbies")}
+            </Heading>
+            {skills_hobbies}
+          </Box>
+        </Flex>
+      )}
     </Stack>
   );
 }
