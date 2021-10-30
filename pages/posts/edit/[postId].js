@@ -11,66 +11,64 @@ import {
   Text,
   Wrap,
   WrapItem,
-  Tooltip,
   Popover,
   PopoverContent,
   PopoverCloseButton,
   PopoverTrigger,
   PopoverBody,
   PopoverArrow,
-  useToast,
   Image as ChakraImage,
 } from "@chakra-ui/react";
 import { FiSend, FiImage } from "react-icons/fi";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
 import React, { useEffect } from "react";
-import ChakraInput from "../components/Shared/ChakraInput";
+import ChakraInput from "../../../components/Shared/ChakraInput";
 import { useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
-import { auth, storage } from "../firebase/firebase";
+import { auth, storage } from "../../../firebase/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "@firebase/storage";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useDispatch } from "react-redux";
-import { submitPost } from "../store/posts/postsSlice";
+import {
+  editPost,
+  getSinglePost,
+  resetEditStatus,
+} from "../../../store/posts/postsSlice";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/dist/client/router";
-import { resetPostStatus } from "../store/posts/postsSlice";
 
-export default function AddProject() {
+import { wrapper } from "../../../store";
+import { useToastHook } from "../../../components/Hooks/useToastHook";
+
+export default function AddProject({ post }) {
   const [tagsArray, setTagsArray] = useState([]);
   const [tagsValue, setTagsValue] = useState("");
   const [imageURL, setImageURL] = useState("");
   const router = useRouter();
   const dispatch = useDispatch();
-  const toast = useToast();
-  const postStatus = useSelector((state) => state.posts.status);
-
+  const editStatus = useSelector((state) => state.posts.editPostStatus);
+  if (auth.currentUser?.uid !== post.userId) {
+    router.push("/");
+  }
   useEffect(() => {
-    if (postStatus === "error") {
-      toast({
-        title: "The post could not be added. Please try again.",
-        status: "error",
-        variant: "subtle",
-        position: "top",
-        duration: 3000,
-      });
+    setTagsArray(post.tags);
+    setImageURL(post.imageURL);
+  }, [post]);
+  useEffect(() => {
+    if (editStatus === "success") {
+      router.push(`/posts/${post.id}`);
     }
-
-    if (postStatus === "success") {
-      toast({
-        title: "The post was added successfully.",
-        status: "success",
-        variant: "subtle",
-        position: "top",
-        duration: 3000,
-      });
-      router.push("/");
-    }
-    return () => dispatch(resetPostStatus());
-  }, [postStatus, toast, router, dispatch]);
-
+    //eslint-disable-next-line
+  }, [editStatus]);
+  useToastHook(
+    {
+      status: editStatus,
+      success: "Success",
+      error: "Something went wrong",
+    },
+    resetEditStatus
+  );
   const handleTagsArray = (e) => {
     if (e.keyCode === 13) {
       e.preventDefault();
@@ -151,19 +149,23 @@ export default function AddProject() {
       tags: tagsArray,
       title: value.projectName,
       description: value.description,
-      userId: auth.currentUser?.uid,
     };
-    dispatch(submitPost(postData));
+    dispatch(editPost({ post: postData, postId: post.id }));
     setTagsArray([]);
     setImageURL("");
     onSubmitProps.resetForm();
   };
+  const initialValues = {
+    projectName: post.title,
+    description: post.description,
+    tags: post.tags,
+  };
   return (
     <Formik
-      initialValues={{ projectName: "", description: "", tags: "" }}
+      initialValues={initialValues}
       validationSchema={Yup.object({
         projectName: Yup.string()
-          .max(15, "Must be 15 characters or less")
+          .max(40, "Must be 40 characters or less")
           .required("Required"),
         description: Yup.string()
           .max(200, "Must be 200 characters or less")
@@ -181,7 +183,7 @@ export default function AddProject() {
           <Box
             mx={{ base: "3" }}
             bg="white"
-            color="blue.300"
+            color="primary.lighter"
             borderRadius="xl"
             p={["5", "6", "8"]}
             h={{ base: "100%", md: "auto" }}
@@ -198,13 +200,13 @@ export default function AddProject() {
                   fontSize={{ base: "22px", md: "18px" }}
                   color="black"
                 >
-                  New Project/idea
+                  Edit your project
                 </Heading>
                 <ChakraInput
                   placeholder="Project name"
                   variant="flushed"
-                  color="blue.500"
-                  fontSize={{ base: "18px", md: "15px" }}
+                  color="primary.lighter"
+                  fontSize={{ base: "18px", md: "18px" }}
                   name="projectName"
                   w="100%"
                 />
@@ -292,7 +294,7 @@ export default function AddProject() {
                 )}
               </VStack>
 
-              <Stack isInline spacing={2} wrap="wrap">
+              <HStack justify="space-between" spacing={2} wrap="wrap">
                 <Input
                   hidden
                   ref={uploadInput}
@@ -300,11 +302,21 @@ export default function AddProject() {
                   accept="image/png, image/jpeg"
                   onChange={onChangeFile}
                 />
-                <IconButton icon={<FiImage />} onClick={openFileUpload}>
+                <IconButton
+                  bg="transparent"
+                  icon={<FiImage size="23" />}
+                  onClick={openFileUpload}
+                >
                   {t("uploadNewPhoto")}
                 </IconButton>
-                <IconButton icon={<FiSend />} type="submit" />
-              </Stack>
+                <Button
+                  isLoading={editStatus === "loading"}
+                  type="submit"
+                  variant="secondary"
+                >
+                  Submit changes
+                </Button>
+              </HStack>
               {imageFileState.file === undefined ? (
                 <Text color="red.400">{imageFileState.imageUploadError}</Text>
               ) : null}
@@ -315,11 +327,22 @@ export default function AddProject() {
     </Formik>
   );
 }
-
-export async function getStaticProps({ locale }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ["navbar"])),
-    },
-  };
-}
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) =>
+    async ({ params }) => {
+      const { postId } = params;
+      await store.dispatch(getSinglePost(postId));
+      const post = store.getState().posts.singlePost;
+      if (post.status === "success") {
+        return {
+          props: {
+            post: post.data,
+          },
+        };
+      } else if (post.status === "error") {
+        return {
+          notFound: true,
+        };
+      }
+    }
+);
