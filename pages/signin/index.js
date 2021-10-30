@@ -9,7 +9,7 @@ function SignInPage() {
 export async function getStaticProps({ locale }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["form"])),
+      ...(await serverSideTranslations(locale, ["form", "navbar"])),
     },
   };
 }

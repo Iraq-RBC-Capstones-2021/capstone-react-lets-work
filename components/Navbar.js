@@ -26,8 +26,10 @@ import NotificationsList from "./Notifications/NotificationsList";
 import { auth } from "../firebase/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { handleSignOut, resetStatus } from "../store/auth/authSlice";
+import { useTranslation } from "next-i18next";
 
 export default function Navbar() {
+  const { t } = useTranslation("navbar");
   const [display, setDisplay] = useState("none");
   const dispatch = useDispatch();
   const signOut = useSelector((state) => state.auth.signOut);
@@ -79,22 +81,22 @@ export default function Navbar() {
         >
           <NextLink href="/" passHref>
             <Button as="a" variant="ghost" aria-label="Home">
-              Home
+              {t("home")}
             </Button>
           </NextLink>
           <NextLink href="/chat" passHref>
-            <Button as="a" variant="ghost" aria-label="Home">
-              Chat
+            <Button as="a" variant="ghost" aria-label="chat">
+              {t("chat")}
             </Button>
           </NextLink>
           <NextLink href="/search" passHref>
-            <Button as="a" variant="ghost" aria-label="Home">
-              Search
+            <Button as="a" variant="ghost" aria-label="search">
+              {t("search")}
             </Button>
           </NextLink>
           <NextLink href="/about" passHref>
-            <Button as="a" variant="ghost" aria-label="Home">
-              About
+            <Button as="a" variant="ghost" aria-label="about">
+              {t("about")}
             </Button>
           </NextLink>
         </HStack>
@@ -135,7 +137,7 @@ export default function Navbar() {
                   <NextLink href={`/account/${auth.currentUser.uid}`}>
                     <HStack>
                       <Icon h="5" w="5" as={CgProfile} />
-                      <Text>Profile </Text>
+                      <Text>{t("profile")} </Text>
                     </HStack>
                   </NextLink>
                 </PopoverHeader>
@@ -143,7 +145,7 @@ export default function Navbar() {
                   <NextLink href="/setting">
                     <HStack>
                       <Icon h="5" w="5" as={FiSettings} />
-                      <Text>Account Settings</Text>
+                      <Text>{t("accountSetting")}</Text>
                     </HStack>
                   </NextLink>
                 </PopoverBody>
@@ -154,15 +156,16 @@ export default function Navbar() {
                 >
                   <HStack>
                     {" "}
-                    <Icon h="5" w="5" as={BiLogOut} /> <Text>Logout</Text>{" "}
+                    <Icon h="5" w="5" as={BiLogOut} />{" "}
+                    <Text>{t("logout")}</Text>{" "}
                   </HStack>{" "}
                 </PopoverFooter>
               </PopoverContent>
             </Popover>
           ) : (
             <NextLink href="/signup" passHref>
-              <Button as="a" variant="ghost" aria-label="Home">
-                Sign Up
+              <Button as="a" variant="ghost" aria-label="sign up">
+                {t("signup")}
               </Button>
             </NextLink>
           )}
@@ -210,22 +213,28 @@ export default function Navbar() {
           >
             <NextLink href="/" passHref>
               <Button as="a" variant="ghost" aria-label="Home" my="2" w="100%">
-                Home
+                {t("home")}
               </Button>
             </NextLink>
             <NextLink href="/chat" passHref>
-              <Button as="a" variant="ghost" aria-label="Home" my="2" w="100%">
-                Chat
+              <Button as="a" variant="ghost" aria-label="chat" my="2" w="100%">
+                {t("chat")}
               </Button>
             </NextLink>
             <NextLink href="/search" passHref>
-              <Button as="a" variant="ghost" aria-label="Home" my="2" w="100%">
-                Search
+              <Button
+                as="a"
+                variant="ghost"
+                aria-label="search"
+                my="2"
+                w="100%"
+              >
+                {t("search")}
               </Button>
             </NextLink>
             <NextLink href="/about" passHref>
-              <Button as="a" variant="ghost" aria-label="Home" my="2" w="100%">
-                About
+              <Button as="a" variant="ghost" aria-label="about" my="2" w="100%">
+                {t("about")}
               </Button>
             </NextLink>
             {auth.currentUser ? (
@@ -234,23 +243,23 @@ export default function Navbar() {
                   <Button
                     as="a"
                     variant="ghost"
-                    aria-label="Home"
+                    aria-label="account"
                     my="2"
                     w="100%"
                   >
-                    Profile
+                    {t("profile")}
                   </Button>
                 </NextLink>
                 <Button
                   as="a"
                   variant="ghost"
-                  aria-label="Home"
+                  aria-label="log out"
                   my="2"
                   w="100%"
                   cursor="pointer"
                   onClick={signOutHandler}
                 >
-                  Logout
+                  {t("logout")}
                 </Button>
               </Stack>
             ) : (
@@ -258,11 +267,11 @@ export default function Navbar() {
                 <Button
                   as="a"
                   variant="ghost"
-                  aria-label="Home"
+                  aria-label="sign up"
                   my="2"
                   w="100%"
                 >
-                  Sign Up
+                  {t("signup")}
                 </Button>
               </NextLink>
             )}

@@ -12,6 +12,7 @@
     "test": "jest --watch"
   },
   "dependencies": {
+    "@ajna/pagination": "^1.4.13",
     "@chakra-ui/icons": "^1.0.15",
     "@chakra-ui/react": "^1.6.9",
     "@emotion/react": "^11",
@@ -19,6 +20,7 @@
     "@fontsource/roboto": "^4.5.1",
     "@reduxjs/toolkit": "^1.6.1",
     "axios": "^0.23.0",
+    "emailjs-com": "^3.2.0",
     "firebase": "^9.1.1",
     "formik": "^2.2.9",
     "framer-motion": "^4",
@@ -29,6 +31,7 @@
     "next-redux-wrapper": "^7.0.5",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-geolocated": "^3.2.0",
     "react-icons": "^4.3.1",
     "react-redux": "^7.2.5",
     "uuid": "^8.3.2",

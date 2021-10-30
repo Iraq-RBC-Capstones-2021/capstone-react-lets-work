@@ -44,6 +44,23 @@ export const getTopProjects = createAsyncThunk(
     return posts;
   }
 );
+
+export const getAllPosts = createAsyncThunk("getAllPosts/posts", async () => {
+  let posts = [];
+  const querySnapshot = await getDocs(collection(db, "posts"));
+  querySnapshot.forEach((doc) => {
+    posts.push(doc.data());
+  });
+  posts = posts.map((post) => {
+    return {
+      ...post,
+      createdAt: moment(post.createdAt.toDate()).format("YYYY-MM-DD HH:mm"),
+    };
+  });
+
+  return posts;
+});
+
 export const getMostRecentProjects = createAsyncThunk(
   "getMostRecentProjects/posts",
   async (limits = 3, { getState, dispatch }) => {
@@ -125,6 +142,7 @@ export const handleLike = createAsyncThunk(
 const postSlice = createSlice({
   name: "posts",
   initialState: {
+    allPosts: { data: [], status: "" },
     topPosts: { data: [], status: "" },
     lastTopPost: "",
     mostRecentPosts: { data: [], status: "" },
@@ -259,6 +277,13 @@ const postSlice = createSlice({
 
     [submitPost.rejected]: (state) => {
       state.status = "error";
+    },
+    [getAllPosts.fulfilled]: (state, action) => {
+      state.allPosts.data = action.payload;
+      state.allPosts.status = "success";
+    },
+    [getAllPosts.rejected]: (state) => {
+      state.allPosts.status = "error";
     },
   },
 });
