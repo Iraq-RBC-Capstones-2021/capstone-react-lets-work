@@ -1,13 +1,13 @@
 import {
   collection,
-  doc,
-  getDoc,
   getDocs,
   limit,
   orderBy,
   query,
   startAfter,
   where,
+  getDoc,
+  doc,
 } from "@firebase/firestore";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
@@ -46,6 +46,35 @@ export const getTopProjects = createAsyncThunk(
     return posts;
   }
 );
+
+export const getAllPosts = createAsyncThunk("getAllPosts/posts", async () => {
+  let posts = [];
+  const querySnapshot = await getDocs(collection(db, "posts"));
+  querySnapshot.forEach((doc) => {
+    posts.push(doc.data());
+  });
+  posts = posts.map((post) => {
+    return {
+      ...post,
+      createdAt: moment(post.createdAt.toDate()).format("YYYY-MM-DD HH:mm"),
+    };
+  });
+
+  return posts;
+});
+export const getSinglePost = createAsyncThunk(
+  "getSinglePost/posts",
+  async (postId) => {
+    const post = await getDoc(doc(db, "posts", postId));
+    const newPost = {
+      ...post.data(),
+      createdAt: moment(post.data().createdAt.toDate()).calendar(),
+      id: post.id,
+    };
+    return newPost;
+  }
+);
+
 export const getMostRecentProjects = createAsyncThunk(
   "getMostRecentProjects/posts",
   async (limits = 3, { getState, dispatch }) => {
@@ -115,16 +144,13 @@ export const getInitialPosts = createAsyncThunk(
     return posts;
   }
 );
-export const getSinglePost = createAsyncThunk(
-  "getSinglePost/posts",
-  async (postId) => {
-    const post = await getDoc(doc(db, "posts", postId));
-    const newPost = {
-      ...post.data(),
-      createdAt: moment(post.data().createdAt.toDate()).calendar(),
-      id: post.id,
-    };
-    return newPost;
+
+export const handleLike = createAsyncThunk(
+  "handleLike/posts",
+  async ({ postId, userId }) => {
+    await axios.post(`/api/posts/likes/${postId}`, {
+      userId,
+    });
   }
 );
 export const deletePost = createAsyncThunk(
@@ -140,18 +166,10 @@ export const editPost = createAsyncThunk(
   }
 );
 
-export const handleLike = createAsyncThunk(
-  "handleLike/posts",
-  async ({ postId, userId }) => {
-    await axios.post(`/api/posts/likes/${postId}`, {
-      userId,
-    });
-  }
-);
-
 const postSlice = createSlice({
   name: "posts",
   initialState: {
+    allPosts: { data: [], status: "" },
     topPosts: { data: [], status: "" },
     lastTopPost: "",
     mostRecentPosts: { data: [], status: "" },
@@ -186,7 +204,6 @@ const postSlice = createSlice({
         state.favPosts.data.push(post);
       }
     },
-
     resetPostStatus(state, action) {
       state.status = "";
     },
@@ -194,6 +211,7 @@ const postSlice = createSlice({
       state.deletePostStatus = "";
       state.editPostStatus = "";
     },
+
     likeHandler(state, action) {
       const { post, userId } = action.payload;
       const { id: postId } = post;
@@ -273,16 +291,6 @@ const postSlice = createSlice({
     [getInitialPosts.rejected]: (state, action) => {
       state.initialPosts = action.payload;
     },
-    [getSinglePost.fulfilled]: (state, action) => {
-      state.singlePost.data = action.payload;
-      state.singlePost.status = "success";
-    },
-    [getSinglePost.rejected]: (state, action) => {
-      state.singlePost.status = "error";
-    },
-    [getSinglePost.pending]: (state, action) => {
-      state.singlePost.status = "loading";
-    },
 
     [handleLike.pending]: (state) => {
       state.likeStatus = "loading";
@@ -325,6 +333,23 @@ const postSlice = createSlice({
 
     [editPost.rejected]: (state) => {
       state.editPostStatus = "error";
+    },
+    [getAllPosts.fulfilled]: (state, action) => {
+      state.allPosts.data = action.payload;
+      state.allPosts.status = "success";
+    },
+    [getAllPosts.rejected]: (state) => {
+      state.allPosts.status = "error";
+    },
+    [getSinglePost.fulfilled]: (state, action) => {
+      state.singlePost.data = action.payload;
+      state.singlePost.status = "success";
+    },
+    [getSinglePost.rejected]: (state, action) => {
+      state.singlePost.status = "error";
+    },
+    [getSinglePost.pending]: (state, action) => {
+      state.singlePost.status = "loading";
     },
   },
 });
