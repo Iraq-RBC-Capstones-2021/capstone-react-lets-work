@@ -9,7 +9,7 @@ import {
 import { useRouter } from "next/dist/client/router";
 import { HiDotsVertical } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
-import { deletePost, resetEditStatus } from "../store/posts/postSlice";
+import { deletePost, resetEditStatus } from "../store/posts/postsSlice";
 import { useToastHook } from "./Hooks/useToastHook";
 import Modal from "./Shared/Modal";
 

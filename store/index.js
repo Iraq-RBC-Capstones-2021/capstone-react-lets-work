@@ -2,14 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
 import authSlice from "./auth/authSlice";
 import commentSlice from "./comments/commentSlice";
-import postSlice from "./posts/postSlice";
+import postsSlice from "./posts/postsSlice";
 import userSlice from "./user/userSlice";
 
 const makeStore = () =>
   configureStore({
     reducer: {
       auth: authSlice,
-      posts: postSlice,
+      posts: postsSlice,
       user: userSlice,
       comments: commentSlice,
     },

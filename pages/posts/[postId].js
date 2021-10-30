@@ -23,7 +23,7 @@ import { useRouter as router } from "next/dist/client/router";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { useTranslation } from "next-i18next";
 import { wrapper } from "../../store";
-import { getSinglePost, handleLike } from "../../store/posts/postSlice";
+import { getSinglePost, handleLike } from "../../store/posts/postsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { doc, getDoc } from "@firebase/firestore";
 import { auth, db } from "../../firebase/firebase";
@@ -164,9 +164,6 @@ export default function Index({ post, user, some }) {
               <Avatar src={user.imageURL} alt="Author" />
               <Stack direction="column" spacing="0" fontSize="sm">
                 <Text fontWeight="600">{user.username}</Text>
-                <Text color="gray.500">
-                  {/* {post.userInfo.map((info) => `${info} `)} */}
-                </Text>
               </Stack>
               <Spacer />
               <Icon

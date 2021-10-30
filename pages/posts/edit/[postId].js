@@ -34,7 +34,7 @@ import {
   editPost,
   getSinglePost,
   resetEditStatus,
-} from "../../../store/posts/postSlice";
+} from "../../../store/posts/postsSlice";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/dist/client/router";
 

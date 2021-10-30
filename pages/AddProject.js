@@ -33,10 +33,10 @@ import { auth, storage } from "../firebase/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "@firebase/storage";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useDispatch } from "react-redux";
-import { submitPost } from "../store/posts/postSlice";
+import { submitPost } from "../store/posts/postsSlice";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/dist/client/router";
-import { resetPostStatus } from "../store/posts/postSlice";
+import { resetPostStatus } from "../store/posts/postsSlice";
 
 export default function AddProject() {
   const [tagsArray, setTagsArray] = useState([]);
@@ -46,7 +46,6 @@ export default function AddProject() {
   const dispatch = useDispatch();
   const toast = useToast();
   const postStatus = useSelector((state) => state.posts.status);
-  console.log(postStatus);
 
   useEffect(() => {
     if (postStatus === "error") {

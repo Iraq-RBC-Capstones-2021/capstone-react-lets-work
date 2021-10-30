@@ -28,7 +28,7 @@ import { useRouter } from "next/dist/client/router";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import GetGeoLocation from "../../components/GeoLocation/GetGeoLocation";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllPosts } from "../../store/posts/postSlice";
+import { getAllPosts } from "../../store/posts/postsSlice";
 import { collection, getDocs } from "@firebase/firestore";
 import { db } from "../../firebase/firebase";
 import moment from "moment";

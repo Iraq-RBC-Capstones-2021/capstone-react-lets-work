@@ -51,7 +51,7 @@ export const getAllPosts = createAsyncThunk("getAllPosts/posts", async () => {
   let posts = [];
   const querySnapshot = await getDocs(collection(db, "posts"));
   querySnapshot.forEach((doc) => {
-    posts.push(doc.data());
+    posts.push({ ...doc.data(), id: doc.id });
   });
   posts = posts.map((post) => {
     return {
