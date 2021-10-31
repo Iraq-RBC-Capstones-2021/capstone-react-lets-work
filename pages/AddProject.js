@@ -39,14 +39,17 @@ import { useRouter } from "next/dist/client/router";
 import { resetPostStatus } from "../store/posts/postSlice";
 
 export default function AddProject() {
+  const router = useRouter();
+
+  if (!auth.currentUser) {
+    router.push("/signup");
+  }
   const [tagsArray, setTagsArray] = useState([]);
   const [tagsValue, setTagsValue] = useState("");
   const [imageURL, setImageURL] = useState("");
-  const router = useRouter();
   const dispatch = useDispatch();
   const toast = useToast();
   const postStatus = useSelector((state) => state.posts.status);
-  console.log(postStatus);
 
   useEffect(() => {
     if (postStatus === "error") {

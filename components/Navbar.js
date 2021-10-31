@@ -27,6 +27,7 @@ import { auth } from "../firebase/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { handleSignOut, resetStatus } from "../store/auth/authSlice";
 import { useTranslation } from "next-i18next";
+import Router from "next/router";
 
 export default function Navbar() {
   const { t } = useTranslation("navbar");
@@ -34,6 +35,7 @@ export default function Navbar() {
   const dispatch = useDispatch();
   const signOut = useSelector((state) => state.auth.signOut);
   const toast = useToast();
+
   useEffect(() => {
     if (signOut.status === "success") {
       toast({
@@ -58,6 +60,7 @@ export default function Navbar() {
   }, [signOut.status, toast, dispatch, signOut.errorMessage]);
   function signOutHandler() {
     dispatch(handleSignOut(auth.currentUser?.uid));
+    Router.reload();
   }
   return (
     <Flex align="center" justify="end" bgColor="offWhite">

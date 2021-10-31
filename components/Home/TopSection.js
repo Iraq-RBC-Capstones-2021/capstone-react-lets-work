@@ -12,10 +12,13 @@ import {
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/dist/client/router";
 import { Image as NextImage } from "next/image";
+import NextLink from "next/link";
+import { auth } from "../../firebase/firebase";
 
 export default function TopSection() {
   const { t } = useTranslation("home");
   const router = useRouter();
+
   return (
     <div dir={router.locale === "ar" ? "rtl" : "ltr"}>
       <Container maxW="3xl">
@@ -51,22 +54,43 @@ export default function TopSection() {
             direction="column"
             align="start"
             alignSelf={{ base: "center", md: "start" }}
-            position="relative"
+            position="reladdpative"
           >
-            <Button
-              fontSize={{ base: "1xl", sm: "1xl", md: "2xl" }}
-              color="secondary.lighter"
-              bg="primary.main"
-              rounded="15px"
-              px={12}
-              py={6}
-              size="md"
-              _hover={{
-                bg: "primary.lighter",
-              }}
-            >
-              {t("join_us")}
-            </Button>
+            {auth.currentUser ? (
+              <NextLink passHref href="/AddProject">
+                <Button
+                  fontSize={{ base: "1xl", sm: "1xl", md: "2xl" }}
+                  color="secondary.lighter"
+                  bg="primary.main"
+                  rounded="15px"
+                  px={12}
+                  py={6}
+                  size="md"
+                  _hover={{
+                    bg: "primary.lighter",
+                  }}
+                >
+                  {t("add")}
+                </Button>
+              </NextLink>
+            ) : (
+              <NextLink passHref href="/signup">
+                <Button
+                  fontSize={{ base: "1xl", sm: "1xl", md: "2xl" }}
+                  color="secondary.lighter"
+                  bg="primary.main"
+                  rounded="15px"
+                  px={12}
+                  py={6}
+                  size="md"
+                  _hover={{
+                    bg: "primary.lighter",
+                  }}
+                >
+                  {t("join_us")}
+                </Button>
+              </NextLink>
+            )}
           </Stack>
         </Stack>
       </Container>
