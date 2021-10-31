@@ -10,7 +10,16 @@ import {
   Link,
   Flex,
 } from "@chakra-ui/react";
+import { useRouter } from "next/dist/client/router";
+import { useEffect } from "react";
 import { SiGmail, SiInstagram, SiFacebook, SiLinkedin } from "react-icons/si";
+import { useDispatch, useSelector } from "react-redux";
+import { auth } from "../../firebase/firebase";
+import {
+  handleChatRoom,
+  resetChatStatus,
+  setChatUser,
+} from "../../store/chat/chatSlice";
 
 function TopSection({
   username,
@@ -24,7 +33,29 @@ function TopSection({
   interests,
   skills_hobbies,
   imageURL,
+  userId,
+  user,
 }) {
+  const chatRoom = useSelector((state) => state.chat.chatRoom);
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (chatRoom.status === "success") {
+      router.push(`/chat/?room=${chatRoom.id}`, undefined, { shallow: true });
+      dispatch(resetChatStatus());
+    }
+    //eslint-disable-next-line
+  }, [chatRoom]);
+  async function handle() {
+    dispatch(
+      handleChatRoom({
+        currentUserId: auth.currentUser.uid,
+        userId: userId,
+      })
+    );
+    dispatch(setChatUser(user));
+  }
   return (
     <Stack>
       <Flex
@@ -59,7 +90,9 @@ function TopSection({
                 {bio}
               </Text>
               <VStack align="flex-start">
-                <Button variant="primary">Message</Button>
+                <Button onClick={handle} variant="primary">
+                  Message
+                </Button>
               </VStack>
             </Stack>
           </Flex>
