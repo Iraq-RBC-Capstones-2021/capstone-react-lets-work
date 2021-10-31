@@ -6,6 +6,8 @@ import {
   query,
   startAfter,
   where,
+  getDoc,
+  doc,
 } from "@firebase/firestore";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
@@ -49,7 +51,7 @@ export const getAllPosts = createAsyncThunk("getAllPosts/posts", async () => {
   let posts = [];
   const querySnapshot = await getDocs(collection(db, "posts"));
   querySnapshot.forEach((doc) => {
-    posts.push(doc.data());
+    posts.push({ ...doc.data(), id: doc.id });
   });
   posts = posts.map((post) => {
     return {
@@ -60,6 +62,18 @@ export const getAllPosts = createAsyncThunk("getAllPosts/posts", async () => {
 
   return posts;
 });
+export const getSinglePost = createAsyncThunk(
+  "getSinglePost/posts",
+  async (postId) => {
+    const post = await getDoc(doc(db, "posts", postId));
+    const newPost = {
+      ...post.data(),
+      createdAt: moment(post.data().createdAt.toDate()).calendar(),
+      id: post.id,
+    };
+    return newPost;
+  }
+);
 
 export const getMostRecentProjects = createAsyncThunk(
   "getMostRecentProjects/posts",
@@ -139,6 +153,19 @@ export const handleLike = createAsyncThunk(
     });
   }
 );
+export const deletePost = createAsyncThunk(
+  "deletePost/posts",
+  async (postId) => {
+    await axios.delete(`/api/posts/${postId}`);
+  }
+);
+export const editPost = createAsyncThunk(
+  "editPost/posts",
+  async ({ postId, post }) => {
+    await axios.put(`/api/posts/${postId}`, post);
+  }
+);
+
 const postSlice = createSlice({
   name: "posts",
   initialState: {
@@ -153,6 +180,9 @@ const postSlice = createSlice({
     likeStatus: "",
     status: "",
     list: [],
+    singlePost: { status: "", data: [] },
+    deletePostStatus: "",
+    editPostStatus: "",
   },
   reducers: {
     setLastTopPost(state, action) {
@@ -174,10 +204,14 @@ const postSlice = createSlice({
         state.favPosts.data.push(post);
       }
     },
-
     resetPostStatus(state, action) {
       state.status = "";
     },
+    resetEditStatus(state) {
+      state.deletePostStatus = "";
+      state.editPostStatus = "";
+    },
+
     likeHandler(state, action) {
       const { post, userId } = action.payload;
       const { id: postId } = post;
@@ -278,12 +312,44 @@ const postSlice = createSlice({
     [submitPost.rejected]: (state) => {
       state.status = "error";
     },
+    [deletePost.pending]: (state) => {
+      state.deletePostStatus = "loading";
+    },
+
+    [deletePost.fulfilled]: (state) => {
+      state.deletePostStatus = "success";
+    },
+
+    [deletePost.rejected]: (state) => {
+      state.deletePostStatus = "error";
+    },
+    [editPost.pending]: (state) => {
+      state.editPostStatus = "loading";
+    },
+
+    [editPost.fulfilled]: (state) => {
+      state.editPostStatus = "success";
+    },
+
+    [editPost.rejected]: (state) => {
+      state.editPostStatus = "error";
+    },
     [getAllPosts.fulfilled]: (state, action) => {
       state.allPosts.data = action.payload;
       state.allPosts.status = "success";
     },
     [getAllPosts.rejected]: (state) => {
       state.allPosts.status = "error";
+    },
+    [getSinglePost.fulfilled]: (state, action) => {
+      state.singlePost.data = action.payload;
+      state.singlePost.status = "success";
+    },
+    [getSinglePost.rejected]: (state, action) => {
+      state.singlePost.status = "error";
+    },
+    [getSinglePost.pending]: (state, action) => {
+      state.singlePost.status = "loading";
     },
   },
 });
@@ -294,5 +360,6 @@ export const {
   setLastFavPost,
   favHandler,
   resetPostStatus,
+  resetEditStatus,
 } = postSlice.actions;
 export default postSlice.reducer;
