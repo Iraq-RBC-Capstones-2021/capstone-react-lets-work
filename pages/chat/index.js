@@ -27,7 +27,6 @@ import { auth } from "../../firebase/firebase";
 import { v4 as uuidv4 } from "uuid";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/dist/client/router";
-import { Heading } from "@chakra-ui/react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export default function Chat() {
