@@ -273,28 +273,6 @@ export default function Navbar() {
                 >
                   {t("logout")}
                 </Button>
-                <Center mt="4">
-                  <Text
-                    px="4"
-                    color="indigo"
-                    as="kbd"
-                    onClick={() => {
-                      changeLanguage("en");
-                    }}
-                  >
-                    English
-                  </Text>
-                  <Text
-                    px="4"
-                    color="indigo"
-                    as="kbd"
-                    onClick={() => {
-                      changeLanguage("ar");
-                    }}
-                  >
-                    Arabic
-                  </Text>
-                </Center>
               </Stack>
             ) : (
               <NextLink passHref href="/signup">
@@ -310,6 +288,28 @@ export default function Navbar() {
               </NextLink>
             )}
           </Flex>
+          <Center mt="4">
+            <Text
+              px="4"
+              color="indigo"
+              as="kbd"
+              onClick={() => {
+                changeLanguage("en");
+              }}
+            >
+              English
+            </Text>
+            <Text
+              px="4"
+              color="indigo"
+              as="kbd"
+              onClick={() => {
+                changeLanguage("ar");
+              }}
+            >
+              Arabic
+            </Text>
+          </Center>
         </Flex>
       </Flex>
     </Flex>
