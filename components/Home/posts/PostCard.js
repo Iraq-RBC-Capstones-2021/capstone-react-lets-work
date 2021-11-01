@@ -24,7 +24,11 @@ import {
 } from "../../../store/posts/postsSlice";
 import { auth } from "../../../firebase/firebase";
 import { useSelector } from "react-redux";
-import { joinGroupChat, setGroupChat } from "../../../store/chat/chatSlice";
+import {
+  joinGroupChat,
+  setChatUser,
+  setGroupChat,
+} from "../../../store/chat/chatSlice";
 import { useRouter } from "next/dist/client/router";
 function PostCard({
   createdAt,
@@ -78,6 +82,7 @@ function PostCard({
         title,
       })
     );
+    dispatch(setChatUser(""));
   }
   function handleProjectJoin() {
     if (auth.currentUser) {

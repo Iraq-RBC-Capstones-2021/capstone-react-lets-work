@@ -34,12 +34,12 @@ function ChatList({ users, groupChats }) {
   const { room } = router.query;
   const chatUser = useSelector((state) => state.chat.chatUser);
 
-  // useEffect(() => {
-  //   if (chatRoom.status !== "loading" && chatRoom.status !== "")
-  //     router.push(`/chat/?room=${chatRoom.id}`, undefined, { shallow: true });
-  //   dispatch(resetChatStatus());
-  //   //eslint-disable-next-line
-  // }, [chatRoom]);
+  useEffect(() => {
+    if (chatRoom.status !== "loading" && chatRoom.status !== "")
+      router.push(`/chat/?room=${chatRoom.id}`, undefined, { shallow: true });
+    dispatch(resetChatStatus());
+    //eslint-disable-next-line
+  }, [chatRoom]);
   async function handlePrivateChat(user) {
     dispatch(
       handleChatRoom({
@@ -47,12 +47,10 @@ function ChatList({ users, groupChats }) {
         userId: user.id,
       })
     );
-    router.push(`/chat/?room=${chatRoom.id}`, undefined, { shallow: true });
     dispatch(setChatUser(user));
     dispatch(setGroupChat(""));
   }
   async function handleGroupChat(chat) {
-    console.log(chat);
     router.push(`/chat/?room=${chat.id}`);
     dispatch(setGroupChat(chat));
     dispatch(setChatUser(""));
@@ -62,7 +60,6 @@ function ChatList({ users, groupChats }) {
     <Flex
       as="aside"
       w={room || "100%"}
-      //   maxW={{ base: "xs", xl: "sm" }}
       display={{ base: room ? "none" : "flex", lg: "flex" }}
       pt={8}
       h="80vh"
@@ -203,6 +200,7 @@ function ChatList({ users, groupChats }) {
                             <Heading fontSize={12} w="full">
                               {chat.title}
                             </Heading>
+
                             <Text
                               overflow="hidden"
                               textOverflow="ellipsis"
