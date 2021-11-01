@@ -1,4 +1,4 @@
-import { addDoc, collection } from "@firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "@firebase/firestore";
 import { db } from "../../../firebase/firebase";
 
 export default async function handler(req, res) {
@@ -11,9 +11,18 @@ export default async function handler(req, res) {
         likes: [],
         likesCount: 0,
         users: [],
+      }).then((d) => {
+        setDoc(doc(db, "chat", d.id), {
+          users: [postData.userId],
+          type: "group",
+          title: postData.title,
+          imageURL: postData.imageURL,
+        });
       });
+
       res.status(200).json("some message");
     } catch (err) {
+      console.log(err);
       res.status(404).end();
     }
   }

@@ -8,11 +8,12 @@ import { getAllUsers } from "../../store/user/userSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import ChatMessage from "../../components/Chat/ChatMessage";
-import { getChatUsers } from "../../store/chat/chatSlice";
+import { getChatUsers, getGroupChats } from "../../store/chat/chatSlice";
 
 export default function Chat({ users }) {
   const router = useRouter();
   const chatUsers = useSelector((state) => state.chat.chatUsers.data);
+  const groupChats = useSelector((state) => state.chat.groupChats.data);
   const newUsers = chatUsers
     .map((id) => {
       const user = users.filter((user) => user.id === id);
@@ -24,6 +25,7 @@ export default function Chat({ users }) {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getChatUsers());
+    dispatch(getGroupChats());
   }, [dispatch]);
   const { room } = router.query;
 
@@ -31,8 +33,8 @@ export default function Chat({ users }) {
     <Center py={8}>
       <Box w={room || "50%"} boxShadow="2xl" p="6" rounded="md">
         <HStack h="80vh" spacing={0}>
-          <ChatList users={newUsers} />
-          {room && <ChatMessage chatId={room} />}
+          <ChatList groupChats={groupChats} users={newUsers} />
+          {room && <ChatMessage users={users} chatId={room} />}
         </HStack>
       </Box>
     </Center>

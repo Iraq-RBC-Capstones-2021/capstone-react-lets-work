@@ -20,8 +20,12 @@ import { useRouter } from "next/dist/client/router";
 
 import { auth } from "../../firebase/firebase";
 import { useDispatch, useSelector } from "react-redux";
-import { handleChatRoom, setChatUser } from "../../store/chat/chatSlice";
-function ChatList({ users }) {
+import {
+  handleChatRoom,
+  setChatUser,
+  setGroupChat,
+} from "../../store/chat/chatSlice";
+function ChatList({ users, groupChats }) {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -34,7 +38,7 @@ function ChatList({ users }) {
       router.push(`/chat/?room=${chatRoom.id}`, undefined, { shallow: true });
     //eslint-disable-next-line
   }, [chatRoom]);
-  async function handle(user) {
+  async function handlePrivateChat(user) {
     dispatch(
       handleChatRoom({
         currentUserId: auth.currentUser.uid,
@@ -42,6 +46,13 @@ function ChatList({ users }) {
       })
     );
     dispatch(setChatUser(user));
+    dispatch(setGroupChat(""));
+  }
+  async function handleGroupChat(chat) {
+    console.log(chat);
+    router.push(`/chat/?room=${chat.id}`);
+    dispatch(setGroupChat(chat));
+    dispatch(setChatUser(""));
   }
   const { t } = useTranslation("chat");
   return (
@@ -78,7 +89,9 @@ function ChatList({ users }) {
                   {users?.map((user) => (
                     <ListItem
                       bg={user.id === chatUser.id && "gray.50"}
-                      onClick={() => handle(user)}
+                      onClick={() => {
+                        handlePrivateChat(user);
+                      }}
                       key={user.id}
                     >
                       <Flex
@@ -144,49 +157,64 @@ function ChatList({ users }) {
 
               <Box w="full" overflowY="auto">
                 <List w="full" spacing={0}>
-                  <ListItem>
-                    <Flex
-                      py={4}
-                      px={2}
-                      w="full"
-                      alignItems="center"
-                      borderBottomColor="gray.100"
-                      borderBottomWidth={1}
-                      style={{ transition: "background 300ms" }}
-                      _hover={{ bg: "gray.50", cursor: "pointer" }}
-                    >
-                      <Box rounded="full" bg="gray.100" minW={14} minH={14}>
-                        <Avatar name="John Doe" minW={14} minH={14}>
-                          <AvatarBadge
-                            bg="green.400"
-                            boxSize={4}
-                            borderWidth={2}
-                          />
-                        </Avatar>
-                      </Box>
-                      <VStack
-                        overflow="hidden"
-                        flex={1}
-                        ml={3}
-                        spacing={0}
-                        alignItems="flex-start"
+                  {groupChats.map((chat) => {
+                    return (
+                      <ListItem
+                        onClick={() => {
+                          handleGroupChat(chat);
+                        }}
+                        bg={chat.id === room && "gray.50"}
+                        key={chat.id}
                       >
-                        <Heading fontSize={12} w="full">
-                          Group
-                        </Heading>
-                        <Text
-                          overflow="hidden"
-                          textOverflow="ellipsis"
-                          whiteSpace="nowrap"
+                        <Flex
+                          py={4}
+                          px={2}
                           w="full"
-                          fontSize="xs"
-                          color="gray.500"
+                          alignItems="center"
+                          borderBottomColor="gray.100"
+                          borderBottomWidth={1}
+                          style={{ transition: "background 300ms" }}
+                          _hover={{ bg: "gray.50", cursor: "pointer" }}
                         >
-                          3 days ago
-                        </Text>
-                      </VStack>
-                    </Flex>
-                  </ListItem>
+                          <Box rounded="full" bg="gray.100" minW={14} minH={14}>
+                            <Avatar
+                              src={chat.imageURL}
+                              name={chat.title}
+                              minW={14}
+                              minH={14}
+                            >
+                              <AvatarBadge
+                                bg="green.400"
+                                boxSize={4}
+                                borderWidth={2}
+                              />
+                            </Avatar>
+                          </Box>
+                          <VStack
+                            overflow="hidden"
+                            flex={1}
+                            ml={3}
+                            spacing={0}
+                            alignItems="flex-start"
+                          >
+                            <Heading fontSize={12} w="full">
+                              {chat.title}
+                            </Heading>
+                            <Text
+                              overflow="hidden"
+                              textOverflow="ellipsis"
+                              whiteSpace="nowrap"
+                              w="full"
+                              fontSize="xs"
+                              color="gray.500"
+                            >
+                              3 days ago
+                            </Text>
+                          </VStack>
+                        </Flex>
+                      </ListItem>
+                    );
+                  })}
                 </List>
               </Box>
             </VStack>

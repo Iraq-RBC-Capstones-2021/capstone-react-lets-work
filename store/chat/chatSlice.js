@@ -1,4 +1,14 @@
-import { addDoc, collection, getDocs, query, where } from "@firebase/firestore";
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "@firebase/firestore";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { auth, db } from "../../firebase/firebase";
@@ -9,12 +19,14 @@ export const handleChatRoom = createAsyncThunk(
     const firstCheck = await getDocs(
       query(
         collection(db, "chat"),
+        where("type", "==", "individual"),
         where("users", "==", [userId, currentUserId])
       )
     );
     const secondCheck = await getDocs(
       query(
         collection(db, "chat"),
+        where("type", "==", "individual"),
         where("users", "==", [currentUserId, userId])
       )
     );
@@ -45,6 +57,7 @@ export const getChatUsers = createAsyncThunk("getChatUsers/chat", async () => {
     await getDocs(
       query(
         collection(db, "chat"),
+        where("type", "==", "individual"),
         where("users", "array-contains", auth.currentUser?.uid)
       )
     )
@@ -58,6 +71,36 @@ export const getChatUsers = createAsyncThunk("getChatUsers/chat", async () => {
 
   return users;
 });
+export const getGroupChats = createAsyncThunk(
+  "getGroupChats/chat",
+  async () => {
+    const groupChatRef = await getDocs(
+      query(
+        collection(db, "chat"),
+        where("type", "==", "group"),
+        where("users", "array-contains", auth.currentUser?.uid)
+      )
+    );
+    const groupChats = groupChatRef.docs.map((chat) => {
+      return { ...chat.data(), id: chat.id };
+    });
+    return groupChats;
+  }
+);
+export const joinGroupChat = createAsyncThunk(
+  "joinGroupChat/chat",
+  async (id) => {
+    const isJoined = await (await getDoc(doc(db, "chat", id)))
+      .data()
+      ?.users.includes(auth.currentUser?.uid);
+    console.log(isJoined);
+    if (!isJoined) {
+      await updateDoc(doc(db, "chat", id), {
+        users: arrayUnion(auth.currentUser?.uid),
+      });
+    }
+  }
+);
 
 const chatSlice = createSlice({
   name: "chat",
@@ -66,10 +109,15 @@ const chatSlice = createSlice({
     chatUser: {},
     sendMessageStatus: "",
     chatUsers: { status: "", data: [] },
+    groupChats: { status: "", data: [] },
+    groupChat: {},
   },
   reducers: {
     setChatUser(state, action) {
       state.chatUser = action.payload;
+    },
+    setGroupChat(state, action) {
+      state.groupChat = action.payload;
     },
     resetChatStatus(state) {
       state.chatRoom.status = "";
@@ -106,7 +154,22 @@ const chatSlice = createSlice({
     [getChatUsers.rejected]: (state, action) => {
       state.chatUsers.status = "error";
     },
+    [getGroupChats.fulfilled]: (state, action) => {
+      state.groupChats.data = action.payload;
+      state.groupChats.status = "success";
+    },
+    [getGroupChats.pending]: (state, action) => {
+      state.groupChats.status = "loading";
+    },
+    [getGroupChats.rejected]: (state, action) => {
+      state.groupChats.status = "error";
+      console.log(action.error.message);
+    },
+    [joinGroupChat.rejected]: (state, action) => {
+      // state.groupChats.status = "error";
+      console.log(action.error.message);
+    },
   },
 });
-export const { setChatUser, resetChatStatus } = chatSlice.actions;
+export const { setChatUser, resetChatStatus, setGroupChat } = chatSlice.actions;
 export default chatSlice.reducer;

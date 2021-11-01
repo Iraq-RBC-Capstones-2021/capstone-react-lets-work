@@ -19,6 +19,7 @@ import { useDispatch } from "react-redux";
 import { handleLike, likeHandler } from "../../../store/posts/postsSlice";
 import { auth } from "../../../firebase/firebase";
 import { useSelector } from "react-redux";
+import { joinGroupChat } from "../../../store/chat/chatSlice";
 function PostCard({
   createdAt,
   description,
@@ -27,7 +28,6 @@ function PostCard({
   likes,
   tags,
   imageURL,
-  postId,
   user,
   id,
   post,
@@ -55,6 +55,9 @@ function PostCard({
     } else if (!auth.currentUser) {
       setLikeError("Login first!");
     }
+  }
+  function handleProjectJoin() {
+    dispatch(joinGroupChat(id));
   }
   return (
     <LinkBox bg="secondary.main" _hover={{ transform: "scale(1.01)" }}>
@@ -90,6 +93,7 @@ function PostCard({
             </NextLink>
             <IconButton // eslint-disable-next-line react/no-children-prop
               children={<FaPlus size="24" color="white" />}
+              onClick={handleProjectJoin}
               bg="primary.main"
               size="sm"
               borderRadius="50%"

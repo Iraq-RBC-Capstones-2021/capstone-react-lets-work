@@ -30,11 +30,16 @@ import ChakraInput from "../Shared/ChakraInput";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { collection, onSnapshot, orderBy, query } from "@firebase/firestore";
-function ChatMessage({ chatId }) {
+function ChatMessage({ chatId, users }) {
   const [messages, setMessages] = useState([]);
   const chatUser = useSelector((state) => state.chat.chatUser);
   const dispatch = useDispatch();
   const status = useSelector((state) => state.chat.sendMessageStatus);
+  const groupChat = useSelector((state) => state.chat.groupChat);
+  const newUsers = messages.map((msg) => {
+    return users.filter((user) => user.id === msg.userId)[0];
+  });
+  console.log(newUsers);
   useEffect(() => {
     const unsub = onSnapshot(
       query(collection(db, `chat/${chatId}/messages`), orderBy("createdAt")),
@@ -80,8 +85,7 @@ function ChatMessage({ chatId }) {
       direction="column"
     >
       <Text fontSize="lg" fontWeight="bold" ml="4">
-        {" "}
-        {chatUser.username}{" "}
+        {chatUser.username ? chatUser.username : groupChat.title}
       </Text>
       <Stack spacing="0" ml={4}>
         <Stack
@@ -96,6 +100,7 @@ function ChatMessage({ chatId }) {
           h="70vh"
         >
           {messages?.map((msg) => {
+            const [msgUser] = newUsers.filter((user) => user.id === msg.userId);
             return (
               <Flex
                 key={msg.id}
@@ -118,14 +123,14 @@ function ChatMessage({ chatId }) {
                       name={
                         msg.userId === auth.currentUser.uid
                           ? auth.currentUser.username
-                          : chatUser.username
+                          : msgUser.username
                       }
                       alignSelf="flex-end"
                       size="sm"
                       src={
                         msg.userId === auth.currentUser.uid
                           ? auth.currentUser.photoURL
-                          : chatUser.imageURL
+                          : msgUser.imageURL
                       }
                       mx="2"
                     />
