@@ -1,6 +1,32 @@
-import { useEffect, useState } from "react";
-import { HStack, Box, Center } from "@chakra-ui/react";
+import { useState, useEffect } from "react";
+import {
+  HStack,
+  useDisclosure,
+  Stack,
+  VStack,
+  Flex,
+  Avatar,
+  AvatarBadge,
+  Heading,
+  IconButton,
+  Box,
+  Divider,
+  Text,
+  Input,
+  List,
+  ListItem,
+  Center,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+} from "@chakra-ui/react";
+import { BiSend } from "react-icons/bi";
+import { auth } from "../../firebase/firebase";
+import { v4 as uuidv4 } from "uuid";
+import { useTranslation } from "next-i18next";
 import { wrapper } from "../../store";
+
 import { useRouter } from "next/dist/client/router";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import ChatList from "../../components/Chat/ChatList";
@@ -9,7 +35,6 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import ChatMessage from "../../components/Chat/ChatMessage";
 import { getChatUsers, getGroupChats } from "../../store/chat/chatSlice";
-import { auth } from "../../firebase/firebase";
 
 export default function Chat({ users }) {
   const router = useRouter();

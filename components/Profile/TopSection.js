@@ -94,9 +94,6 @@ function TopSection({
                   </Button>
                 </VStack>
               )}
-              <VStack align="flex-start">
-                <Button variant="primary">{t("message")}</Button>
-              </VStack>
             </Stack>
           </Flex>
         </Box>
