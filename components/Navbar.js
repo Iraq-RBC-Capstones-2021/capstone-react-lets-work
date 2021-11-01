@@ -16,6 +16,7 @@ import {
   PopoverFooter,
   PopoverArrow,
   Stack,
+  Center,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { BiLogOut } from "react-icons/bi";
@@ -28,10 +29,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleSignOut, resetStatus } from "../store/auth/authSlice";
 import { useTranslation } from "next-i18next";
 import Router from "next/router";
+import LanguageSwitcher from "./LanguageSwitcher";
+import { useRouter } from "next/router";
 
 export default function Navbar() {
   const { t } = useTranslation("navbar");
   const [display, setDisplay] = useState("none");
+  const router = useRouter();
+  const { pathname, asPath, query } = router;
   const dispatch = useDispatch();
   const signOut = useSelector((state) => state.auth.signOut);
   const toast = useToast();
@@ -58,10 +63,16 @@ export default function Navbar() {
       dispatch(resetStatus());
     }
   }, [signOut.status, toast, dispatch, signOut.errorMessage]);
+
   function signOutHandler() {
     dispatch(handleSignOut(auth.currentUser?.uid));
     Router.reload();
   }
+
+  const changeLanguage = (ln) => {
+    router.push({ pathname, query }, asPath, { locale: ln });
+  };
+
   return (
     <Flex align="center" justify="end" bgColor="offWhite">
       <Flex align="center" display={["flex", "flex", "none", "none"]} mr="auto">
@@ -82,6 +93,7 @@ export default function Navbar() {
           justify="end"
           spacing="3"
         >
+          <LanguageSwitcher />
           <NextLink href="/" passHref>
             <Button as="a" variant="ghost" aria-label="Home">
               {t("home")}
@@ -279,6 +291,28 @@ export default function Navbar() {
               </NextLink>
             )}
           </Flex>
+          <Center mt="4">
+            <Text
+              px="4"
+              color="indigo"
+              as="kbd"
+              onClick={() => {
+                changeLanguage("en");
+              }}
+            >
+              English
+            </Text>
+            <Text
+              px="4"
+              color="indigo"
+              as="kbd"
+              onClick={() => {
+                changeLanguage("ar");
+              }}
+            >
+              Arabic
+            </Text>
+          </Center>
         </Flex>
       </Flex>
     </Flex>

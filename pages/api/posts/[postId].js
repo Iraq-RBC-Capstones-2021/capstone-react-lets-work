@@ -20,6 +20,7 @@ export default async function handler(req, res) {
       comments?.forEach(async (comment) => {
         await deleteDoc(doc(db, `posts/${postId}/comments`, comment));
       });
+      await deleteDoc(doc(db, "chat", postId));
       res.status(200).json("deleted successfully");
     } catch (err) {
       res.status(402).end();
