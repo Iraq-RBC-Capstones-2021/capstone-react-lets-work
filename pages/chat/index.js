@@ -347,7 +347,7 @@ export default function Chat() {
 export async function getStaticProps({ locale }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["chat"])),
+      ...(await serverSideTranslations(locale, ["chat", "navbar"])),
     },
   };
 }
