@@ -9,7 +9,6 @@ function Profile({ userInfo, loading }) {
     <TopSection
       username={userInfo.username}
       bio={userInfo.bio}
-      job={userInfo.job}
       about={userInfo.about}
       interests={userInfo.interests.map((interest) => (
         <Tag size="lg" variant="subtle" key={interest.id} m="1">
