@@ -10,7 +10,6 @@ function Profile({ userInfo, loading }) {
       user={userInfo}
       username={userInfo.username}
       bio={userInfo.bio}
-      job={userInfo.job}
       about={userInfo.about}
       userId={userInfo.id}
       interests={userInfo.interests.map((interest) => (
