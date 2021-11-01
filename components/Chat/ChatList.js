@@ -22,6 +22,7 @@ import { auth } from "../../firebase/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import {
   handleChatRoom,
+  resetChatStatus,
   setChatUser,
   setGroupChat,
 } from "../../store/chat/chatSlice";
@@ -33,11 +34,12 @@ function ChatList({ users, groupChats }) {
   const { room } = router.query;
   const chatUser = useSelector((state) => state.chat.chatUser);
 
-  useEffect(() => {
-    if (chatRoom.status !== "loading")
-      router.push(`/chat/?room=${chatRoom.id}`, undefined, { shallow: true });
-    //eslint-disable-next-line
-  }, [chatRoom]);
+  // useEffect(() => {
+  //   if (chatRoom.status !== "loading" && chatRoom.status !== "")
+  //     router.push(`/chat/?room=${chatRoom.id}`, undefined, { shallow: true });
+  //   dispatch(resetChatStatus());
+  //   //eslint-disable-next-line
+  // }, [chatRoom]);
   async function handlePrivateChat(user) {
     dispatch(
       handleChatRoom({
@@ -45,6 +47,7 @@ function ChatList({ users, groupChats }) {
         userId: user.id,
       })
     );
+    router.push(`/chat/?room=${chatRoom.id}`, undefined, { shallow: true });
     dispatch(setChatUser(user));
     dispatch(setGroupChat(""));
   }
@@ -207,9 +210,7 @@ function ChatList({ users, groupChats }) {
                               w="full"
                               fontSize="xs"
                               color="gray.500"
-                            >
-                              3 days ago
-                            </Text>
+                            ></Text>
                           </VStack>
                         </Flex>
                       </ListItem>

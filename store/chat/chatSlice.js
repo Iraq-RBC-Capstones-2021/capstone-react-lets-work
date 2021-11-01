@@ -89,15 +89,19 @@ export const getGroupChats = createAsyncThunk(
 );
 export const joinGroupChat = createAsyncThunk(
   "joinGroupChat/chat",
-  async (id) => {
+  async ({ id, postUsers }) => {
     const isJoined = await (await getDoc(doc(db, "chat", id)))
       .data()
       ?.users.includes(auth.currentUser?.uid);
-    console.log(isJoined);
     if (!isJoined) {
       await updateDoc(doc(db, "chat", id), {
         users: arrayUnion(auth.currentUser?.uid),
       });
+      if (!postUsers.includes(auth.currentUser.uid)) {
+        await updateDoc(doc(db, "posts", id), {
+          users: arrayUnion(auth.currentUser.uid),
+        });
+      }
     }
   }
 );
@@ -111,6 +115,7 @@ const chatSlice = createSlice({
     chatUsers: { status: "", data: [] },
     groupChats: { status: "", data: [] },
     groupChat: {},
+    joinProjectStatus: "",
   },
   reducers: {
     setChatUser(state, action) {
@@ -121,6 +126,9 @@ const chatSlice = createSlice({
     },
     resetChatStatus(state) {
       state.chatRoom.status = "";
+    },
+    resetJoinProject(state) {
+      state.joinProjectStatus = "";
     },
   },
   extraReducers: {
@@ -163,13 +171,18 @@ const chatSlice = createSlice({
     },
     [getGroupChats.rejected]: (state, action) => {
       state.groupChats.status = "error";
-      console.log(action.error.message);
     },
     [joinGroupChat.rejected]: (state, action) => {
-      // state.groupChats.status = "error";
-      console.log(action.error.message);
+      state.joinProjectStatus = "error";
+    },
+    [joinGroupChat.fulfilled]: (state, action) => {
+      state.joinProjectStatus = "success";
+    },
+    [joinGroupChat.pending]: (state, action) => {
+      state.joinProjectStatus = "loading";
     },
   },
 });
-export const { setChatUser, resetChatStatus, setGroupChat } = chatSlice.actions;
+export const { setChatUser, resetChatStatus, setGroupChat, resetJoinProject } =
+  chatSlice.actions;
 export default chatSlice.reducer;

@@ -89,11 +89,13 @@ function TopSection({
                 {" "}
                 {bio}
               </Text>
-              <VStack align="flex-start">
-                <Button onClick={handle} variant="primary">
-                  Message
-                </Button>
-              </VStack>
+              {auth.currentUser?.uid !== userId && (
+                <VStack align="flex-start">
+                  <Button onClick={handle} variant="primary">
+                    Message
+                  </Button>
+                </VStack>
+              )}
             </Stack>
           </Flex>
         </Box>

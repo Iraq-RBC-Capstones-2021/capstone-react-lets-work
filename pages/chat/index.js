@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import ChatMessage from "../../components/Chat/ChatMessage";
 import { getChatUsers, getGroupChats } from "../../store/chat/chatSlice";
+import { auth } from "../../firebase/firebase";
 
 export default function Chat({ users }) {
   const router = useRouter();
@@ -28,7 +29,9 @@ export default function Chat({ users }) {
     dispatch(getGroupChats());
   }, [dispatch]);
   const { room } = router.query;
-
+  if (!auth.currentUser) {
+    router.push("/");
+  }
   return (
     <Center py={8}>
       <Box w={room || "50%"} boxShadow="2xl" p="6" rounded="md">

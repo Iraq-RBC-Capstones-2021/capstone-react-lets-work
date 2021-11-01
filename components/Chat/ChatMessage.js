@@ -39,7 +39,6 @@ function ChatMessage({ chatId, users }) {
   const newUsers = messages.map((msg) => {
     return users.filter((user) => user.id === msg.userId)[0];
   });
-  console.log(newUsers);
   useEffect(() => {
     const unsub = onSnapshot(
       query(collection(db, `chat/${chatId}/messages`), orderBy("createdAt")),
@@ -83,10 +82,18 @@ function ChatMessage({ chatId, users }) {
       borderRightColor="gray.100"
       borderRightWidth={1}
       direction="column"
+      align="center"
+      justify="center"
     >
-      <Text fontSize="lg" fontWeight="bold" ml="4">
-        {chatUser.username ? chatUser.username : groupChat.title}
-      </Text>
+      <HStack my="3">
+        <Avatar
+          src={chatUser.imageURL ? chatUser.imageURL : groupChat.imageURL}
+          name={chatUser.username ? chatUser.username : groupChat.title}
+        />
+        <Text fontSize="3xl" fontWeight="bold" ml="4">
+          {chatUser.username ? chatUser.username : groupChat.title}
+        </Text>
+      </HStack>
       <Stack spacing="0" ml={4}>
         <Stack
           spacing="6"
@@ -166,15 +173,6 @@ function ChatMessage({ chatId, users }) {
                         align="center"
                       >
                         <Text>{msg.content}</Text>
-                        {/* <Text
-                          mr={msg.userId === auth.currentUser?.uid ? "" : "2"}
-                          ml={msg.userId === auth.currentUser?.uid ? "2" : ""}
-                          alignSelf="end"
-                          fontSize="10px"
-                          fontWeight="light"
-                        >
-                          {moment(msg.createdAt).fromNow()}
-                        </Text> */}
                       </Flex>
                     </Text>
                   </Flex>
