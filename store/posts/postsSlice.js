@@ -250,6 +250,24 @@ const postSlice = createSlice({
         });
       }
     },
+    joinProjectHandler(state, action) {
+      const { postId, userId } = action.payload;
+      function joinProject(posts) {
+        posts.map((post) => {
+          if (post.id === postId) {
+            if (!post.users.includes(userId)) {
+              return {
+                ...post,
+                likes: post.users.push(userId),
+              };
+            }
+          }
+        });
+      }
+      joinProject(state.topPosts.data);
+      joinProject(state.favPosts.data);
+      joinProject(state.mostRecentPosts.data);
+    },
   },
   extraReducers: {
     [getTopProjects.fulfilled]: (state, action) => {
@@ -361,5 +379,6 @@ export const {
   favHandler,
   resetPostStatus,
   resetEditStatus,
+  joinProjectHandler,
 } = postSlice.actions;
 export default postSlice.reducer;
