@@ -8,18 +8,27 @@ import {
 } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { MdNotificationsNone, MdNotificationsActive } from "react-icons/md";
-import { auth } from "../../firebase/firebase";
+import { auth, notificationDb } from "../../firebase/firebase";
 import NotificationItem from "./NotificationItem";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllNotification } from "../../store/user/userSlice";
+import { setNotifications } from "../../store/user/userSlice";
+import { onValue, ref } from "@firebase/database";
 
 function NotificationsList() {
   const dispatch = useDispatch();
   const { data, status } = useSelector((state) => state.user.notifications);
+
   useEffect(() => {
-    if (auth.currentUser?.emailVerified) {
-      dispatch(getAllNotification(auth.currentUser.uid));
-    }
+    //note: these listeners should be detached?!
+    const notificationRef = ref(
+      notificationDb,
+      `users/${auth.currentUser.uid}`
+    );
+    onValue(notificationRef, (snapshot) => {
+      const allData = snapshot.val();
+      dispatch(setNotifications(allData));
+    });
+    return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -43,11 +52,7 @@ function NotificationsList() {
         w={{ base: "20rem", md: "md" }}
         maxH="33rem"
       >
-        <MenuGroup
-          color="#2E2A77"
-          fontSize="22px"
-          title={`${data.length} new notifications`}
-        >
+        <MenuGroup color="#2E2A77" fontSize="22px">
           {status === "success"
             ? data.map((notification) => (
                 <MenuItem

@@ -2,21 +2,6 @@ import { getAuth, updateProfile } from "firebase/auth";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { firebaseErrors } from "../../firebase/firebaseErrors";
-import { getDatabase, ref, set, onValue } from "firebase/database";
-import { notificationDb } from "../../firebase/firebase";
-
-export const getAllNotification = createAsyncThunk(
-  "profile/getAllNotification",
-  async (userId) => {
-    const notificationRef = ref(notificationDb, `users/${userId}`);
-    let notificationArray;
-    await onValue(notificationRef, (snapshot) => {
-      const data = snapshot.val();
-      notificationArray = data;
-    });
-    return notificationArray;
-  }
-);
 
 export const getUserProfileData = createAsyncThunk(
   "profile/getUserProfileData",
@@ -92,6 +77,10 @@ const userSlice = createSlice({
         status: "",
       };
     },
+    setNotifications(state, action) {
+      state.notifications.data = action.payload;
+      state.notifications.status = "success";
+    },
   },
   extraReducers: {
     [getUserProfileData.fulfilled]: (state, action) => {
@@ -119,12 +108,8 @@ const userSlice = createSlice({
         success: null,
       };
     },
-    [getAllNotification.fulfilled]: (state, action) => {
-      state.notifications.data = action.payload;
-      state.notifications.status = "success";
-    },
   },
 });
 
-export const { resetUpdateRequest } = userSlice.actions;
+export const { resetUpdateRequest, setNotifications } = userSlice.actions;
 export default userSlice.reducer;

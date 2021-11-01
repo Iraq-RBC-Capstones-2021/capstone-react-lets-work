@@ -13,12 +13,12 @@ function NotificationItem({ notification }) {
         borderBottom="1px solid #CCCCCC"
         align="center"
         justify="space-between"
+        bgColor={notification.seen ? "primary" : "gray.200"}
       >
         <HStack align="center" spacing="4">
           <Avatar size="md" src={notification.userImageURL} />
           <Stack spacing="1">
             <Text fontSize={{ base: "15px", md: "17px" }} color="#2E2A77">
-              {" "}
               {`${notification.username} ${notification.content}`}{" "}
             </Text>
             <Text fontSize={{ base: "12px", md: "13px" }} fontWeight="light">
