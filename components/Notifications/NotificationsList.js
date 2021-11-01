@@ -6,88 +6,29 @@ import {
   MenuGroup,
   IconButton,
 } from "@chakra-ui/react";
-import { BellIcon } from "@chakra-ui/icons";
+import { useEffect } from "react";
+import { MdNotificationsNone, MdNotificationsActive } from "react-icons/md";
+import { auth } from "../../firebase/firebase";
 import NotificationItem from "./NotificationItem";
-const sampleNotifications = [
-  {
-    content: "Sent a message to Group Chat",
-    userId: "",
-    createdAt: new Date(),
-    redirectTo: "/chat",
-    id: "1",
-    // TODO: fetch user data using userId
-    userImageURL: "https://randomuser.me/api/portraits/thumb/men/75.jpg",
-    username: "Ali",
-    imageURL: "https://random.imagecdn.app/500/151",
-  },
-  {
-    content: "Sent a message to Group Chat",
-    userId: "",
-    userImageURL: "https://randomuser.me/api/portraits/women/74.jpg",
-    redirectTo: "/chat",
-    id: "2",
-    username: "Cloe",
-    imageURL: "https://random.imagecdn.app/500/152",
-    createdAt: new Date(),
-  },
-  {
-    content: "Liked your post",
-    userId: "",
-    userImageURL: "https://randomuser.me/api/portraits/thumb/men/72.jpg",
-    redirectTo: "/search",
-    id: "3",
-    username: "John",
-    imageURL: "https://random.imagecdn.app/500/153",
-    createdAt: new Date(),
-  },
-  {
-    content: "Liked your post",
-    userId: "",
-    userImageURL: "https://randomuser.me/api/portraits/women/75.jpg",
-    redirectTo: "/about",
-    id: "4",
-    username: "Natalie",
-    imageURL: "https://random.imagecdn.app/500/154",
-    createdAt: new Date(),
-  },
-  {
-    content: "Sent you a Private Message",
-    userId: "",
-    userImageURL: "https://randomuser.me/api/portraits/men/20.jpg",
-    redirectTo: "/chat",
-    id: "5",
-    username: "Mohammed",
-    imageURL: "https://random.imagecdn.app/500/155",
-    createdAt: new Date(),
-  },
-  {
-    content: "Liked your post",
-    userId: "",
-    userImageURL: "https://randomuser.me/api/portraits/women/70.jpg",
-    redirectTo: "/about",
-    id: "6",
-    username: "Natalie",
-    imageURL: "https://random.imagecdn.app/500/150",
-    createdAt: new Date(),
-  },
-  {
-    content: "Liked your post",
-    userId: "",
-    username: "Cloe",
-    userImageURL: "https://randomuser.me/api/portraits/women/80.jpg",
-    redirectTo: "/about",
-    id: "7",
-    imageURL: "https://random.imagecdn.app/500/250",
-    createdAt: new Date(),
-  },
-];
+import { useDispatch, useSelector } from "react-redux";
+import { getAllNotification } from "../../store/user/userSlice";
+
 function NotificationsList() {
+  const dispatch = useDispatch();
+  const { data, status } = useSelector((state) => state.user.notifications);
+  useEffect(() => {
+    if (auth.currentUser?.emailVerified) {
+      dispatch(getAllNotification(auth.currentUser.uid));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Menu>
       <MenuButton
         aria-label="Close menu"
         size="lg"
-        icon={<BellIcon />}
+        icon={<MdNotificationsNone />}
         as={IconButton}
         background="transparent"
       />
@@ -105,13 +46,19 @@ function NotificationsList() {
         <MenuGroup
           color="#2E2A77"
           fontSize="22px"
-          title={`${sampleNotifications.length} new notifications`}
+          title={`${data.length} new notifications`}
         >
-          {sampleNotifications.map((notification) => (
-            <MenuItem _hover={{ bg: "#f4f5fd" }} p="0" key={notification.id}>
-              <NotificationItem notification={notification} />
-            </MenuItem>
-          ))}
+          {status === "success"
+            ? data.map((notification) => (
+                <MenuItem
+                  _hover={{ bg: "#f4f5fd" }}
+                  p="0"
+                  key={notification.id}
+                >
+                  <NotificationItem notification={notification} />
+                </MenuItem>
+              ))
+            : null}
         </MenuGroup>
       </MenuList>
     </Menu>

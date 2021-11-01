@@ -61,9 +61,16 @@ export default function Navbar() {
   }
   return (
     <Flex align="center" justify="end" bgColor="offWhite">
-      <Flex align="center" display={["flex", "flex", "none", "none"]} mr="auto">
-        <NotificationsList />
-      </Flex>
+      {auth.currentUser ? (
+        <Flex
+          align="center"
+          display={["flex", "flex", "none", "none"]}
+          mr="auto"
+        >
+          <NotificationsList />
+        </Flex>
+      ) : null}
+
       <HStack
         justify={{ base: "end", md: "" }}
         minW="50%"
@@ -169,8 +176,7 @@ export default function Navbar() {
               </Button>
             </NextLink>
           )}
-
-          <NotificationsList />
+          {auth.currentUser ? <NotificationsList /> : null}
         </HStack>
         <IconButton
           aria-label="open menu"
