@@ -27,6 +27,17 @@ export const handleNotification = createAsyncThunk(
   }
 );
 
+export const setNotificationSeenAsTrue = createAsyncThunk(
+  "posts/setNotificationSeenAsTrue",
+  async ({ notificationId }) => {
+    const notificationListRef = ref(
+      notificationDb,
+      `users/${auth.currentUser.uid}/${notificationId}/seen`
+    );
+    set(notificationListRef, true);
+  }
+);
+
 export const submitPost = createAsyncThunk(
   "posts/submitPost",
   async (postData) => {

@@ -26,18 +26,37 @@ function NotificationsList() {
     );
     onValue(notificationRef, (snapshot) => {
       let allData = snapshot.val() === null ? [] : snapshot.val();
-      allData = Object.values(allData);
+      allData = Object.entries(allData);
+
       dispatch(setNotifications(allData));
     });
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const isAllNotificationsSeen = () => {
+    if (status === "success") {
+      for (let index = 0; index < data.length; index++) {
+        if (data[index][1].seen === false) {
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+
   return (
     <Menu>
       <MenuButton
         aria-label="Close menu"
         size="lg"
-        icon={<MdNotificationsNone />}
+        icon={
+          isAllNotificationsSeen() ? (
+            <MdNotificationsNone />
+          ) : (
+            <MdNotificationsActive />
+          )
+        }
         as={IconButton}
         background="transparent"
       />
@@ -58,9 +77,12 @@ function NotificationsList() {
                 <MenuItem
                   _hover={{ bg: "#f4f5fd" }}
                   p="0"
-                  key={notification.id}
+                  key={notification[0]}
                 >
-                  <NotificationItem notification={notification} />
+                  <NotificationItem
+                    notification={notification[1]}
+                    notificationId={notification[0]}
+                  />
                 </MenuItem>
               ))
             : null}
