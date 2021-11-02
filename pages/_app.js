@@ -16,6 +16,8 @@ import Head from "next/head";
 import Link from "next/link";
 import NProgress from "nprogress";
 
+NProgress.configure({ showSpinner: false });
+
 const App = ({ Component, pageProps }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
