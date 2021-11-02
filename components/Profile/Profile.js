@@ -7,10 +7,11 @@ function Profile({ userInfo, loading }) {
     <Skeleton h="100%" size="100%" />
   ) : (
     <TopSection
+      user={userInfo}
       username={userInfo.username}
       bio={userInfo.bio}
-      job={userInfo.job}
       about={userInfo.about}
+      userId={userInfo.id}
       interests={userInfo.interests.map((interest) => (
         <Tag size="lg" variant="subtle" key={interest.id} m="1">
           {interest.value}

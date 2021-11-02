@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
 import authSlice from "./auth/authSlice";
+import chatSlice from "./chat/chatSlice";
 import commentSlice from "./comments/commentSlice";
 import postsSlice from "./posts/postsSlice";
 import userSlice from "./user/userSlice";
@@ -12,6 +13,7 @@ const makeStore = () =>
       posts: postsSlice,
       user: userSlice,
       comments: commentSlice,
+      chat: chatSlice,
     },
 
     devTools: true,

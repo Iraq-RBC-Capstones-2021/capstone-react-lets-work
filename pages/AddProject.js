@@ -1,6 +1,7 @@
 import { useTranslation } from "next-i18next";
 import {
   Box,
+  Skeleton,
   Heading,
   Input,
   HStack,
@@ -39,10 +40,15 @@ import { useRouter } from "next/dist/client/router";
 import { resetPostStatus } from "../store/posts/postsSlice";
 
 export default function AddProject() {
+  const router = useRouter();
+
+  if (!auth.currentUser) {
+    router.push("/signup");
+  }
+
   const [tagsArray, setTagsArray] = useState([]);
   const [tagsValue, setTagsValue] = useState("");
   const [imageURL, setImageURL] = useState("");
-  const router = useRouter();
   const dispatch = useDispatch();
   const toast = useToast();
   const postStatus = useSelector((state) => state.posts.status);
@@ -158,7 +164,9 @@ export default function AddProject() {
     setImageURL("");
     onSubmitProps.resetForm();
   };
-  return (
+  return !auth.currentUser ? (
+    <Skeleton h="100vh" size="100vh" />
+  ) : (
     <Formik
       initialValues={{ projectName: "", description: "", tags: "" }}
       validationSchema={Yup.object({
