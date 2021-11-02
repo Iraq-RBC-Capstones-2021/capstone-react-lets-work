@@ -12,7 +12,6 @@ import { auth } from "../firebase/firebase";
 import { setIsLoggedIn } from "../store/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { Router } from "next/router";
-import CustomLoader from "../components/CustomLoader";
 import Head from "next/head";
 import Link from "next/link";
 import NProgress from "nprogress";
@@ -30,12 +29,10 @@ const App = ({ Component, pageProps }) => {
   }, [dispatch]);
 
   Router.events.on("routeChangeStart", (url) => {
-    console.log("Route is changing... ");
     NProgress.start();
     setLoading(true);
   });
   Router.events.on("routeChangeComplete", (url) => {
-    console.log("Route is complete... ");
     NProgress.done();
     setLoading(false);
   });
