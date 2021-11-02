@@ -13,7 +13,6 @@ import { setIsLoggedIn } from "../store/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { Router } from "next/router";
 import Head from "next/head";
-import Link from "next/link";
 import NProgress from "nprogress";
 
 NProgress.configure({ showSpinner: false });
