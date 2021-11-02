@@ -9,10 +9,23 @@ import {
   getDoc,
   doc,
 } from "@firebase/firestore";
+import { ref, push, set } from "firebase/database";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import moment from "moment";
-import { auth, db } from "../../firebase/firebase";
+import { auth, db, notificationDb } from "../../firebase/firebase";
+
+export const handleNotification = createAsyncThunk(
+  "posts/sendNotification",
+  async (newNotification) => {
+    const notificationListRef = ref(
+      notificationDb,
+      `users/${newNotification.invokedUserId}`
+    );
+    const newNotificationRef = push(notificationListRef);
+    set(newNotificationRef, newNotification);
+  }
+);
 
 export const submitPost = createAsyncThunk(
   "posts/submitPost",

@@ -16,7 +16,11 @@ import {
 } from "@chakra-ui/react";
 import { FaPlus, FaHeart } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { handleLike, likeHandler } from "../../../store/posts/postsSlice";
+import {
+  handleLike,
+  handleNotification,
+  likeHandler,
+} from "../../../store/posts/postsSlice";
 import { auth } from "../../../firebase/firebase";
 import { useSelector } from "react-redux";
 function PostCard({
@@ -52,6 +56,18 @@ function PostCard({
     if (auth.currentUser && likeStatus !== "loading") {
       dispatch(handleLike({ postId: id, userId: auth.currentUser.uid }));
       dispatch(likeHandler({ post, userId: auth.currentUser.uid }));
+      dispatch(
+        handleNotification({
+          redirectTo: `/posts/${id}`,
+          seen: false,
+          invokerUserImage: auth.currentUser.photoURL,
+          invokerUsername: auth.currentUser.displayName,
+          content: "liked your post",
+          createdAt: new Date(),
+          invokedItemImage: imageURL,
+          invokedUserId: user.id,
+        })
+      );
     } else if (!auth.currentUser) {
       setLikeError("Login first!");
     }

@@ -25,13 +25,13 @@ function NotificationsList() {
       `users/${auth.currentUser.uid}`
     );
     onValue(notificationRef, (snapshot) => {
-      const allData = snapshot.val();
+      let allData = snapshot.val() === null ? [] : snapshot.val();
+      allData = Object.values(allData);
       dispatch(setNotifications(allData));
     });
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   return (
     <Menu>
       <MenuButton
