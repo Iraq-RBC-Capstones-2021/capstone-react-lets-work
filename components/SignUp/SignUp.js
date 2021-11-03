@@ -48,6 +48,7 @@ function SignUp() {
         status: "success",
         variant: "subtle",
       });
+      router.reload();
       dispatch(resetStatus());
     }
     //eslint-disable-next-line
