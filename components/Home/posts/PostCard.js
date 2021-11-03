@@ -17,6 +17,7 @@ import {
 import { FaPlus, FaHeart } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import {
+  handleDeletingNotification,
   handleLike,
   handleNotification,
   likeHandler,
@@ -56,18 +57,25 @@ function PostCard({
     if (auth.currentUser && likeStatus !== "loading") {
       dispatch(handleLike({ postId: id, userId: auth.currentUser.uid }));
       dispatch(likeHandler({ post, userId: auth.currentUser.uid }));
-      dispatch(
-        handleNotification({
-          redirectTo: `/posts/${id}`,
-          seen: false,
-          invokerUserImage: auth.currentUser.photoURL,
-          invokerUsername: auth.currentUser.displayName,
-          content: "liked your post",
-          createdAt: new Date(),
-          invokedItemImage: imageURL,
-          invokedUserId: user.id,
-        })
-      );
+      if (!likes.includes(auth.currentUser.uid)) {
+        dispatch(
+          handleNotification({
+            redirectTo: `/posts/${id}`,
+            seen: false,
+            invokerUserImage: auth.currentUser.photoURL,
+            invokerUsername: auth.currentUser.displayName,
+            content: "liked your post",
+            createdAt: new Date().toString(),
+            invokedItemImage: imageURL,
+            invokedUserId: user.id,
+            postId: id,
+          })
+        );
+      } else {
+        dispatch(
+          handleDeletingNotification({ invokedUserId: user.id, postId: id })
+        );
+      }
     } else if (!auth.currentUser) {
       setLikeError("Login first!");
     }

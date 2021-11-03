@@ -9,21 +9,31 @@ import {
   getDoc,
   doc,
 } from "@firebase/firestore";
-import { ref, push, set } from "firebase/database";
+import { ref, push, set, remove } from "firebase/database";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import moment from "moment";
 import { auth, db, notificationDb } from "../../firebase/firebase";
+
+export const handleDeletingNotification = createAsyncThunk(
+  "posts/handleDeletingNotification",
+  async ({ invokedUserId, postId }) => {
+    const notificationListRef = ref(
+      notificationDb,
+      `users/${invokedUserId}/${postId}`
+    );
+    remove(notificationListRef);
+  }
+);
 
 export const handleNotification = createAsyncThunk(
   "posts/sendNotification",
   async (newNotification) => {
     const notificationListRef = ref(
       notificationDb,
-      `users/${newNotification.invokedUserId}`
+      `users/${newNotification.invokedUserId}/${newNotification.postId}`
     );
-    const newNotificationRef = push(notificationListRef);
-    set(newNotificationRef, newNotification);
+    set(notificationListRef, newNotification);
   }
 );
 
