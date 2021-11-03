@@ -1,6 +1,5 @@
 import {
   Box,
-  Link,
   Image,
   Text,
   HStack,
@@ -9,12 +8,11 @@ import {
   Skeleton,
 } from "@chakra-ui/react";
 import { Image as NextImage } from "next/image";
-import { Link as NextLink } from "next/link";
+import NextLink from "next/link";
 
 const IdeaCard = ({ ideaImage, title, userImage, username, date, ideaId }) => {
   return (
-    <Link
-      as={NextLink}
+    <NextLink
       textDecoration="none"
       _hover={{ textDecoration: "none" }}
       href={`/posts/${ideaId}`}
@@ -79,7 +77,7 @@ const IdeaCard = ({ ideaImage, title, userImage, username, date, ideaId }) => {
           </HStack>
         </Flex>
       </Box>
-    </Link>
+    </NextLink>
   );
 };
 
