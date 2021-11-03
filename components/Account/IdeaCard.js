@@ -1,4 +1,13 @@
-import { Box, Link, Image, Text, HStack, Flex } from "@chakra-ui/react";
+import {
+  Box,
+  Link,
+  Image,
+  Text,
+  HStack,
+  Flex,
+  Avatar,
+  Skeleton,
+} from "@chakra-ui/react";
 import { Image as NextImage } from "next/image";
 import { Link as NextLink } from "next/link";
 
@@ -24,16 +33,20 @@ const IdeaCard = ({ ideaImage, title, userImage, username, date, ideaId }) => {
         <Box
           overflow="hidden"
           borderTopRadius="lg"
-          height="218px"
+          height={ideaImage ? "218px" : "auto"}
           width="300px"
         >
-          <Image
-            as={NextImage}
-            src={ideaImage}
-            alt={title}
-            objectFit="contain"
-            width="100%"
-          />
+          {ideaImage && (
+            <Image
+              as={NextImage}
+              src={ideaImage}
+              alt={title}
+              objectFit="cover"
+              width="100%"
+              height="100%"
+              fallbackSrc={<Skeleton w="100%" h="100%" />}
+            />
+          )}
         </Box>
         <Flex pl={4} mb={4} direction="column">
           <Text
@@ -51,10 +64,10 @@ const IdeaCard = ({ ideaImage, title, userImage, username, date, ideaId }) => {
           </Text>
           <HStack marginTop="2" spacing="2" display="flex" alignSelf="start">
             <Box overflow="hidden" height="24px" width="24px">
-              <Image
+              <Avatar
                 borderRadius="50%"
                 src={userImage}
-                alt={username}
+                name={username}
                 height="24px"
                 objectFit="cover"
                 width="24px"
