@@ -78,7 +78,7 @@ function PostCard({
         dispatch(
           handleDeletingNotification({
             invokedUserId: user.id,
-            postId: id,
+            userId: auth.currentUser.uid,
             type: "like",
           })
         );
