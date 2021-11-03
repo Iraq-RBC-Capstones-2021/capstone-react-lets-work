@@ -8,15 +8,17 @@ import {
   Skeleton,
   Heading,
   Flex,
+  Button,
 } from "@chakra-ui/react";
 import { auth } from "../../firebase/firebase";
 import { useEffect } from "react";
 import { useRouter } from "next/dist/client/router";
 import { getUserProfileData } from "../../store/user/userSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { usePopulateUserSlice } from "../../components/Hooks/usePopulateUserSlice";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
+import { getUserPosts, resetUserProjects } from "../../store/posts/postsSlice";
 
 export default function AccountId({ params }) {
   const { t } = useTranslation("profile");
@@ -26,23 +28,23 @@ export default function AccountId({ params }) {
   const userInfo = useSelector((state) => state.user.entities);
   const loading = useSelector((state) => state.user.loading);
   usePopulateUserSlice(getUserProfileData, params.accountId);
-
+  const lastUserPost = useSelector((state) => state.posts.lastUserPost);
+  const dispatch = useDispatch();
   useEffect(() => {
     if (!auth.currentUser) {
       router.push("/");
     }
   }, [router]);
 
-  const dummy_data = [
-    {
-      date: "12 hours ago",
-      ideaImage: "https://source.unsplash.com/random",
-      title: "German telescope",
-      userImage: "https://source.unsplash.com/random",
-      username: "Bruce Lee",
-      id: 1,
-    },
-  ];
+  const userProjects = useSelector((state) => state.posts.userPosts);
+  useEffect(() => {
+    if (userProjects.data.length === 0) {
+      dispatch(getUserPosts(params.accountId));
+    }
+    return () => dispatch(resetUserProjects());
+    //eslint-disable-next-line
+  }, [params.accountId]);
+
   return !auth.currentUser && params.accountId ? (
     <Skeleton h="100%" size="100%" />
   ) : (
@@ -64,24 +66,34 @@ export default function AccountId({ params }) {
         px={8}
         textAlign="center"
         dir="ltr"
+        align="center"
       >
         <Center>
           <Box p={4}>
             <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={16}>
-              {dummy_data.map((idea) => (
+              {userProjects.data.map((idea) => (
                 <IdeaCard
                   key={idea.id}
-                  date={idea.date}
-                  ideaImage={idea.ideaImage}
+                  date={idea.createdAt}
+                  ideaImage={idea.imageURL}
                   title={idea.title}
-                  userImage={idea.userImage}
-                  username={idea.username}
+                  userImage={userInfo.imageURL}
+                  username={userInfo.username}
                   ideaId={idea.id}
                 />
               ))}
             </SimpleGrid>
           </Box>
         </Center>
+        {lastUserPost && userProjects.data.length % 3 === 0 && (
+          <Button
+            onClick={() => dispatch(getUserPosts(params.accountId))}
+            w="30%"
+            variant="secondary"
+          >
+            Load more
+          </Button>
+        )}
       </Stack>
     </Box>
   );
