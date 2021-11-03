@@ -19,7 +19,7 @@ import { useDispatch } from "react-redux";
 import {
   handleDeletingNotification,
   handleLike,
-  handleNotification,
+  handleSendingNotification,
   likeHandler,
 } from "../../../store/posts/postsSlice";
 import { auth } from "../../../firebase/firebase";
@@ -59,21 +59,28 @@ function PostCard({
       dispatch(likeHandler({ post, userId: auth.currentUser.uid }));
       if (!likes.includes(auth.currentUser.uid)) {
         dispatch(
-          handleNotification({
-            redirectTo: `/posts/${id}`,
-            seen: false,
-            invokerUserImage: auth.currentUser.photoURL,
-            invokerUsername: auth.currentUser.displayName,
-            content: "liked your post",
-            createdAt: new Date().toString(),
-            invokedItemImage: imageURL,
-            invokedUserId: user.id,
-            postId: id,
+          handleSendingNotification({
+            newNotification: {
+              redirectTo: `/posts/${id}`,
+              seen: false,
+              invokerUserImage: auth.currentUser.photoURL,
+              invokerUsername: auth.currentUser.displayName,
+              content: "liked your post",
+              createdAt: new Date().toString(),
+              invokedItemImage: imageURL,
+              invokedUserId: user.id,
+              postId: id,
+            },
+            type: "like",
           })
         );
       } else {
         dispatch(
-          handleDeletingNotification({ invokedUserId: user.id, postId: id })
+          handleDeletingNotification({
+            invokedUserId: user.id,
+            postId: id,
+            type: "like",
+          })
         );
       }
     } else if (!auth.currentUser) {

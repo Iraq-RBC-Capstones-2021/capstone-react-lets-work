@@ -9,7 +9,7 @@ import {
   getDoc,
   doc,
 } from "@firebase/firestore";
-import { ref, push, set, remove } from "firebase/database";
+import { ref, set, remove } from "firebase/database";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import moment from "moment";
@@ -17,21 +17,30 @@ import { auth, db, notificationDb } from "../../firebase/firebase";
 
 export const handleDeletingNotification = createAsyncThunk(
   "posts/handleDeletingNotification",
-  async ({ invokedUserId, postId }) => {
+  async ({ invokedUserId, postId, type }) => {
+    let typeOfNotification;
+    if (type === "comment") typeOfNotification = `${postId}comment`;
+    if (type === "like") typeOfNotification = `${postId}like`;
+
     const notificationListRef = ref(
       notificationDb,
-      `users/${invokedUserId}/${postId}`
+      `users/${invokedUserId}/${typeOfNotification}`
     );
     remove(notificationListRef);
   }
 );
 
-export const handleNotification = createAsyncThunk(
-  "posts/sendNotification",
-  async (newNotification) => {
+export const handleSendingNotification = createAsyncThunk(
+  "posts/handleSendingNotification",
+  async ({ newNotification, type }) => {
+    let typeOfNotification;
+    if (type === "comment")
+      typeOfNotification = `${newNotification.postId}comment`;
+    if (type === "like") typeOfNotification = `${newNotification.postId}like`;
+
     const notificationListRef = ref(
       notificationDb,
-      `users/${newNotification.invokedUserId}/${newNotification.postId}`
+      `users/${newNotification.invokedUserId}/${typeOfNotification}`
     );
     set(notificationListRef, newNotification);
   }
