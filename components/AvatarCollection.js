@@ -6,7 +6,6 @@ export default function AvatarCollection({ users }) {
       <Avatar {...props} />
     </Tooltip>
   );
-  console.log(users);
   return (
     <AvatarGroup size="sm" max="4">
       {users.map((user) => (

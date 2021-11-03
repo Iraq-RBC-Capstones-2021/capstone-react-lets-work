@@ -1,26 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
   HStack,
-  useDisclosure,
   Stack,
-  VStack,
   Flex,
   Avatar,
-  AvatarBadge,
-  Heading,
   IconButton,
   Box,
-  Divider,
   Text,
-  Input,
-  List,
-  ListItem,
-  Center,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
 } from "@chakra-ui/react";
 import { auth, db } from "../../firebase/firebase";
 import { BiSend } from "react-icons/bi";
@@ -171,8 +157,9 @@ function ChatMessage({ chatId, users }) {
                             : "row-reverse"
                         }
                         align="center"
+                        wrap="wrap"
                       >
-                        <Text>{msg.content}</Text>
+                        <Text maxW="20rem">{msg.content}</Text>
                       </Flex>
                     </Text>
                   </Flex>
