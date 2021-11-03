@@ -32,7 +32,7 @@ import PostOptionsMenu from "../../components/PostOptionsMenu";
 import {
   getComments,
   postComment,
-  resetCommentStatus,
+  //resetCommentStatus,
 } from "../../store/comments/commentSlice";
 import Comment from "../../components/Comment";
 import { Form, Formik } from "formik";
@@ -55,13 +55,13 @@ export default function Index({ post, user, some }) {
       .trim()
       .min(1, "Comments can not be empty"),
   });
-  useToastHook(
+  /* useToastHook(
     {
       status: postCommentStatus,
       error: "Something went wrong",
     },
     resetCommentStatus
-  );
+  );*/
   function handleLikeClick() {
     if (likeStatus !== "loading" && auth.currentUser) {
       dispatch(handleLike({ postId: post.id, userId: auth.currentUser.uid }));
