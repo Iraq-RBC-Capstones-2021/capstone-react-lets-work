@@ -50,6 +50,8 @@ export default function Navbar() {
         position: "top",
         duration: 3000,
       });
+      router.reload();
+
       dispatch(resetStatus());
     }
     if (signOut.status === "error") {
@@ -62,11 +64,10 @@ export default function Navbar() {
       });
       dispatch(resetStatus());
     }
-  }, [signOut.status, toast, dispatch, signOut.errorMessage]);
+  }, [signOut.status, toast, dispatch, signOut.errorMessage, router]);
 
   function signOutHandler() {
     dispatch(handleSignOut(auth.currentUser?.uid));
-    Router.reload();
   }
 
   const changeLanguage = (ln) => {
