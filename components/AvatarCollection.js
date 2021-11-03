@@ -1,10 +1,21 @@
-import { AvatarGroup, Avatar } from "@chakra-ui/react";
+import { AvatarGroup, Avatar, Tooltip } from "@chakra-ui/react";
 
 export default function AvatarCollection({ users }) {
+  const ToolTipAvatar = (props) => (
+    <Tooltip label={props.name}>
+      <Avatar {...props} />
+    </Tooltip>
+  );
+  console.log(users);
   return (
     <AvatarGroup size="sm" max="4">
       {users.map((user) => (
-        <Avatar key={user.name} name={user.name} src={user.source} />
+        <ToolTipAvatar
+          key={user.id}
+          size="sm"
+          name={user.name}
+          src={user.imageURL}
+        />
       ))}
     </AvatarGroup>
   );

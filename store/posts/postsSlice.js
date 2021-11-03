@@ -412,7 +412,6 @@ const postSlice = createSlice({
     },
     [getUserPosts.rejected]: (state, action) => {
       state.userPosts.status = "error";
-      console.log(action.error.message);
     },
     [getUserPosts.pending]: (state, action) => {
       state.userPosts.status = "loading";
