@@ -16,7 +16,7 @@ import { auth, notificationDb } from "../../firebase/firebase";
 import NotificationItem from "./NotificationItem";
 import { useDispatch, useSelector } from "react-redux";
 import { setNotifications } from "../../store/user/userSlice";
-import { onValue, ref } from "@firebase/database";
+import { onValue, ref, off } from "@firebase/database";
 import { GiDesert } from "react-icons/gi";
 
 function NotificationsList() {
@@ -24,18 +24,20 @@ function NotificationsList() {
   const { data, status } = useSelector((state) => state.user.notifications);
 
   useEffect(() => {
-    //note: these listeners should be detached?!
     const notificationRef = ref(
       notificationDb,
       `users/${auth.currentUser.uid}`
     );
-    onValue(notificationRef, (snapshot) => {
+    const unsubscribe = onValue(notificationRef, (snapshot) => {
       let allData = snapshot.val() === null ? [] : snapshot.val();
       allData = Object.entries(allData);
 
       dispatch(setNotifications(allData));
     });
-    return () => {};
+
+    return () => {
+      unsubscribe();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

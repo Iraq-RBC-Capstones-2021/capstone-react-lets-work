@@ -18,7 +18,7 @@ import {
   IconButton,
   Skeleton,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter as router } from "next/dist/client/router";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { useTranslation } from "next-i18next";
@@ -33,16 +33,11 @@ import { doc, getDoc } from "@firebase/firestore";
 import { auth, db } from "../../firebase/firebase";
 import moment from "moment";
 import PostOptionsMenu from "../../components/PostOptionsMenu";
-import {
-  getComments,
-  postComment,
-  resetCommentStatus,
-} from "../../store/comments/commentSlice";
+import { getComments, postComment } from "../../store/comments/commentSlice";
 import Comment from "../../components/Comment";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import ChakraInput from "../../components/Shared/ChakraInput";
-import { useToastHook } from "../../components/Hooks/useToastHook";
 
 export default function Index({ post, user, some }) {
   const { t } = useTranslation("postId");
@@ -59,13 +54,7 @@ export default function Index({ post, user, some }) {
       .trim()
       .min(1, "Comments can not be empty"),
   });
-  // useToastHook(
-  //   {
-  //     status: postCommentStatus,
-  //     error: "Something went wrong",
-  //   },
-  //   resetCommentStatus
-  // );
+
   function handleLikeClick() {
     if (likeStatus !== "loading" && auth.currentUser) {
       dispatch(handleLike({ postId: post.id, userId: auth.currentUser.uid }));
