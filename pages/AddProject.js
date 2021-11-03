@@ -42,7 +42,7 @@ import { resetPostStatus } from "../store/posts/postsSlice";
 export default function AddProject() {
   const router = useRouter();
 
-  if (!auth.currentUser) {
+  if (!auth.currentUser || !auth.currentUser?.emailVerified) {
     router.push("/signup");
   }
 
@@ -164,7 +164,7 @@ export default function AddProject() {
     setImageURL("");
     onSubmitProps.resetForm();
   };
-  return !auth.currentUser ? (
+  return !auth.currentUser || !auth.currentUser?.emailVerified ? (
     <Skeleton h="100vh" size="100vh" />
   ) : (
     <Formik

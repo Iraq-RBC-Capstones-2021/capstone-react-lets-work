@@ -64,7 +64,11 @@ export default function Index({ post, user, some }) {
     resetCommentStatus
   );*/
   function handleLikeClick() {
-    if (likeStatus !== "loading" && auth.currentUser) {
+    if (
+      likeStatus !== "loading" &&
+      auth.currentUser &&
+      auth.currentUser?.emailVerified
+    ) {
       dispatch(handleLike({ postId: post.id, userId: auth.currentUser.uid }));
       if (post.likes.includes(auth.currentUser.uid)) {
         const userIndex = post.likes.findIndex(
@@ -188,7 +192,7 @@ export default function Index({ post, user, some }) {
 
               <Text color="lightPurple">{post.likes.length}</Text>
             </HStack>
-            {auth.currentUser && (
+            {auth.currentUser && auth.currentUser?.emailVerified && (
               <Formik
                 validationSchema={validationSchema}
                 initialValues={{ comment: "" }}

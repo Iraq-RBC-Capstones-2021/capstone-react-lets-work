@@ -157,12 +157,21 @@ export default function Navbar() {
                   </NextLink>
                 </PopoverHeader>
                 <PopoverBody cursor="pointer" _hover={{ bg: "gray.100" }}>
-                  <NextLink href="/setting">
-                    <HStack>
-                      <Icon h="5" w="5" as={FiSettings} />
-                      <Text>{t("accountSetting")}</Text>
-                    </HStack>
-                  </NextLink>
+                  {auth.currentUser.emailVerified ? (
+                    <NextLink href="/setting">
+                      <HStack>
+                        <Icon h="5" w="5" as={FiSettings} />
+                        <Text>{t("accountSetting")}</Text>
+                      </HStack>
+                    </NextLink>
+                  ) : (
+                    <NextLink href="/signup">
+                      <HStack>
+                        <Icon h="5" w="5" as={FiSettings} />
+                        <Text>{t("verify")}</Text>
+                      </HStack>
+                    </NextLink>
+                  )}
                 </PopoverBody>
                 <PopoverFooter
                   onClick={signOutHandler}

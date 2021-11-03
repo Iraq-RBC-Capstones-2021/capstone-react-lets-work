@@ -20,6 +20,7 @@ import {
   TabList,
   TabPanels,
   Tab,
+  Skeleton,
 } from "@chakra-ui/react";
 import { BiSend } from "react-icons/bi";
 import { auth } from "../../firebase/firebase";
@@ -54,10 +55,12 @@ export default function Chat({ users }) {
     dispatch(getGroupChats());
   }, [dispatch]);
   const { room } = router.query;
-  if (!auth.currentUser) {
-    router.push("/");
+  if (!auth.currentUser || !auth.currentUser?.emailVerified) {
+    router.push("/signup");
   }
-  return (
+  return !auth.currentUser?.emailVerified ? (
+    <Skeleton h="100vh" />
+  ) : (
     <Center py={8}>
       <Box w={room || "50%"} boxShadow="2xl" p="6" rounded="md">
         <HStack h="80vh" spacing={0}>
