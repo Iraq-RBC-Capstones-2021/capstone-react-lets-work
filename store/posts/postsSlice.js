@@ -169,6 +169,32 @@ export const getFavPosts = createAsyncThunk(
     return posts;
   }
 );
+export const getUserPosts = createAsyncThunk(
+  "getInitialPosts/posts",
+  async (userId, { dispatch, getState }) => {
+    const lastDisplayedPost = getState().posts.lastUserPost;
+    const postsRef = await getDocs(
+      query(
+        collection(db, "posts"),
+        where("userId", "==", userId),
+        orderBy("likes", "desc"),
+        startAfter(lastDisplayedPost || "0"),
+        limit(3)
+      )
+    );
+    const lastPost = postsRef.docs[postsRef.docs.length - 1];
+    dispatch(setLastUserPost(lastPost));
+    const posts = postsRef.docs.map((post) => {
+      return {
+        id: post.id,
+        ...post.data(),
+        createdAt: moment(post.data().createdAt.toDate()).calendar(),
+      };
+    });
+
+    return posts;
+  }
+);
 export const getInitialPosts = createAsyncThunk(
   "getInitialPosts/posts",
   async (order) => {
@@ -226,6 +252,8 @@ const postSlice = createSlice({
     singlePost: { status: "", data: [] },
     deletePostStatus: "",
     editPostStatus: "",
+    userPosts: { status: "", data: [] },
+    lastUserPost: {},
   },
   reducers: {
     setLastTopPost(state, action) {
@@ -237,6 +265,10 @@ const postSlice = createSlice({
     setLastFavPost(state, action) {
       state.lastFavPost = action.payload;
     },
+    setLastUserPost(state, action) {
+      state.lastUserPost = action.payload;
+    },
+
     favHandler(state, action) {
       const post = action.payload;
       const isthere = state.favPosts.data.find((p) => p.id === post.id);
@@ -253,6 +285,11 @@ const postSlice = createSlice({
     resetEditStatus(state) {
       state.deletePostStatus = "";
       state.editPostStatus = "";
+    },
+    resetUserProjects(state, action) {
+      state.userPosts.data = [];
+      state.userPosts.status = "";
+      state.lastUserPost = {};
     },
 
     likeHandler(state, action) {
@@ -292,6 +329,24 @@ const postSlice = createSlice({
           likesCount: post.likesCount + 1,
         });
       }
+    },
+    joinProjectHandler(state, action) {
+      const { postId, userId } = action.payload;
+      function joinProject(posts) {
+        posts.map((post) => {
+          if (post.id === postId) {
+            if (!post.users.includes(userId)) {
+              return {
+                ...post,
+                likes: post.users.push(userId),
+              };
+            }
+          }
+        });
+      }
+      joinProject(state.topPosts.data);
+      joinProject(state.favPosts.data);
+      joinProject(state.mostRecentPosts.data);
     },
   },
   extraReducers: {
@@ -394,6 +449,16 @@ const postSlice = createSlice({
     [getSinglePost.pending]: (state, action) => {
       state.singlePost.status = "loading";
     },
+    [getUserPosts.fulfilled]: (state, action) => {
+      state.userPosts.data.push(...action.payload);
+      state.userPosts.status = "success";
+    },
+    [getUserPosts.rejected]: (state, action) => {
+      state.userPosts.status = "error";
+    },
+    [getUserPosts.pending]: (state, action) => {
+      state.userPosts.status = "loading";
+    },
   },
 });
 export const {
@@ -404,5 +469,8 @@ export const {
   favHandler,
   resetPostStatus,
   resetEditStatus,
+  joinProjectHandler,
+  setLastUserPost,
+  resetUserProjects,
 } = postSlice.actions;
 export default postSlice.reducer;

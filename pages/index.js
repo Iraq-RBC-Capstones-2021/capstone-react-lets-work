@@ -28,9 +28,16 @@ export default function Home({
   const lastRecentPost = useSelector((state) => state.posts.lastRecentPost);
   const lastFavPost = useSelector((state) => state.posts.lastFavPost);
   useEffect(() => {
-    dispatch(getTopProjects());
-    dispatch(getMostRecentProjects());
-    dispatch(getFavPosts());
+    if (topPosts.data.length === 0) {
+      dispatch(getTopProjects());
+    }
+    if (mostRecentPosts.data.length === 0) {
+      dispatch(getMostRecentProjects());
+    }
+    if (favPosts.data.length === 0) {
+      dispatch(getFavPosts());
+    }
+    //eslint-disable-next-line
   }, [dispatch]);
   return (
     <Box mb="20">

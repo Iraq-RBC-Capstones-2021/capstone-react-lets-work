@@ -33,7 +33,12 @@ import { doc, getDoc } from "@firebase/firestore";
 import { auth, db } from "../../firebase/firebase";
 import moment from "moment";
 import PostOptionsMenu from "../../components/PostOptionsMenu";
-import { getComments, postComment } from "../../store/comments/commentSlice";
+import {
+  getComments,
+  postComment,
+  //resetCommentStatus,
+} from "../../store/comments/commentSlice";
+import { getAllUsers } from "../../store/user/userSlice";
 import Comment from "../../components/Comment";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
@@ -54,7 +59,6 @@ export default function Index({ post, user, some }) {
       .trim()
       .min(1, "Comments can not be empty"),
   });
-
   function handleLikeClick() {
     if (likeStatus !== "loading" && auth.currentUser) {
       dispatch(handleLike({ postId: post.id, userId: auth.currentUser.uid }));
@@ -106,7 +110,15 @@ export default function Index({ post, user, some }) {
     }
     onSubmitProps.resetForm();
   }
-
+  const users = useSelector((state) => state.user.users);
+  useEffect(() => {
+    if (users.length === 0) {
+      dispatch(getAllUsers());
+    }
+  }, [dispatch, users]);
+  const postUsers = users.filter((user) => {
+    return post.users.includes(user.id);
+  });
   return (
     <Flex mt={{ base: "6", md: "" }} align="center" justify="center">
       <Stack
@@ -134,7 +146,7 @@ export default function Index({ post, user, some }) {
                 <PostOptionsMenu postId={post.id} />
               )}
             </HStack>
-            <AvatarCollection users={post.users} />
+            <AvatarCollection users={postUsers} />
 
             <Text color={"gray.500"}>{post.description}</Text>
           </Stack>

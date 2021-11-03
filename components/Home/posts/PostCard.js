@@ -15,15 +15,23 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { FaPlus, FaHeart } from "react-icons/fa";
+import { IoMdChatbubbles } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import {
   handleDeletingNotification,
   handleLike,
   handleSendingNotification,
+  joinProjectHandler,
   likeHandler,
 } from "../../../store/posts/postsSlice";
 import { auth } from "../../../firebase/firebase";
 import { useSelector } from "react-redux";
+import {
+  joinGroupChat,
+  setChatUser,
+  setGroupChat,
+} from "../../../store/chat/chatSlice";
+import { useRouter } from "next/dist/client/router";
 function PostCard({
   createdAt,
   description,
@@ -32,8 +40,8 @@ function PostCard({
   likes,
   tags,
   imageURL,
-  postId,
   user,
+  users,
   id,
   post,
 }) {
@@ -41,6 +49,11 @@ function PostCard({
   const likeStatus = useSelector((state) => state.posts.likeStatus);
   const dispatch = useDispatch();
   const toast = useToast();
+  const router = useRouter();
+
+  const joinProjectStatus = useSelector(
+    (state) => state.chat.joinProjectStatus
+  );
   useEffect(() => {
     if (likeError) {
       toast({
@@ -55,8 +68,8 @@ function PostCard({
   }, [likeError, toast]);
   function handleLikeClick() {
     if (auth.currentUser && likeStatus !== "loading") {
-      dispatch(handleLike({ postId: id, userId: auth.currentUser.uid }));
-      dispatch(likeHandler({ post, userId: auth.currentUser.uid }));
+      dispatch(handleLike({ postId: id, userId: auth.currentUser?.uid }));
+      dispatch(likeHandler({ post, userId: auth.currentUser?.uid }));
       if (!likes.includes(auth.currentUser.uid)) {
         dispatch(
           handleSendingNotification({
@@ -83,6 +96,28 @@ function PostCard({
           })
         );
       }
+    } else if (!auth.currentUser) {
+      setLikeError("Login first!");
+    }
+  }
+  function handleChat() {
+    router.push(`/chat/?room=${id}`, undefined, {
+      shallow: true,
+    });
+    dispatch(
+      setGroupChat({
+        imageURL,
+        title,
+      })
+    );
+    dispatch(setChatUser(""));
+  }
+  function handleProjectJoin() {
+    if (auth.currentUser) {
+      dispatch(joinGroupChat({ id, postUsers: users }));
+      dispatch(
+        joinProjectHandler({ postId: id, userId: auth.currentUser?.uid })
+      );
     } else if (!auth.currentUser) {
       setLikeError("Login first!");
     }
@@ -119,14 +154,28 @@ function PostCard({
                 </Text>{" "}
               </LinkOverlay>
             </NextLink>
-            <IconButton // eslint-disable-next-line react/no-children-prop
-              children={<FaPlus size="24" color="white" />}
-              bg="primary.main"
-              size="sm"
-              borderRadius="50%"
-              _hover={{ bg: "primary.darker" }}
-              _active={{ bg: "primary.lighter" }}
-            />
+            {users.includes(auth.currentUser?.uid) ||
+            userId === auth.currentUser?.uid ? (
+              <IconButton // eslint-disable-next-line react/no-children-prop
+                children={<IoMdChatbubbles size="24" color="white" />}
+                bg="primary.main"
+                size="sm"
+                onClick={handleChat}
+                borderRadius="50%"
+                _hover={{ bg: "primary.darker" }}
+                _active={{ bg: "primary.lighter" }}
+              />
+            ) : (
+              <IconButton // eslint-disable-next-line react/no-children-prop
+                children={<FaPlus size="24" color="white" />}
+                onClick={handleProjectJoin}
+                bg="primary.main"
+                size="sm"
+                borderRadius="50%"
+                _hover={{ bg: "primary.darker" }}
+                _active={{ bg: "primary.lighter" }}
+              />
+            )}
           </HStack>
           <Stack pb="3" justify="space-between" h="100%">
             <Text fontWeight="light" noOfLines={2}>

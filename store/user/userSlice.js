@@ -2,6 +2,9 @@ import { getAuth, updateProfile } from "firebase/auth";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { firebaseErrors } from "../../firebase/firebaseErrors";
+import { collection, getDocs } from "@firebase/firestore";
+import { db } from "../../firebase/firebase";
+import moment from "moment";
 
 export const getUserProfileData = createAsyncThunk(
   "profile/getUserProfileData",
@@ -45,6 +48,17 @@ export const updateUserProfileData = createAsyncThunk(
     return newData;
   }
 );
+export const getAllUsers = createAsyncThunk("getAllUsers/user", async () => {
+  const users = await (
+    await getDocs(collection(db, "users"))
+  ).docs.map((user) => {
+    return {
+      ...user.data(),
+      createdAt: moment(user.data().createdAt.toDate()).calendar(),
+    };
+  });
+  return users;
+});
 
 const userSlice = createSlice({
   name: "user",
@@ -68,6 +82,8 @@ const userSlice = createSlice({
       status: "",
     },
     notifications: { data: [], status: "" },
+    error: "",
+    users: [],
   },
   reducers: {
     resetUpdateRequest(state) {
@@ -108,6 +124,10 @@ const userSlice = createSlice({
         success: null,
       };
     },
+    [getAllUsers.fulfilled]: (state, action) => {
+      state.users = action.payload;
+    },
+    [getAllUsers.rejected]: (state, action) => {},
   },
 });
 
