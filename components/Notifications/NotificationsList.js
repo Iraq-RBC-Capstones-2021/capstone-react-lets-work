@@ -5,6 +5,10 @@ import {
   MenuItem,
   MenuGroup,
   IconButton,
+  Center,
+  Icon,
+  VStack,
+  Text,
 } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { MdNotificationsNone, MdNotificationsActive } from "react-icons/md";
@@ -13,6 +17,7 @@ import NotificationItem from "./NotificationItem";
 import { useDispatch, useSelector } from "react-redux";
 import { setNotifications } from "../../store/user/userSlice";
 import { onValue, ref } from "@firebase/database";
+import { GiDesert } from "react-icons/gi";
 
 function NotificationsList() {
   const dispatch = useDispatch();
@@ -72,20 +77,25 @@ function NotificationsList() {
         maxH="33rem"
       >
         <MenuGroup color="#2E2A77" fontSize="22px">
-          {status === "success"
-            ? data.map((notification) => (
-                <MenuItem
-                  _hover={{ bg: "#f4f5fd" }}
-                  p="0"
-                  key={notification[0]}
-                >
-                  <NotificationItem
-                    notification={notification[1]}
-                    notificationId={notification[0]}
-                  />
-                </MenuItem>
-              ))
-            : null}
+          {status === "success" && data.length > 0 ? (
+            data.map((notification) => (
+              <MenuItem _hover={{ bg: "#f4f5fd" }} p="0" key={notification[0]}>
+                <NotificationItem
+                  notification={notification[1]}
+                  notificationId={notification[0]}
+                />
+              </MenuItem>
+            ))
+          ) : (
+            <Center my="10">
+              <VStack>
+                <Icon as={GiDesert} w={20} h={20} color="lightPurple" />
+                <Text color="lightPurple">
+                  There are no notification ¯\_( ツ )_/¯
+                </Text>
+              </VStack>
+            </Center>
+          )}
         </MenuGroup>
       </MenuList>
     </Menu>
