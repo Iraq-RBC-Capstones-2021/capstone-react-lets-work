@@ -18,7 +18,7 @@ import {
   IconButton,
   Skeleton,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter as router } from "next/dist/client/router";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { useTranslation } from "next-i18next";
