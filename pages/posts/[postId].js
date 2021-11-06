@@ -25,6 +25,7 @@ import { useTranslation } from "next-i18next";
 import { wrapper } from "../../store";
 import {
   getSinglePost,
+  handleDeletingNotification,
   handleLike,
   handleSendingNotification,
 } from "../../store/posts/postsSlice";
@@ -71,8 +72,33 @@ export default function Index({ post, user, some }) {
           (u) => u === auth.currentUser.uid
         );
         post.likes.splice(userIndex, 1);
+        dispatch(
+          handleDeletingNotification({
+            invokedUserId: user.id,
+            userId: auth.currentUser.uid,
+            type: "like",
+            postId: post.id,
+          })
+        );
       } else {
         post.likes.push(auth.currentUser.uid);
+
+        dispatch(
+          handleSendingNotification({
+            newNotification: {
+              redirectTo: `/posts/${post.id}`,
+              seen: false,
+              invokerUserImage: auth.currentUser.photoURL,
+              invokerUsername: auth.currentUser.displayName,
+              content: "liked your post",
+              createdAt: new Date().toString(),
+              invokedItemImage: post.imageURL,
+              invokedUserId: user.id,
+              postId: post.id,
+            },
+            type: "like",
+          })
+        );
       }
     }
   }
