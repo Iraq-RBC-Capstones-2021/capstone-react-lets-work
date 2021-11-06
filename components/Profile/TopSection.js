@@ -9,6 +9,8 @@ import {
   IconButton,
   Link,
   Flex,
+  Icon,
+  HStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
 import { useEffect } from "react";
@@ -77,12 +79,47 @@ function TopSection({
               <Heading fontSize={{ base: "25px", md: "27px" }}>
                 {username}
               </Heading>
-              <Flex align="center">
-                <IconButton as={Link} href={email} icon={<SiGmail />} />
-                <IconButton as={Link} href={instagram} icon={<SiInstagram />} />
-                <IconButton as={Link} href={facebook} icon={<SiFacebook />} />
-                <IconButton as={Link} href={linkedIn} icon={<SiLinkedin />} />
-              </Flex>
+              <HStack spacing="4" align="center">
+                <Link
+                  _focus={{}}
+                  _hover={{ opacity: "0.7" }}
+                  href={email}
+                  isExternal
+                >
+                  {" "}
+                  <Icon as={SiGmail} />{" "}
+                </Link>
+
+                <Link
+                  _focus={{}}
+                  _hover={{ opacity: "0.7" }}
+                  href={instagram}
+                  isExternal
+                >
+                  {" "}
+                  <Icon as={SiInstagram} />{" "}
+                </Link>
+
+                <Link
+                  _focus={{}}
+                  _hover={{ opacity: "0.7" }}
+                  href={facebook}
+                  isExternal
+                >
+                  {" "}
+                  <Icon as={SiFacebook} />{" "}
+                </Link>
+
+                <Link
+                  _focus={{}}
+                  _hover={{ opacity: "0.7" }}
+                  href={linkedIn}
+                  isExternal
+                >
+                  {" "}
+                  <Icon as={SiLinkedin} />{" "}
+                </Link>
+              </HStack>
               <Text color="gray.500" fontWeight="light">
                 {" "}
                 {bio}

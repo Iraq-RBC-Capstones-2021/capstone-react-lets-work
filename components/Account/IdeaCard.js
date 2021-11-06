@@ -19,6 +19,7 @@ const IdeaCard = ({ ideaImage, title, userImage, username, date, ideaId }) => {
       _focus={{ boxShadow: "none" }}
     >
       <Box
+        cursor="pointer"
         bg="white"
         borderRadius="lg"
         boxShadow="md"
