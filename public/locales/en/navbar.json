@@ -6,5 +6,6 @@
     "signup":"Sign Up",
     "profile":"Profile",
     "accountSetting":"Account Setting",
-    "logout":"Log Out"
+    "logout":"Log Out" ,
+    "verify":"Verify Your Account"
 }

@@ -65,11 +65,17 @@ function PostCard({
     }
   }, [likeError, toast]);
   function handleLikeClick() {
-    if (auth.currentUser && likeStatus !== "loading") {
+    if (
+      auth.currentUser &&
+      likeStatus !== "loading" &&
+      auth.currentUser?.emailVerified
+    ) {
       dispatch(handleLike({ postId: id, userId: auth.currentUser?.uid }));
       dispatch(likeHandler({ post, userId: auth.currentUser?.uid }));
     } else if (!auth.currentUser) {
       setLikeError("Login first!");
+    } else if (!auth.currentUser?.emailVerified) {
+      setLikeError("Please verify your account first");
     }
   }
   function handleChat() {
@@ -85,13 +91,15 @@ function PostCard({
     dispatch(setChatUser(""));
   }
   function handleProjectJoin() {
-    if (auth.currentUser) {
+    if (auth.currentUser && auth.currentUser?.emailVerified) {
       dispatch(joinGroupChat({ id, postUsers: users }));
       dispatch(
         joinProjectHandler({ postId: id, userId: auth.currentUser?.uid })
       );
     } else if (!auth.currentUser) {
       setLikeError("Login first!");
+    } else if (!auth.currentUser?.emailVerified) {
+      setLikeError("Please verify your account first");
     }
   }
   return (

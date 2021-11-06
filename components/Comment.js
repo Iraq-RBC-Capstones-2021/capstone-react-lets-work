@@ -20,7 +20,11 @@ function Comment({ sampleComment, postUser }) {
   const dispatch = useDispatch();
   const likeStatus = useSelector((state) => state.comments.likeStatus);
   function handleLike() {
-    if (auth.currentUser && likeStatus !== "loading") {
+    if (
+      auth.currentUser &&
+      likeStatus !== "loading" &&
+      auth.currentUser?.emailVerified
+    ) {
       dispatch(
         handleCommentLike({
           userId: auth.currentUser.uid,
