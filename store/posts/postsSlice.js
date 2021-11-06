@@ -17,10 +17,10 @@ import { auth, db, notificationDb } from "../../firebase/firebase";
 
 export const handleDeletingNotification = createAsyncThunk(
   "posts/handleDeletingNotification",
-  async ({ invokedUserId, userId, type }) => {
+  async ({ invokedUserId, userId, type, postId }) => {
     let typeOfNotification;
-    if (type === "comment") typeOfNotification = `${userId}comment`;
-    if (type === "like") typeOfNotification = `${userId}like`;
+    if (type === "comment") typeOfNotification = `${userId + postId}comment`;
+    if (type === "like") typeOfNotification = `${userId + postId}like`;
 
     const notificationListRef = ref(
       notificationDb,
@@ -35,8 +35,13 @@ export const handleSendingNotification = createAsyncThunk(
   async ({ newNotification, type }) => {
     let typeOfNotification;
     if (type === "comment")
-      typeOfNotification = `${auth.currentUser.uid}comment`;
-    if (type === "like") typeOfNotification = `${auth.currentUser.uid}like`;
+      typeOfNotification = `${
+        auth.currentUser.uid + newNotification.postId
+      }comment`;
+    if (type === "like")
+      typeOfNotification = `${
+        auth.currentUser.uid + newNotification.postId
+      }like`;
 
     const notificationListRef = ref(
       notificationDb,
