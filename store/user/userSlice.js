@@ -75,11 +75,13 @@ const userSlice = createSlice({
       imageURL: "",
     },
     loading: true,
+    error: "",
     updateRequest: {
       error: "",
       success: "",
       status: "",
     },
+    notifications: { data: [], status: "" },
     error: "",
     users: [],
   },
@@ -90,6 +92,10 @@ const userSlice = createSlice({
         success: "",
         status: "",
       };
+    },
+    setNotifications(state, action) {
+      state.notifications.data = action.payload;
+      state.notifications.status = "success";
     },
   },
   extraReducers: {
@@ -125,5 +131,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { resetUpdateRequest } = userSlice.actions;
+export const { resetUpdateRequest, setNotifications } = userSlice.actions;
 export default userSlice.reducer;

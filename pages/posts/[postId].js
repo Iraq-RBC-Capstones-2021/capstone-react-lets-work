@@ -23,7 +23,11 @@ import { useRouter as router } from "next/dist/client/router";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { useTranslation } from "next-i18next";
 import { wrapper } from "../../store";
-import { getSinglePost, handleLike } from "../../store/posts/postsSlice";
+import {
+  getSinglePost,
+  handleLike,
+  handleSendingNotification,
+} from "../../store/posts/postsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { doc, getDoc } from "@firebase/firestore";
 import { auth, db } from "../../firebase/firebase";
@@ -39,7 +43,6 @@ import Comment from "../../components/Comment";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import ChakraInput from "../../components/Shared/ChakraInput";
-import { useToastHook } from "../../components/Hooks/useToastHook";
 
 export default function Index({ post, user, some }) {
   const { t } = useTranslation("postId");
@@ -56,13 +59,6 @@ export default function Index({ post, user, some }) {
       .trim()
       .min(1, "Comments can not be empty"),
   });
-  /* useToastHook(
-    {
-      status: postCommentStatus,
-      error: "Something went wrong",
-    },
-    resetCommentStatus
-  );*/
   function handleLikeClick() {
     if (
       likeStatus !== "loading" &&
@@ -81,26 +77,42 @@ export default function Index({ post, user, some }) {
     }
   }
   function handleComments(value, onSubmitProps) {
-    {
-      const newComment = {
-        content: value.comment.trim(),
-        userId: auth.currentUser.uid,
-        createdAt: new Date(),
-        postId: post.id,
-        likes: [],
-        username: auth.currentUser.displayName,
-        userImage: auth.currentUser.photoURL,
-      };
-      setComments((prevComments) => [newComment, ...prevComments]);
+    const newComment = {
+      content: value.comment.trim(),
+      userId: auth.currentUser.uid,
+      createdAt: new Date(),
+      postId: post.id,
+      likes: [],
+      username: auth.currentUser.displayName,
+      userImage: auth.currentUser.photoURL,
+    };
+    setComments((prevComments) => [newComment, ...prevComments]);
 
+    dispatch(
+      postComment({
+        postId: post.id,
+        comment: newComment,
+      })
+    );
+    if (auth.currentUser) {
       dispatch(
-        postComment({
-          postId: post.id,
-          comment: newComment,
+        handleSendingNotification({
+          newNotification: {
+            redirectTo: `/posts/${post.id}`,
+            seen: false,
+            invokerUserImage: auth.currentUser.photoURL,
+            invokerUsername: auth.currentUser.displayName,
+            content: "commented on your post",
+            createdAt: new Date().toString(),
+            invokedItemImage: post.imageURL,
+            invokedUserId: user.id,
+            postId: post.id,
+          },
+          type: "comment",
         })
       );
-      onSubmitProps.resetForm();
     }
+    onSubmitProps.resetForm();
   }
   const users = useSelector((state) => state.user.users);
   useEffect(() => {
