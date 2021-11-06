@@ -52,7 +52,7 @@ export default function AddProject() {
   const dispatch = useDispatch();
   const toast = useToast();
   const postStatus = useSelector((state) => state.posts.status);
-
+  const postId = useSelector((state) => state.posts.submittedPostId);
   useEffect(() => {
     if (postStatus === "error") {
       toast({
@@ -72,10 +72,11 @@ export default function AddProject() {
         position: "top",
         duration: 3000,
       });
-      router.push("/");
+      router.push(`/posts/${postId}`);
     }
     return () => dispatch(resetPostStatus());
-  }, [postStatus, toast, router, dispatch]);
+    //eslint-disable-next-line
+  }, [postStatus]);
 
   const handleTagsArray = (e) => {
     if (e.keyCode === 13) {

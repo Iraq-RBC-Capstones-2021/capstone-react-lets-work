@@ -47,14 +47,17 @@ export default function Index() {
   const loading = useSelector((state) => state.user.loading);
 
   const request = useSelector((state) => state.user.updateRequest);
-
   usePopulateUserSlice(getUserProfileData, auth.currentUser?.uid);
   useToastHook(request, resetUpdateRequest);
   const imageURL = useUploadValidatedImage(
     auth.currentUser.photoURL,
     validatedImage
   );
-
+  useEffect(() => {
+    if (request.success) {
+      nextRouter.push(`/account/${auth.currentUser?.uid}`);
+    }
+  }, [request, nextRouter]);
   const initialValues = !loading
     ? {
         name: userInfo.name,

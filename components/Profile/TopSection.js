@@ -9,6 +9,8 @@ import {
   IconButton,
   Link,
   Flex,
+  Icon,
+  HStack,
 } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
 import { useEffect } from "react";
@@ -77,12 +79,47 @@ function TopSection({
               <Heading fontSize={{ base: "25px", md: "27px" }}>
                 {username}
               </Heading>
-              <Flex align="center">
-                <IconButton as={Link} href={email} icon={<SiGmail />} />
-                <IconButton as={Link} href={instagram} icon={<SiInstagram />} />
-                <IconButton as={Link} href={facebook} icon={<SiFacebook />} />
-                <IconButton as={Link} href={linkedIn} icon={<SiLinkedin />} />
-              </Flex>
+              <HStack spacing="4" align="center">
+                <Link
+                  _focus={{}}
+                  _hover={{ opacity: "0.7" }}
+                  href={email}
+                  isExternal
+                >
+                  {" "}
+                  <Icon as={SiGmail} />{" "}
+                </Link>
+
+                <Link
+                  _focus={{}}
+                  _hover={{ opacity: "0.7" }}
+                  href={instagram}
+                  isExternal
+                >
+                  {" "}
+                  <Icon as={SiInstagram} />{" "}
+                </Link>
+
+                <Link
+                  _focus={{}}
+                  _hover={{ opacity: "0.7" }}
+                  href={facebook}
+                  isExternal
+                >
+                  {" "}
+                  <Icon as={SiFacebook} />{" "}
+                </Link>
+
+                <Link
+                  _focus={{}}
+                  _hover={{ opacity: "0.7" }}
+                  href={linkedIn}
+                  isExternal
+                >
+                  {" "}
+                  <Icon as={SiLinkedin} />{" "}
+                </Link>
+              </HStack>
               <Text color="gray.500" fontWeight="light">
                 {" "}
                 {bio}
@@ -98,46 +135,48 @@ function TopSection({
           </Flex>
         </Box>
       </Flex>
-      {interests === "" ? null : (
-        <Flex
-          direction={["column", "column", "row", "row"]}
-          align={{ base: "flex-start", md: "center" }}
-          bg="white"
-        >
-          <Box px={["50px", "100px", "150px"]} paddingY="30px" bg="white">
-            <Heading
-              paddingBottom="20px"
-              fontSize={{ base: "25px", md: "27px" }}
-            >
-              {t("interests")}
-            </Heading>
-            <Flex wrap="wrap">{interests}</Flex>
-          </Box>
-        </Flex>
-      )}
-
-      {about === "" ? null : (
-        <Flex
-          direction={["column", "column", "row", "row"]}
-          align={{ base: "flex-start", md: "flex-start" }}
-          bg="white"
-        >
-          <Box
-            px={["50px", "100px", "150px"]}
-            py="20px"
-            spacing={25}
+      <Stack spacing="0" bg="white">
+        {interests === "" ? null : (
+          <Flex
+            direction={["column", "column", "row", "row"]}
+            align={{ base: "flex-start", md: "center" }}
             bg="white"
           >
-            <Heading
-              paddingBottom="20px"
-              fontSize={{ base: "25px", md: "27px" }}
+            <Box px={["50px", "100px", "150px"]} paddingY="30px" bg="white">
+              <Heading
+                paddingBottom="20px"
+                fontSize={{ base: "25px", md: "27px" }}
+              >
+                {t("interests")}
+              </Heading>
+              <Flex wrap="wrap">{interests}</Flex>
+            </Box>
+          </Flex>
+        )}
+
+        {about === "" ? null : (
+          <Flex
+            direction={["column", "column", "row", "row"]}
+            align={{ base: "flex-start", md: "flex-start" }}
+            bg="white"
+          >
+            <Box
+              px={["50px", "100px", "150px"]}
+              py="20px"
+              spacing={25}
+              bg="white"
             >
-              {t("about")}
-            </Heading>
-            <Text>{about}</Text>
-          </Box>
-        </Flex>
-      )}
+              <Heading
+                paddingBottom="20px"
+                fontSize={{ base: "25px", md: "27px" }}
+              >
+                {t("about")}
+              </Heading>
+              <Text>{about}</Text>
+            </Box>
+          </Flex>
+        )}
+      </Stack>
 
       {skills_hobbies === "" ? null : (
         <Flex

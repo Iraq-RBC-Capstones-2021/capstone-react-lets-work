@@ -17,7 +17,9 @@ import { auth, db } from "../../firebase/firebase";
 export const submitPost = createAsyncThunk(
   "posts/submitPost",
   async (postData) => {
-    await axios.post("/api/posts", postData);
+    return await (
+      await axios.post("/api/posts", postData)
+    ).data;
   }
 );
 export const getTopProjects = createAsyncThunk(
@@ -211,6 +213,7 @@ const postSlice = createSlice({
     editPostStatus: "",
     userPosts: { status: "", data: [] },
     lastUserPost: {},
+    submittedPostId: "",
   },
   reducers: {
     setLastTopPost(state, action) {
@@ -238,6 +241,7 @@ const postSlice = createSlice({
     },
     resetPostStatus(state, action) {
       state.status = "";
+      state.submittedPostId = "";
     },
     resetEditStatus(state) {
       state.deletePostStatus = "";
@@ -360,8 +364,9 @@ const postSlice = createSlice({
       state.status = "loading";
     },
 
-    [submitPost.fulfilled]: (state) => {
+    [submitPost.fulfilled]: (state, action) => {
       state.status = "success";
+      state.submittedPostId = action.payload;
     },
 
     [submitPost.rejected]: (state) => {
