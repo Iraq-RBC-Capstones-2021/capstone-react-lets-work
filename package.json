@@ -35,6 +35,7 @@
     "react-geolocated": "^3.2.0",
     "react-icons": "^4.3.1",
     "react-redux": "^7.2.5",
+    "react-scroll-to-bottom": "^4.2.0",
     "uuid": "^8.3.2",
     "yup": "^0.32.9"
   },

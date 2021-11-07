@@ -17,6 +17,8 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { collection, onSnapshot, orderBy, query } from "@firebase/firestore";
 import { handleSendingNotification } from "../../store/posts/postsSlice";
+import ScrollToBottom from "react-scroll-to-bottom";
+
 function ChatMessage({ chatId, users }) {
   const [messages, setMessages] = useState([]);
   const initialUser = useSelector((state) => state.chat.chatUser);
@@ -108,7 +110,7 @@ function ChatMessage({ chatId, users }) {
       </HStack>
       <Stack spacing="0" ml={4}>
         <Stack
-          spacing="6"
+          as={ScrollToBottom}
           borderRadius="xl"
           borderBottomRadius="none"
           bg="white"
@@ -123,6 +125,7 @@ function ChatMessage({ chatId, users }) {
             return (
               <Flex
                 key={msg.id}
+                my="3"
                 justify={
                   msg.userId === auth.currentUser?.uid
                     ? "flex-end"
@@ -202,7 +205,7 @@ function ChatMessage({ chatId, users }) {
               </Flex>
             );
           })}
-        </Stack>
+        </Stack>{" "}
         <Formik
           validationSchema={validationSchema}
           initialValues={{ message: "" }}
