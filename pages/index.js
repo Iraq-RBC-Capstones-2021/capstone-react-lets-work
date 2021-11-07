@@ -16,12 +16,14 @@ import { collection, getDocs } from "@firebase/firestore";
 import { auth, db } from "../firebase/firebase";
 import moment from "moment";
 import CustomHead from "../components/CustomHead";
+import { useTranslation } from "next-i18next";
 
 export default function Home({
   initialTopPosts,
   initialMostRecentPosts,
   users,
 }) {
+  const { t } = useTranslation("home");
   const dispatch = useDispatch();
   const topPosts = useSelector((state) => state.posts.topPosts);
   const mostRecentPosts = useSelector((state) => state.posts.mostRecentPosts);
@@ -49,7 +51,7 @@ export default function Home({
         <PostList
           users={users}
           status={topPosts.status}
-          list="Top Projects"
+          list={t("top_projects")}
           posts={topPosts.data.length > 0 ? topPosts.data : initialTopPosts}
         />
         {lastTopPost && topPosts.data.length % 3 === 0 && (
@@ -67,7 +69,7 @@ export default function Home({
           <Stack align="center">
             <PostList
               users={users}
-              list="Favorite Projects"
+              list={t("favorite_projects")}
               posts={favPosts.data}
               status={favPosts.status}
             />
@@ -86,7 +88,7 @@ export default function Home({
             <PostList
               users={users}
               status={mostRecentPosts.status}
-              list="New Projects"
+              list={t("new_projects")}
               posts={
                 mostRecentPosts.data.length > 0
                   ? mostRecentPosts.data

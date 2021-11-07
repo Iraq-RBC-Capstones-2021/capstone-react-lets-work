@@ -48,7 +48,6 @@ import CustomHead from "../../components/CustomHead";
 
 export default function Index({ post, user, some }) {
   const { t } = useTranslation("postId");
-  const [joinBtn, setJoinBtn] = useState(false);
   const likeStatus = useSelector((state) => state.posts.likeStatus);
   const postCommentStatus = useSelector(
     (state) => state.comments.postCommentStatus
@@ -153,10 +152,7 @@ export default function Index({ post, user, some }) {
   return (
     <Flex mt={{ base: "6", md: "" }} align="center" justify="center">
       <CustomHead title="Post Page" />
-      <Stack
-        p={{ md: "6", base: "0" }}
-        dir={router().locale === "ar" ? "rtl" : "ltr"}
-      >
+      <Stack p={{ md: "6", base: "0" }}>
         <Box
           maxW="780px"
           minW={{ base: "300px", md: "600px", lg: "780px" }}
@@ -171,9 +167,7 @@ export default function Index({ post, user, some }) {
                 {post.title}
               </Heading>
               <Spacer />
-              <Button rounded="15px" onClick={() => setJoinBtn(!joinBtn)}>
-                {joinBtn ? t("joined") : t("join")}
-              </Button>
+
               {auth.currentUser?.uid === post.userId && (
                 <PostOptionsMenu postId={post.id} />
               )}
@@ -291,7 +285,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
             post,
             user: newUser,
             some: comments,
-            ...(await serverSideTranslations(locale, ["postId"])),
+            ...(await serverSideTranslations(locale, ["postId", "navbar"])),
           },
         };
       } catch (err) {
