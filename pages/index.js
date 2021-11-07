@@ -15,6 +15,8 @@ import { wrapper } from "../store";
 import { collection, getDocs } from "@firebase/firestore";
 import { auth, db } from "../firebase/firebase";
 import moment from "moment";
+import CustomHead from "../components/CustomHead";
+
 export default function Home({
   initialTopPosts,
   initialMostRecentPosts,
@@ -41,6 +43,7 @@ export default function Home({
   }, [dispatch]);
   return (
     <Box mb="20">
+      <CustomHead title="Home" />
       <TopSection />
       <Stack spacing="6" align="center">
         <PostList

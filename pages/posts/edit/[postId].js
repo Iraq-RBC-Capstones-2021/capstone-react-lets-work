@@ -40,6 +40,7 @@ import { useRouter } from "next/dist/client/router";
 
 import { wrapper } from "../../../store";
 import { useToastHook } from "../../../components/Hooks/useToastHook";
+import CustomHead from "../../../components/CustomHead";
 
 export default function AddProject({ post }) {
   const [tagsArray, setTagsArray] = useState([]);
@@ -161,170 +162,174 @@ export default function AddProject({ post }) {
     tags: post.tags,
   };
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={Yup.object({
-        projectName: Yup.string()
-          .max(40, "Must be 40 characters or less")
-          .required("Required"),
-        description: Yup.string()
-          .max(200, "Must be 200 characters or less")
-          .required("Required"),
-      })}
-      onSubmit={onSubmit}
-    >
-      <Form>
-        <Stack
-          align="center"
-          justify="center"
-          bg="secondary.main"
-          height="70vh"
-        >
-          <Box
-            mx={{ base: "3" }}
-            bg="white"
-            color="primary.lighter"
-            borderRadius="xl"
-            p={["5", "6", "8"]}
-            h={{ base: "100%", md: "auto" }}
-            w={{ md: "40rem", base: "100%" }}
+    <>
+      <CustomHead title="Edit Post" />
+      <Formik
+        initialValues={initialValues}
+        validationSchema={Yup.object({
+          projectName: Yup.string()
+            .max(40, "Must be 40 characters or less")
+            .required("Required"),
+          description: Yup.string()
+            .max(200, "Must be 200 characters or less")
+            .required("Required"),
+        })}
+        onSubmit={onSubmit}
+      >
+        <Form>
+          <Stack
+            align="center"
+            justify="center"
+            bg="secondary.main"
+            height="70vh"
           >
-            <Stack spacing={3}>
-              <VStack
-                alignContent="space-evenly"
-                align="flex-start"
-                justify="flex-start"
-              >
-                <Heading
-                  as="h5"
-                  fontSize={{ base: "22px", md: "18px" }}
-                  color="black"
+            <Box
+              mx={{ base: "3" }}
+              bg="white"
+              color="primary.lighter"
+              borderRadius="xl"
+              p={["5", "6", "8"]}
+              h={{ base: "100%", md: "auto" }}
+              w={{ md: "40rem", base: "100%" }}
+            >
+              <Stack spacing={3}>
+                <VStack
+                  alignContent="space-evenly"
+                  align="flex-start"
+                  justify="flex-start"
                 >
-                  Edit your project
-                </Heading>
-                <ChakraInput
-                  placeholder="Project name"
-                  variant="flushed"
-                  color="primary.lighter"
-                  fontSize={{ base: "18px", md: "18px" }}
-                  name="projectName"
-                  w="100%"
-                />
-                <ChakraInput
-                  placeholder="Description"
-                  variant="flushed"
-                  fontSize={{ base: "18px", md: "15px" }}
-                  name="description"
-                  w="100%"
-                />
-              </VStack>
-              <VStack align="flex-start" justify="flex-start">
-                <HStack>
                   <Heading
                     as="h5"
                     fontSize={{ base: "22px", md: "18px" }}
                     color="black"
                   >
-                    Tags
+                    Edit your project
                   </Heading>
-                  <Popover isLazy>
-                    <PopoverTrigger>
-                      <InfoOutlineIcon />
-                    </PopoverTrigger>
-                    <PopoverContent>
-                      <PopoverCloseButton />
-                      <PopoverArrow />
-                      <PopoverBody>
-                        Press Enter to add a tag, You cant add more than 3 tags
-                      </PopoverBody>
-                    </PopoverContent>
-                  </Popover>
-                </HStack>
+                  <ChakraInput
+                    placeholder="Project name"
+                    variant="flushed"
+                    color="primary.lighter"
+                    fontSize={{ base: "18px", md: "18px" }}
+                    name="projectName"
+                    w="100%"
+                  />
+                  <ChakraInput
+                    placeholder="Description"
+                    variant="flushed"
+                    fontSize={{ base: "18px", md: "15px" }}
+                    name="description"
+                    w="100%"
+                  />
+                </VStack>
+                <VStack align="flex-start" justify="flex-start">
+                  <HStack>
+                    <Heading
+                      as="h5"
+                      fontSize={{ base: "22px", md: "18px" }}
+                      color="black"
+                    >
+                      Tags
+                    </Heading>
+                    <Popover isLazy>
+                      <PopoverTrigger>
+                        <InfoOutlineIcon />
+                      </PopoverTrigger>
+                      <PopoverContent>
+                        <PopoverCloseButton />
+                        <PopoverArrow />
+                        <PopoverBody>
+                          Press Enter to add a tag, You cant add more than 3
+                          tags
+                        </PopoverBody>
+                      </PopoverContent>
+                    </Popover>
+                  </HStack>
 
-                <HStack wrap="wrap" spacing={3} flexShrink={0}>
-                  <Box
-                    w={["18rem", "35rem"]}
-                    minH="4vw"
-                    borderWidth="1px"
-                    rounded="7"
-                    p="2"
-                  >
-                    <Wrap>
-                      {tagsArray.map((tag) => (
-                        <WrapItem key={uuidv4()}>
-                          <Button
-                            type="button"
-                            size="sm"
-                            bgColor="blue.100"
-                            rounded="100"
-                            m="1"
-                            onClick={() => {
-                              const newtags = tagsArray.filter(
-                                (t) => t !== tag
-                              );
-                              setTagsArray(newtags);
+                  <HStack wrap="wrap" spacing={3} flexShrink={0}>
+                    <Box
+                      w={["18rem", "35rem"]}
+                      minH="4vw"
+                      borderWidth="1px"
+                      rounded="7"
+                      p="2"
+                    >
+                      <Wrap>
+                        {tagsArray.map((tag) => (
+                          <WrapItem key={uuidv4()}>
+                            <Button
+                              type="button"
+                              size="sm"
+                              bgColor="blue.100"
+                              rounded="100"
+                              m="1"
+                              onClick={() => {
+                                const newtags = tagsArray.filter(
+                                  (t) => t !== tag
+                                );
+                                setTagsArray(newtags);
+                              }}
+                            >
+                              {tag}
+                            </Button>
+                          </WrapItem>
+                        ))}
+                        <WrapItem>
+                          <Input
+                            placeholder={t("Press Enter to add the tag")}
+                            name="interests"
+                            variant="ghost"
+                            onKeyDown={handleTagsArray}
+                            value={tagsValue}
+                            onChange={(e) => {
+                              setTagsValue(e.target.value);
                             }}
-                          >
-                            {tag}
+                          />
+                        </WrapItem>
+                        <WrapItem>
+                          <Button onClick={handleTags} display={{ lg: "none" }}>
+                            Add Tag
                           </Button>
                         </WrapItem>
-                      ))}
-                      <WrapItem>
-                        <Input
-                          placeholder={t("Press Enter to add the tag")}
-                          name="interests"
-                          variant="ghost"
-                          onKeyDown={handleTagsArray}
-                          value={tagsValue}
-                          onChange={(e) => {
-                            setTagsValue(e.target.value);
-                          }}
-                        />
-                      </WrapItem>
-                      <WrapItem>
-                        <Button onClick={handleTags} display={{ lg: "none" }}>
-                          Add Tag
-                        </Button>
-                      </WrapItem>
-                    </Wrap>
-                  </Box>
-                </HStack>
-                {imageURL && (
-                  <ChakraImage src={imageURL} boxSize="3rem" alt="img" />
-                )}
-              </VStack>
+                      </Wrap>
+                    </Box>
+                  </HStack>
+                  {imageURL && (
+                    <ChakraImage src={imageURL} boxSize="3rem" alt="img" />
+                  )}
+                </VStack>
 
-              <HStack justify="space-between" spacing={2} wrap="wrap">
-                <Input
-                  hidden
-                  ref={uploadInput}
-                  type="file"
-                  accept="image/png, image/jpeg"
-                  onChange={onChangeFile}
-                />
-                <IconButton
-                  bg="transparent"
-                  icon={<FiImage size="23" />}
-                  onClick={openFileUpload}
-                >
-                  {t("uploadNewPhoto")}
-                </IconButton>
-                <Button
-                  isLoading={editStatus === "loading"}
-                  type="submit"
-                  variant="secondary"
-                >
-                  Submit changes
-                </Button>
-              </HStack>
-              {imageFileState.file === undefined ? (
-                <Text color="red.400">{imageFileState.imageUploadError}</Text>
-              ) : null}
-            </Stack>
-          </Box>
-        </Stack>
-      </Form>
-    </Formik>
+                <HStack justify="space-between" spacing={2} wrap="wrap">
+                  <Input
+                    hidden
+                    ref={uploadInput}
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    onChange={onChangeFile}
+                  />
+                  <IconButton
+                    bg="transparent"
+                    icon={<FiImage size="23" />}
+                    onClick={openFileUpload}
+                  >
+                    {t("uploadNewPhoto")}
+                  </IconButton>
+                  <Button
+                    isLoading={editStatus === "loading"}
+                    type="submit"
+                    variant="secondary"
+                  >
+                    Submit changes
+                  </Button>
+                </HStack>
+                {imageFileState.file === undefined ? (
+                  <Text color="red.400">{imageFileState.imageUploadError}</Text>
+                ) : null}
+              </Stack>
+            </Box>
+          </Stack>
+        </Form>
+      </Formik>
+    </>
   );
 }
 export const getServerSideProps = wrapper.getServerSideProps(

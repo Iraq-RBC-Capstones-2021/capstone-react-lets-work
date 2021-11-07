@@ -44,6 +44,7 @@ import Comment from "../../components/Comment";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import ChakraInput from "../../components/Shared/ChakraInput";
+import CustomHead from "../../components/CustomHead";
 
 export default function Index({ post, user, some }) {
   const { t } = useTranslation("postId");
@@ -151,6 +152,7 @@ export default function Index({ post, user, some }) {
   });
   return (
     <Flex mt={{ base: "6", md: "" }} align="center" justify="center">
+      <CustomHead title="Post Page" />
       <Stack
         p={{ md: "6", base: "0" }}
         dir={router().locale === "ar" ? "rtl" : "ltr"}
