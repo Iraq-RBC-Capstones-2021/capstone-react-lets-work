@@ -16,6 +16,7 @@ import ChakraInput from "../Shared/ChakraInput";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { collection, onSnapshot, orderBy, query } from "@firebase/firestore";
+import { handleSendingNotification } from "../../store/posts/postsSlice";
 function ChatMessage({ chatId, users }) {
   const [messages, setMessages] = useState([]);
   const chatUser = useSelector((state) => state.chat.chatUser);
@@ -55,6 +56,25 @@ function ChatMessage({ chatId, users }) {
         message: newMessage,
       })
     );
+
+    if (auth.currentUser) {
+      dispatch(
+        handleSendingNotification({
+          newNotification: {
+            redirectTo: `/chat`,
+            seen: false,
+            invokerUserImage: auth.currentUser.photoURL,
+            invokerUsername: auth.currentUser.displayName,
+            content: "messaged you",
+            createdAt: new Date().toString(),
+            invokedItemImage: "",
+            invokedUserId: chatUser.id,
+            postId: auth.currentUser.uid,
+          },
+          type: "message",
+        })
+      );
+    }
     onSubmitProps.resetForm();
   };
   const validationSchema = Yup.object({
