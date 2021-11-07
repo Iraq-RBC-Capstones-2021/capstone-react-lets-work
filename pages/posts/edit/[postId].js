@@ -41,12 +41,15 @@ import { useRouter } from "next/dist/client/router";
 import { wrapper } from "../../../store";
 import { useToastHook } from "../../../components/Hooks/useToastHook";
 import CustomHead from "../../../components/CustomHead";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export default function AddProject({ post }) {
   const [tagsArray, setTagsArray] = useState([]);
   const [tagsValue, setTagsValue] = useState("");
   const [imageURL, setImageURL] = useState("");
   const router = useRouter();
+  const { t } = useTranslation("postId");
+
   const dispatch = useDispatch();
   const editStatus = useSelector((state) => state.posts.editPostStatus);
   if (auth.currentUser?.uid !== post.userId) {
@@ -98,7 +101,6 @@ export default function AddProject({ post }) {
     imageUploadError: null,
   });
   const uploadInput = useRef();
-  const { t } = useTranslation("setting");
 
   function openFileUpload() {
     uploadInput.current.click();
@@ -178,6 +180,7 @@ export default function AddProject({ post }) {
       >
         <Form>
           <Stack
+            dir={router.locale === "ar" ? "rtl" : "ltr"}
             align="center"
             justify="center"
             bg="secondary.main"
@@ -203,7 +206,7 @@ export default function AddProject({ post }) {
                     fontSize={{ base: "22px", md: "18px" }}
                     color="black"
                   >
-                    Edit your project
+                    {t("edit")}
                   </Heading>
                   <ChakraInput
                     placeholder="Project name"
@@ -228,7 +231,7 @@ export default function AddProject({ post }) {
                       fontSize={{ base: "22px", md: "18px" }}
                       color="black"
                     >
-                      Tags
+                      {t("tags")}
                     </Heading>
                     <Popover isLazy>
                       <PopoverTrigger>
@@ -237,10 +240,7 @@ export default function AddProject({ post }) {
                       <PopoverContent>
                         <PopoverCloseButton />
                         <PopoverArrow />
-                        <PopoverBody>
-                          Press Enter to add a tag, You cant add more than 3
-                          tags
-                        </PopoverBody>
+                        <PopoverBody>{t("tagsInfo")}</PopoverBody>
                       </PopoverContent>
                     </Popover>
                   </HStack>
@@ -275,7 +275,7 @@ export default function AddProject({ post }) {
                         ))}
                         <WrapItem>
                           <Input
-                            placeholder={t("Press Enter to add the tag")}
+                            placeholder={t("tag")}
                             name="interests"
                             variant="ghost"
                             onKeyDown={handleTagsArray}
@@ -318,7 +318,7 @@ export default function AddProject({ post }) {
                     type="submit"
                     variant="secondary"
                   >
-                    Submit changes
+                    {t("submit")}
                   </Button>
                 </HStack>
                 {imageFileState.file === undefined ? (
@@ -334,7 +334,7 @@ export default function AddProject({ post }) {
 }
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) =>
-    async ({ params }) => {
+    async ({ params, locale }) => {
       const { postId } = params;
       await store.dispatch(getSinglePost(postId));
       const post = store.getState().posts.singlePost;
@@ -342,6 +342,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         return {
           props: {
             post: post.data,
+            ...(await serverSideTranslations(locale, ["postId", "navbar"])),
           },
         };
       } else if (post.status === "error") {
