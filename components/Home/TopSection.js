@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/dist/client/router";
-import { Image as NextImage } from "next/image";
+import NextImage from "next/image";
 import NextLink from "next/link";
 import { auth } from "../../firebase/firebase";
 

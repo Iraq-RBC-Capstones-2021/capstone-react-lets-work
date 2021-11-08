@@ -7,7 +7,7 @@ import {
   Avatar,
   Skeleton,
 } from "@chakra-ui/react";
-import { Image as NextImage } from "next/image";
+import NextImage from "next/image";
 import NextLink from "next/link";
 
 const IdeaCard = ({ ideaImage, title, userImage, username, date, ideaId }) => {

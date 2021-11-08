@@ -8,7 +8,7 @@ import {
   Image,
   Center,
 } from "@chakra-ui/react";
-import { Image as NextImage } from "next/image";
+import NextImage from "next/image";
 import Feature from "../../components/About/Feature";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/dist/client/router";

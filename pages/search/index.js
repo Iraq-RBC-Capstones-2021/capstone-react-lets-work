@@ -16,7 +16,7 @@ import {
   Box,
   Image,
 } from "@chakra-ui/react";
-import { Image as NextImage } from "next/image";
+import NextImage from "next/image";
 import { Search2Icon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { BiSliderAlt } from "react-icons/bi";

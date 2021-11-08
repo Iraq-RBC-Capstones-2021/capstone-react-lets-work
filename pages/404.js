@@ -8,7 +8,7 @@ import {
   Button,
   Flex,
 } from "@chakra-ui/react";
-import { Image as NextImage } from "next/image";
+import NextImage from "next/image";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/dist/client/router";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
