@@ -17,6 +17,7 @@ import { auth, db } from "../firebase/firebase";
 import moment from "moment";
 import CustomHead from "../components/CustomHead";
 import { useTranslation } from "next-i18next";
+import { useRouter } from "next/dist/client/router";
 
 export default function Home({
   initialTopPosts,
@@ -31,6 +32,7 @@ export default function Home({
   const lastTopPost = useSelector((state) => state.posts.lastTopPost);
   const lastRecentPost = useSelector((state) => state.posts.lastRecentPost);
   const lastFavPost = useSelector((state) => state.posts.lastFavPost);
+  const router = useRouter();
   useEffect(() => {
     if (topPosts.data.length === 0) {
       dispatch(getTopProjects());
@@ -44,7 +46,7 @@ export default function Home({
     //eslint-disable-next-line
   }, [dispatch]);
   return (
-    <Box mb="20">
+    <Box dir={router.locale === "ar" ? "rtl" : "ltr"} mb="20">
       <CustomHead title="Home" />
       <TopSection />
       <Stack spacing="6" align="center">
@@ -60,7 +62,7 @@ export default function Home({
             variant="secondary"
             onClick={() => dispatch(getTopProjects())}
           >
-            Load More
+            {t("load")}{" "}
           </Button>
         )}
       </Stack>
@@ -80,7 +82,7 @@ export default function Home({
                 variant="secondary"
                 onClick={() => dispatch(getFavPosts())}
               >
-                Load More
+                {t("load")}{" "}
               </Button>
             )}
           </Stack>
@@ -101,7 +103,7 @@ export default function Home({
                 variant="secondary"
                 onClick={() => dispatch(getMostRecentProjects())}
               >
-                Load More
+                {t("load")}{" "}
               </Button>
             )}
           </Stack>
