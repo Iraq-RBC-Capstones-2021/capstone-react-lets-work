@@ -176,7 +176,7 @@ export default function AddProject() {
         initialValues={{ projectName: "", description: "", tags: "" }}
         validationSchema={Yup.object({
           projectName: Yup.string()
-            .max(15, "Must be 15 characters or less")
+            .max(32, "Must be 32 characters or less")
             .required("Required"),
           description: Yup.string()
             .max(200, "Must be 200 characters or less")
