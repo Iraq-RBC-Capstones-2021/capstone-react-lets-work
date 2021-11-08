@@ -36,6 +36,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import ChatMessage from "../../components/Chat/ChatMessage";
 import { getChatUsers, getGroupChats } from "../../store/chat/chatSlice";
+import CustomHead from "../../components/CustomHead";
 
 export default function Chat({ users }) {
   const router = useRouter();
@@ -62,6 +63,7 @@ export default function Chat({ users }) {
     <Skeleton h="100vh" />
   ) : (
     <Center py={8}>
+      <CustomHead title="Chat" />
       <Box w={room || "50%"} boxShadow="2xl" p="6" rounded="md">
         <HStack h="80vh" spacing={0}>
           <ChatList groupChats={groupChats} users={newUsers} />

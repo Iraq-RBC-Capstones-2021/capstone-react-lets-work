@@ -97,6 +97,7 @@ function PostCard({
             invokedUserId: user.id,
             userId: auth.currentUser.uid,
             type: "like",
+            postId: id,
           })
         );
       }

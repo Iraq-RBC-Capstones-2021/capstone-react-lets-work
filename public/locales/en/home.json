@@ -3,5 +3,9 @@
     "heading":"on a Project!",
     "description":"A platform where you can find Projects, Ideas, and People with the same interest as you.",
     "join_us":"Join us",
-    "add":"Add new project"
+    "add":"Add new project",
+    "top_projects":"Top Projects",
+    "favorite_projects":"Favorite Projects",
+    "new_projects": "New Projects",
+    "load":"Load More"
 }

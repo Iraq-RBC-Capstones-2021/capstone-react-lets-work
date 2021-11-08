@@ -1,9 +1,15 @@
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import React from "react";
 import SignUp from "../../components/SignUp/SignUp";
+import CustomHead from "../../components/CustomHead";
 
 function SignUpPage() {
-  return <SignUp />;
+  return (
+    <>
+      <CustomHead title="Sign Up" />
+      <SignUp />
+    </>
+  );
 }
 export async function getStaticProps({ locale }) {
   return {

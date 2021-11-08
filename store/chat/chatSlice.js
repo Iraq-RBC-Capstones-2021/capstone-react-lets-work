@@ -124,6 +124,9 @@ const chatSlice = createSlice({
     setGroupChat(state, action) {
       state.groupChat = action.payload;
     },
+    resetGroupChat(state, action) {
+      state.groupChat = {};
+    },
     resetChatStatus(state) {
       state.chatRoom.status = "";
     },
@@ -183,6 +186,11 @@ const chatSlice = createSlice({
     },
   },
 });
-export const { setChatUser, resetChatStatus, setGroupChat, resetJoinProject } =
-  chatSlice.actions;
+export const {
+  setChatUser,
+  resetChatStatus,
+  setGroupChat,
+  resetJoinProject,
+  resetGroupChat,
+} = chatSlice.actions;
 export default chatSlice.reducer;

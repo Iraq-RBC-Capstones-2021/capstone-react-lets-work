@@ -41,6 +41,7 @@ import {
   PaginationContainer,
   PaginationPageGroup,
 } from "@ajna/pagination";
+import CustomHead from "../../components/CustomHead";
 
 export default function Search({ users }) {
   const { t } = useTranslation("search");
@@ -132,6 +133,7 @@ export default function Search({ users }) {
 
   return (
     <Box w="100%" bg="secondary.main" py={4}>
+      <CustomHead title="Search" />
       {/* /<GetGeoLocation /> */}
       <Stack>
         <Container mt={8}>

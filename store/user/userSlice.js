@@ -94,7 +94,11 @@ const userSlice = createSlice({
       };
     },
     setNotifications(state, action) {
-      state.notifications.data = action.payload;
+      state.notifications.data = action.payload.sort((a, b) => {
+        let dateA = new Date(a[1].createdAt).getTime();
+        let dateB = new Date(b[1].createdAt).getTime();
+        return dateA < dateB ? 1 : -1;
+      });
       state.notifications.status = "success";
     },
   },

@@ -13,12 +13,14 @@ import Feature from "../../components/About/Feature";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/dist/client/router";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import CustomHead from "../../components/CustomHead";
 
 export default function About() {
   const { t } = useTranslation("about");
   const { locale } = useRouter();
   return (
     <div>
+      <CustomHead title="About" />
       <Stack
         bg="secondary.main"
         py={{ base: 8, md: 16 }}

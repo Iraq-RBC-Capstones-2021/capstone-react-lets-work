@@ -33,7 +33,9 @@ function NotificationItem({ notification, notificationId }) {
             </Text>
           </Stack>
         </HStack>
-        <Avatar size="md" src={notification.invokedItemImage} />
+        {notification.invokedItemImage !== "" ? (
+          <Avatar size="md" src={notification.invokedItemImage} />
+        ) : null}
       </Flex>
     </Link>
   );

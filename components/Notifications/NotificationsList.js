@@ -16,7 +16,7 @@ import { auth, notificationDb } from "../../firebase/firebase";
 import NotificationItem from "./NotificationItem";
 import { useDispatch, useSelector } from "react-redux";
 import { setNotifications } from "../../store/user/userSlice";
-import { onValue, ref, off } from "@firebase/database";
+import { onValue, ref } from "@firebase/database";
 import { GiDesert } from "react-icons/gi";
 
 function NotificationsList() {
