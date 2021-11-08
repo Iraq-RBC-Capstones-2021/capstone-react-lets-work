@@ -11,20 +11,26 @@ import {
 import { auth, db } from "../../firebase/firebase";
 import { BiSend } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import { sendMessage } from "../../store/chat/chatSlice";
+import { resetGroupChat, sendMessage } from "../../store/chat/chatSlice";
 import ChakraInput from "../Shared/ChakraInput";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { collection, onSnapshot, orderBy, query } from "@firebase/firestore";
+import { handleSendingNotification } from "../../store/posts/postsSlice";
+import ScrollToBottom from "react-scroll-to-bottom";
+
 function ChatMessage({ chatId, users }) {
   const [messages, setMessages] = useState([]);
-  const chatUser = useSelector((state) => state.chat.chatUser);
+  const initialUser = useSelector((state) => state.chat.chatUser);
   const dispatch = useDispatch();
   const status = useSelector((state) => state.chat.sendMessageStatus);
   const groupChat = useSelector((state) => state.chat.groupChat);
   const newUsers = messages.map((msg) => {
     return users.filter((user) => user.id === msg.userId)[0];
   });
+  const user = newUsers.filter((u) => u.id !== auth.currentUser?.uid)[0];
+  const chatUser = user ? user : initialUser;
+
   useEffect(() => {
     const unsub = onSnapshot(
       query(collection(db, `chat/${chatId}/messages`), orderBy("createdAt")),
@@ -42,6 +48,9 @@ function ChatMessage({ chatId, users }) {
     );
     return () => unsub();
   }, [chatId]);
+  useEffect(() => {
+    return () => dispatch(resetGroupChat());
+  }, [dispatch]);
   const onSubmitHandler = (values, onSubmitProps) => {
     event.preventDefault();
     const newMessage = {
@@ -55,6 +64,25 @@ function ChatMessage({ chatId, users }) {
         message: newMessage,
       })
     );
+
+    if (auth.currentUser) {
+      dispatch(
+        handleSendingNotification({
+          newNotification: {
+            redirectTo: `/chat/?room=${chatId}`,
+            seen: false,
+            invokerUserImage: auth.currentUser.photoURL,
+            invokerUsername: auth.currentUser.displayName,
+            content: "messaged you",
+            createdAt: new Date().toString(),
+            invokedItemImage: "",
+            invokedUserId: chatUser.id,
+            postId: auth.currentUser.uid,
+          },
+          type: "message",
+        })
+      );
+    }
     onSubmitProps.resetForm();
   };
   const validationSchema = Yup.object({
@@ -73,16 +101,16 @@ function ChatMessage({ chatId, users }) {
     >
       <HStack my="3">
         <Avatar
-          src={chatUser.imageURL ? chatUser.imageURL : groupChat.imageURL}
-          name={chatUser.username ? chatUser.username : groupChat.title}
+          src={groupChat.imageURL ? groupChat.imageURL : chatUser.imageURL}
+          name={groupChat.title ? groupChat.title : chatUser.username}
         />
         <Text fontSize="3xl" fontWeight="bold" ml="4">
-          {chatUser.username ? chatUser.username : groupChat.title}
+          {groupChat.title ? groupChat.title : chatUser.username}
         </Text>
       </HStack>
       <Stack spacing="0" ml={4}>
         <Stack
-          spacing="6"
+          as={ScrollToBottom}
           borderRadius="xl"
           borderBottomRadius="none"
           bg="white"
@@ -97,6 +125,7 @@ function ChatMessage({ chatId, users }) {
             return (
               <Flex
                 key={msg.id}
+                my="3"
                 justify={
                   msg.userId === auth.currentUser?.uid
                     ? "flex-end"
@@ -176,7 +205,7 @@ function ChatMessage({ chatId, users }) {
               </Flex>
             );
           })}
-        </Stack>
+        </Stack>{" "}
         <Formik
           validationSchema={validationSchema}
           initialValues={{ message: "" }}

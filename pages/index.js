@@ -15,11 +15,16 @@ import { wrapper } from "../store";
 import { collection, getDocs } from "@firebase/firestore";
 import { auth, db } from "../firebase/firebase";
 import moment from "moment";
+import CustomHead from "../components/CustomHead";
+import { useTranslation } from "next-i18next";
+import { useRouter } from "next/dist/client/router";
+
 export default function Home({
   initialTopPosts,
   initialMostRecentPosts,
   users,
 }) {
+  const { t } = useTranslation("home");
   const dispatch = useDispatch();
   const topPosts = useSelector((state) => state.posts.topPosts);
   const mostRecentPosts = useSelector((state) => state.posts.mostRecentPosts);
@@ -27,6 +32,7 @@ export default function Home({
   const lastTopPost = useSelector((state) => state.posts.lastTopPost);
   const lastRecentPost = useSelector((state) => state.posts.lastRecentPost);
   const lastFavPost = useSelector((state) => state.posts.lastFavPost);
+  const router = useRouter();
   useEffect(() => {
     if (topPosts.data.length === 0) {
       dispatch(getTopProjects());
@@ -40,13 +46,14 @@ export default function Home({
     //eslint-disable-next-line
   }, [dispatch]);
   return (
-    <Box mb="20">
+    <Box dir={router.locale === "ar" ? "rtl" : "ltr"} mb="20">
+      <CustomHead title="Home" />
       <TopSection />
       <Stack spacing="6" align="center">
         <PostList
           users={users}
           status={topPosts.status}
-          list="Top Projects"
+          list={t("top_projects")}
           posts={topPosts.data.length > 0 ? topPosts.data : initialTopPosts}
         />
         {lastTopPost && topPosts.data.length % 3 === 0 && (
@@ -55,7 +62,7 @@ export default function Home({
             variant="secondary"
             onClick={() => dispatch(getTopProjects())}
           >
-            Load More
+            {t("load")}{" "}
           </Button>
         )}
       </Stack>
@@ -64,7 +71,7 @@ export default function Home({
           <Stack align="center">
             <PostList
               users={users}
-              list="Favorite Projects"
+              list={t("favorite_projects")}
               posts={favPosts.data}
               status={favPosts.status}
             />
@@ -75,7 +82,7 @@ export default function Home({
                 variant="secondary"
                 onClick={() => dispatch(getFavPosts())}
               >
-                Load More
+                {t("load")}{" "}
               </Button>
             )}
           </Stack>
@@ -83,7 +90,7 @@ export default function Home({
             <PostList
               users={users}
               status={mostRecentPosts.status}
-              list="New Projects"
+              list={t("new_projects")}
               posts={
                 mostRecentPosts.data.length > 0
                   ? mostRecentPosts.data
@@ -96,7 +103,7 @@ export default function Home({
                 variant="secondary"
                 onClick={() => dispatch(getMostRecentProjects())}
               >
-                Load More
+                {t("load")}{" "}
               </Button>
             )}
           </Stack>

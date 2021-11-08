@@ -10,6 +10,7 @@ import { useRouter } from "next/dist/client/router";
 import { HiDotsVertical } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePost, resetEditStatus } from "../store/posts/postsSlice";
+import { useTranslation } from "next-i18next";
 import { useToastHook } from "./Hooks/useToastHook";
 import Modal from "./Shared/Modal";
 
@@ -17,6 +18,7 @@ export default function PostOptionsMenu({ postId }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const deleteStatus = useSelector((state) => state.posts.deletePostStatus);
+  const { t } = useTranslation("postId");
   const { isOpen, onOpen, onClose } = useDisclosure();
   useToastHook(
     {
@@ -43,10 +45,10 @@ export default function PostOptionsMenu({ postId }) {
       />
       <MenuList>
         <MenuItem onClick={() => router.push(`/posts/edit/${postId}`)}>
-          Edit Post
+          {t("editPost")}
         </MenuItem>
         <MenuItem onClick={onOpen} textColor="red.500">
-          Delete Post
+          {t("delete")}
         </MenuItem>
       </MenuList>
       <Modal

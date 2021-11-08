@@ -21,6 +21,7 @@ export const handleDeletingNotification = createAsyncThunk(
     let typeOfNotification;
     if (type === "comment") typeOfNotification = `${userId + postId}comment`;
     if (type === "like") typeOfNotification = `${userId + postId}like`;
+    if (type === "message") typeOfNotification = `${userId + postId}message`;
 
     const notificationListRef = ref(
       notificationDb,
@@ -42,6 +43,10 @@ export const handleSendingNotification = createAsyncThunk(
       typeOfNotification = `${
         auth.currentUser.uid + newNotification.postId
       }like`;
+    if (type === "message")
+      typeOfNotification = `${
+        auth.currentUser.uid + newNotification.postId
+      }message`;
 
     const notificationListRef = ref(
       notificationDb,
