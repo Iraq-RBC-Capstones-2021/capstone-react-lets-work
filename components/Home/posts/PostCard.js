@@ -32,6 +32,7 @@ import {
   setGroupChat,
 } from "../../../store/chat/chatSlice";
 import { useRouter } from "next/dist/client/router";
+import LoadingPost from "./loadingPost";
 function PostCard({
   createdAt,
   description,
@@ -130,7 +131,9 @@ function PostCard({
       setLikeError("Please verify your account first");
     }
   }
-  return (
+  return !user ? (
+    <LoadingPost />
+  ) : (
     <LinkBox bg="secondary.main" _hover={{ transform: "scale(1.01)" }}>
       <Stack
         spacing="0"
